@@ -1,3 +1,2 @@
-application/config/database.php
-application/config/config.php
-project.*
+/application/config/database.php
+/application/config/config.php
