@@ -39,8 +39,8 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "root";
-$db['default']['password'] = "snatchss";
-$db['default']['database'] = "povarenok";
+$db['default']['password'] = "snatch";
+$db['default']['database'] = "listafe";
 $db['default']['dbdriver'] = "mysql";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;
