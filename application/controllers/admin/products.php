@@ -20,7 +20,7 @@ class Products extends MY_Controller {
         $products->include_related('mera', array('name'))->get();
         $products->include_related('category', array('name'))->get();
         $data['products'] = $products;
-        $this->template->load('/admin/templates/main_template', '/admin/products_show', $data);
+        $this->template->load('/admin/templates/main_template', '/admin/products/show', $data);
     }
     
     function delete($id = false){
@@ -38,11 +38,8 @@ class Products extends MY_Controller {
         
         $category	= new Category();
         $mera		= new Mera();
-        $data['category_model']	= $category->get_iterated();
-        $data['mera_model']		= $mera->get_iterated();
-        //error and success mesages for form - false by default
-        $data['form_success']	= false;
-        $data['form_error']		= false;
+		$nutritions_categories = new Nutritions_category();
+		
   		
         
         $product = new Product($id);
@@ -83,8 +80,15 @@ class Products extends MY_Controller {
                 $data['form_error'] = $product->error->string;
             }
         }
-        $data['product'] = $product;
-        $this->template->load('/admin/templates/main_template', '/admin/products_edit', $data);
+
+
+        $this->data['category_model']	= $category->get_iterated();
+        $this->data['mera_model']		= $mera->get_iterated();
+        $this->data['nutritions_category_model'] = $nutritions_categories->get_iterated();
+        $this->data['product'] 			= $product;
+		
+		
+        $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
     }
     
     //uploads products image

@@ -1,69 +1,69 @@
     <?php
-    $product_name = array(
+    $inp_product_name = array(
     'name'  => 'product_name',
     'id'    => 'product_name',
     'class' => 'f_input',
     'value' => $product->name);
     
-    $category = array(
+    $sel_category = array(
     'options' => array_for_dropbox($category_model),
     'name'  => 'category_id',
     'id'    => 'category_id',
     'class' => 'f_select wide',
     'selected' => $product->category_id);
-    
-    $description = array(
+	
+    $txt_description = array(
     'name'  => 'description',
     'id'    => 'description',
     'class' => 'f_textarea',
     'value' => $product->description);
     
-    $calories = array(
+    $inp_calories = array(
     'name'  => 'calories',
     'id'    => 'calories',
     'class' => 'f_input',
     'value' => $product->calories);
     
-    $protein = array(
+    $inp_protein = array(
     'name'  => 'protein',
     'id'    => 'protein',
     'class' => 'f_input',
     'value' => $product->protein);
     
-    $fat = array(
+    $inp_fat = array(
     'name'  => 'fat',
     'id'    => 'fat',
     'class' => 'f_input',
     'value' => $product->fat);
     
-    $carbo = array(
+    $inp_carbo = array(
     'name'  => 'carbo',
     'id'    => 'carbo',
     'class' => 'f_input',
     'value' => $product->carbo);
     
-    $mera = array(
+    $sel_mera = array(
     'options' => array_for_dropbox($mera_model),
     'name'  => 'mera_id',
     'id'    => 'mera_id',
     'class' => 'f_select wide',
     'selected' => $product->mera_id);
     
-    $price = array(
+    $inp_price = array(
     'name'  => 'price',
     'id'    => 'price',
     'class' => 'f_input',
     'value' => $product->price
     );
     
-    $units_for_price = array(
+    $inp_units_for_price = array(
     'name'  => 'units_for_price',
     'id'    => 'units_for_price',
     'class' => 'f_input f_joined',
     'value' => $product->units_for_price
     );
     
-    $units_mera = array(
+    $sel_units_mera = array(
     'options' => array_for_dropbox($mera_model),
     'name'  => 'units_mera_id',
     'id'    => 'units_mera_id',
@@ -71,7 +71,7 @@
     'selected' => $product->units_mera_id
     );
     
-    $image = array(
+    $fu_image = array(
     'name'  => 'image',
     'id'    => 'image',
     'class' => 'f_file_upload');
@@ -90,33 +90,33 @@
         <?php echo form_success_error($form_error, $form_success); ?>
         <div id="pe_main_tab" class="tab_content">
         <?php
-        echo form_label('Название продукта', $product_name['id'], array('class' => 'f_label'));
-        echo form_input($product_name);
+        echo form_label('Название продукта', $inp_product_name['id'], array('class' => 'f_label'));
+        echo form_input($inp_product_name);
         
-        echo form_label('Категория', $category['id'], array('class' => 'f_label'));
-        echo form_dropdown($category['name'], $category['options'], $category['selected'], 'id = "'.$category['id'].'" class = "'.$category['class'].'"');
+        echo form_label('Категория', $sel_category['id'], array('class' => 'f_label'));
+        echo form_dropdown($sel_category['name'], $sel_category['options'], $sel_category['selected'], 'id = "'.$sel_category['id'].'" class = "'.$sel_category['class'].'"');
         
-        echo form_label('Калорий', $calories['id'], array('class' => 'f_label'));
-        echo form_input($calories);
+        echo form_label('Калорий', $inp_calories['id'], array('class' => 'f_label'));
+        echo form_input($inp_calories);
         
-        echo form_label('Белки', $protein['id'], array('class' => 'f_label'));
-        echo form_input($protein);
+        echo form_label('Белки', $inp_protein['id'], array('class' => 'f_label'));
+        echo form_input($inp_protein);
         
-        echo form_label('Жиры', $fat['id'], array('class' => 'f_label'));
-        echo form_input($fat);
+        echo form_label('Жиры', $inp_fat['id'], array('class' => 'f_label'));
+        echo form_input($inp_fat);
         
-        echo form_label('Углеводы', $carbo['id'], array('class' => 'f_label'));
-        echo form_input($carbo);
+        echo form_label('Углеводы', $inp_carbo['id'], array('class' => 'f_label'));
+        echo form_input($inp_carbo);
         
-        echo form_label('Мера измерения', $mera['id'], array('class' => 'f_label'));
-        echo form_dropdown($mera['name'], $mera['options'], $mera['selected'], 'id = "'.$mera['id'].'" class = "'.$mera['class'].'"');
+        echo form_label('Мера измерения', $sel_mera['id'], array('class' => 'f_label'));
+        echo form_dropdown($sel_mera['name'], $sel_mera['options'], $sel_mera['selected'], 'id = "'.$sel_mera['id'].'" class = "'.$sel_mera['class'].'"');
         
-        echo form_label('Цена', $price['id'], array('class' => 'f_label'));
-        echo form_input($price);
+        echo form_label('Цена', $inp_price['id'], array('class' => 'f_label'));
+        echo form_input($inp_price);
         
-        echo form_label('Кол-во продукта за эту цену', $units_for_price['id'], array('class' => 'f_label'));
-        echo form_input($units_for_price);
-        echo form_dropdown($units_mera['name'], $units_mera['options'], $units_mera['selected'], 'id = "'.$units_mera['id'].'" class = "'.$units_mera['class'].'"');
+        echo form_label('Кол-во продукта за эту цену', $inp_units_for_price['id'], array('class' => 'f_label'));
+        echo form_input($inp_units_for_price);
+        echo form_dropdown($sel_units_mera['name'], $sel_units_mera['options'], $sel_units_mera['selected'], 'id = "'.$sel_units_mera['id'].'" class = "'.$sel_units_mera['class'].'"');
         echo cleared_div();
         
         
@@ -128,11 +128,11 @@
         </div>
         <div id="pe_additional_tab" class="tab_content hidden">
         <?php 
-        echo form_label('Картинка', $image['id'], array('class' => 'f_label'));
-        echo form_upload($image);
+        echo form_label('Картинка', $fu_image['id'], array('class' => 'f_label'));
+        echo form_upload($fu_image);
         
-        echo form_label('Описание продукта', $description['id'], array('class' => 'f_label'));
-        echo form_textarea($description);
+        echo form_label('Описание продукта', $txt_description['id'], array('class' => 'f_label'));
+        echo form_textarea($txt_description);
         ?>
         </div>
     </div>
