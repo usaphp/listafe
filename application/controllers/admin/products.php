@@ -6,6 +6,9 @@ class Products extends MY_Controller {
 	{
 		parent::__construct();
         $this->_forse_login(TRUE);
+		$this->data = array();
+		$this->data['form_error'] = FALSE;
+		$this->data['form_success'] = FALSE;
 	}
 	
 	function index()
@@ -75,9 +78,9 @@ class Products extends MY_Controller {
             if($product->save()){
                 $image_upload_status = '';
                 if(!$this->_upload_product_images($product->id)) $data['form_error'] = $this->upload->display_errors();
-                $data['form_success'] = 'Продукт добавлен';
+                $this->data['form_success'] = 'Продукт добавлен';
             }else{
-                $data['form_error'] = $product->error->string;
+                $this->data['form_error'] = $product->error->string;
             }
         }
 
