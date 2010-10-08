@@ -21,12 +21,7 @@ class Nutritions extends MY_Controller {
 
     function show(){
         $nutritions = new Nutrition();
-<<<<<<< HEAD
 		$nutritions->include_related('nutrition_category')->get();
-=======
-        $nutritions->get();
-		
->>>>>>> 22fefe03d823ddee2afc16548f33fbfed09ad5fd
         $this->data['nutritions'] = $nutritions;
         $this->template->load('/admin/templates/main_template', '/admin/nutritions/show', $this->data);
     }
@@ -66,12 +61,8 @@ class Nutritions extends MY_Controller {
             }
         }
         $this->data['nutrition'] = $nutrition;
-<<<<<<< HEAD
-        $this->template->load('/admin/templates/main_template', '/admin/nutritions/edit', $this->data);
-=======
         $this->data['nutritions_categories'] = $nutritions_categories;
-        $this->template->load('/admin/templates/main_template', '/admin/nutritions/nutritions_edit', $this->data);
->>>>>>> 22fefe03d823ddee2afc16548f33fbfed09ad5fd
+        $this->template->load('/admin/templates/main_template', '/admin/nutritions/edit', $this->data);
     }
 
 	function _nutrition_name_exists($name) {
