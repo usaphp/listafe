@@ -18,6 +18,14 @@
             <li><?php echo anchor('admin/recipes/show', 'Список Рецептов'); ?></li>
         </ul>
     </li>
+
+	<li><?php echo anchor('admin/nutritions/show', 'Ингридиенты'); ?>
+        <ul class="sub_menu">
+            <li><?php echo anchor('admin/nutritions/edit', 'Добавить ингридиент'); ?></li>
+            <li><?php echo anchor('admin/nutritions/show', 'Список ингридиентов'); ?></li>
+		</ul>
+	</li>
+
     <li><?php echo anchor('admin/nutritions_categories/show', 'Составляющие'); ?>
         <ul class="sub_menu">
             <li><?php echo anchor('admin/nutritions_categories/add', 'Добавить Составляющие'); ?></li>
