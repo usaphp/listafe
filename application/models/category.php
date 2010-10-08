@@ -16,14 +16,6 @@ class Category extends DataMapper {
         parent::__construct($id);
     }
     
-    function array_for_dropbox(){
-        $o = $this->get_iterated();
-        $data = array('' => 'Выберите категорию');
-        foreach($o as $obj){
-            $data[$obj->id] = $obj->name;
-        }
-        return $data;
-    }
 }
 
 /* End of file name.php */
