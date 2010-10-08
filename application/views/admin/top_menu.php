@@ -6,7 +6,7 @@
             <li><?php echo anchor('admin/products/show', 'Список Продуктов'); ?></li>
         </ul>
     </li>
-    <li><?php echo anchor('admin/categories/show', 'Категрии'); ?>
+    <li><?php echo anchor('admin/categories/show', 'Категории'); ?>
         <ul class="sub_menu">
             <li><?php echo anchor('admin/categories/edit', 'Добавить Категорию'); ?></li>
             <li><?php echo anchor('admin/categories/show', 'Список Категорий'); ?></li>
