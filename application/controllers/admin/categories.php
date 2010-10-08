@@ -5,7 +5,12 @@ class Categories extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
-        $this->_forse_login(TRUE);	
+        $this->_forse_login(TRUE);
+		$this->data['form_success'] = false;
+        $this->data['form_error'] =  false;
+
+		# Js function from main.js which loads by default
+		$this->data['js_functions'] = array();
 	}
 	
 	function index()
@@ -17,8 +22,8 @@ class Categories extends MY_Controller {
     {
         $categories = new Category();
         $categories->get();
-        $data['categories'] = $categories;
-        $this->template->load('/admin/templates/main_template', '/admin/categories_show', $data);
+        $this->data['categories'] = $categories;
+        $this->template->load('/admin/templates/main_template', '/admin/categories/categories_show', $this->data);
     }
     
     function delete($id = false){
@@ -33,8 +38,9 @@ class Categories extends MY_Controller {
     function edit($id = false){
         $this->load->library('form_validation');
         
-        $data['form_success'] = false;
-        $data['form_error'] =  false;
+        $this->data['form_success'] = false;
+        $this->data['form_error'] =  false;
+		array_push($this->data['js_functions'], array('name' => 'category_edit_init', 'data' => FALSE));
         
         $category = new Category($id);
         
@@ -48,13 +54,13 @@ class Categories extends MY_Controller {
             $category->name          = $this->input->post('category_name');
             
             if($category->save()){
-                $data['form_success'] = 'Категория добавлена';
+                $this->data['form_success'] = 'Категория добавлена';
             }else{
-                $data['form_error'] = $category->error->string;
+                $this->data['form_error'] = $category->error->string;
             }
         }
-        $data['category'] = $category;
-        $this->template->load('/admin/templates/main_template', '/admin/categories_edit', $data);
+        $this->data['category'] = $category;
+        $this->template->load('/admin/templates/main_template', '/admin/categories/categories_edit', $this->data);
     }
     
     

@@ -1,5 +1,4 @@
 function main(){
-}
 
 main.admin_url = 'http://local.povarenok/admin/';
 
@@ -112,4 +111,14 @@ main.prototype.process_ajax_response = function(response, form_name){
     }else{
         $('#'+form_name+'_status').html(response.message).attr('class', 'f_general_error');;
     }
+}
+
+main.prototype.nutritions_edit_init = function(){
+    $('#nutrition_edit_form').validate({
+        rules : {
+            'nutrition_name'				: "required",
+            'nutritions_categories_id'		: "required"
+            }
+    });
+}
 }

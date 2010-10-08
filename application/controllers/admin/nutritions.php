@@ -9,6 +9,10 @@ class Nutritions extends MY_Controller {
         $this->_forse_login(TRUE);
 		$this->data['form_success'] = false;
         $this->data['form_error'] =  false;
+
+		# Js function from main.js which loads by default
+		$this->data['js_functions'] = array();
+		array_push($this->data['js_functions'], array('name' => 'nutritions_edit_init', 'data' => FALSE));
 	}
 
 	function index(){
@@ -17,7 +21,12 @@ class Nutritions extends MY_Controller {
 
     function show(){
         $nutritions = new Nutrition();
+<<<<<<< HEAD
 		$nutritions->include_related('nutrition_category')->get();
+=======
+        $nutritions->get();
+		
+>>>>>>> 22fefe03d823ddee2afc16548f33fbfed09ad5fd
         $this->data['nutritions'] = $nutritions;
         $this->template->load('/admin/templates/main_template', '/admin/nutritions/show', $this->data);
     }
@@ -37,7 +46,9 @@ class Nutritions extends MY_Controller {
         $this->load->library('form_validation');
 
         $nutrition = new Nutrition($id);
-
+		$nutritions_categories = new Nutritions_category();
+		$nutritions_categories->get();
+		
         $rules = array(
             array('field' => 'nutrition_name', 'label' => 'Название Вещества', 'rules' => 'trim|required|xss_clean|_nutrition_name_exists')
         );
@@ -45,7 +56,8 @@ class Nutritions extends MY_Controller {
 
         //if form validates
         if($this->form_validation->run()){
-            $nutrition->name          = $this->input->post('nutrition_name');
+            $nutrition->name				= $this->input->post('nutrition_name');
+            $nutrition->category_id          = $this->input->post('nutritions_categories_id');
 
             if($nutrition->save()){
                 $this->data['form_success'] = 'Вещество  добавлено';
@@ -54,7 +66,12 @@ class Nutritions extends MY_Controller {
             }
         }
         $this->data['nutrition'] = $nutrition;
+<<<<<<< HEAD
         $this->template->load('/admin/templates/main_template', '/admin/nutritions/edit', $this->data);
+=======
+        $this->data['nutritions_categories'] = $nutritions_categories;
+        $this->template->load('/admin/templates/main_template', '/admin/nutritions/nutritions_edit', $this->data);
+>>>>>>> 22fefe03d823ddee2afc16548f33fbfed09ad5fd
     }
 
 	function _nutrition_name_exists($name) {
