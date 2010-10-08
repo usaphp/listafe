@@ -18,10 +18,10 @@ class Nutritions_categories extends MY_Controller {
     
     function show()
     {
-        $nutritions_categories = new Nutritions_category();
+        $nutritions_categories = new Nutrition_category();
         $nutritions_categories->get();
         $this->data['nutritions_categories'] = $nutritions_categories;
-        $this->template->load('/admin/templates/main_template', '/admin/nutritions_categories/show', $this->data);
+        $this->template->load('/admin/templates/main_template', '/admin/nutrition_categories/show', $this->data);
     }
     
     function delete($id = false){

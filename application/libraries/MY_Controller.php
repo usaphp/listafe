@@ -9,6 +9,7 @@ class MY_Controller extends Controller {
         parent::__construct();
         $this->top_error    = $this->session->flashdata('top_error');
         $this->top_success  = $this->session->flashdata('top_success');
+		$this->output->enable_profiler(TRUE);
     }
     
     // loggs user in

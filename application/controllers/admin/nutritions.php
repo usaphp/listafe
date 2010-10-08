@@ -17,9 +17,9 @@ class Nutritions extends MY_Controller {
 
     function show(){
         $nutritions = new Nutrition();
-        $nutritions->get_iterated();
+		$nutritions->include_related('nutrition_category')->get();
         $this->data['nutritions'] = $nutritions;
-        $this->template->load('/admin/templates/main_template', '/admin/nutritions/nutritions_show', $this->data);
+        $this->template->load('/admin/templates/main_template', '/admin/nutritions/show', $this->data);
     }
 
 	function delete($id = false) {
@@ -28,7 +28,8 @@ class Nutritions extends MY_Controller {
 			if ($nutrition->exists())
 				$nutrition->delete();
 		}
-		$this->session->set_flashdata('top_success', 'Категория удалена');
+		
+		$this->session->set_flashdata('top_success', 'Вещество  удалено');
 		redirect('admin/nutritions/show');
 	}
 
@@ -38,7 +39,7 @@ class Nutritions extends MY_Controller {
         $nutrition = new Nutrition($id);
 
         $rules = array(
-            array('field' => 'nutrition_name', 'label' => 'Название Ингридиента', 'rules' => 'trim|required|xss_clean|_nutrition_name_exists')
+            array('field' => 'nutrition_name', 'label' => 'Название Вещества', 'rules' => 'trim|required|xss_clean|_nutrition_name_exists')
         );
         $this->form_validation->set_rules($rules);
 
@@ -47,13 +48,13 @@ class Nutritions extends MY_Controller {
             $nutrition->name          = $this->input->post('nutrition_name');
 
             if($nutrition->save()){
-                $this->data['form_success'] = 'Ингридиент добавлен';
+                $this->data['form_success'] = 'Вещество  добавлено';
             }else{
                 $this->data['form_error'] = $nutrition->error->string;
             }
         }
         $this->data['nutrition'] = $nutrition;
-        $this->template->load('/admin/templates/main_template', '/admin/nutritions/nutritions_edit', $this->data);
+        $this->template->load('/admin/templates/main_template', '/admin/nutritions/edit', $this->data);
     }
 
 	function _nutrition_name_exists($name) {

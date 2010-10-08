@@ -19,17 +19,17 @@
         </ul>
     </li>
 
-	<li><?php echo anchor('admin/nutritions/show', 'Ингридиенты'); ?>
+    <li><?php echo anchor('admin/nutritions_categories/show', 'Вещества'); ?>
         <ul class="sub_menu">
-            <li><?php echo anchor('admin/nutritions/edit', 'Добавить ингридиент'); ?></li>
-            <li><?php echo anchor('admin/nutritions/show', 'Список ингридиентов'); ?></li>
-		</ul>
-	</li>
-
-    <li><?php echo anchor('admin/nutritions_categories/show', 'Составляющие'); ?>
-        <ul class="sub_menu">
-            <li><?php echo anchor('admin/nutritions_categories/add', 'Добавить Составляющие'); ?></li>
-            <li><?php echo anchor('admin/nutritions_categories/show', 'Список Составляющих'); ?></li>
+            <li><?php echo anchor('admin/nutritions_categories/add', 'Добавить Вещество'); ?></li>
+            <li><?php echo anchor('admin/nutritions_categories/show', 'Список Веществ'); ?></li>
         </ul>
     </li>
+
+	<li><?php echo anchor('admin/nutritions/show', 'Сост. Веществ'); ?>
+        <ul class="sub_menu">
+            <li><?php echo anchor('admin/nutritions/edit', 'Добавить Сост. Вещества'); ?></li>
+            <li><?php echo anchor('admin/nutritions/show', 'Список Сост. Веществ'); ?></li>
+		</ul>
+	</li>
 </ul>

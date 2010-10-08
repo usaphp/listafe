@@ -5,7 +5,7 @@
                 <th>ID</th>
                 <th>Название</th>
                 <th>Категория</th>
-                <th class="c_aligned">Действие</th>
+                <th class="r_aligned">Действие</th>
             </tr>
         </thead>
         <tbody>
@@ -13,8 +13,8 @@
                 <tr>
                     <td><?php echo $nutrition->id; ?></td>
                     <td><?php echo $nutrition->name; ?></td>
-                    <td><?php echo $nutrition->category_id; ?></td>
-                    <td class="c_aligned">
+                    <td><?php echo $nutrition->nutrition_category_name; ?></td>
+                    <td class="r_aligned">
                         <?php echo anchor('admin/nutritions/edit/'.$nutrition->id, 'Редактировать', array('class' => 't_action'));?>
                         <?php echo anchor('admin/nutritions/delete/'.$nutrition->id, 'Удалить', array('class' => 't_action'));?>
                     </td>
