@@ -12,17 +12,17 @@
             <li><?php echo anchor('admin/categories/show', 'Список Категорий'); ?></li>
         </ul>
     </li>
-    <li><?php echo anchor('admin/reciepts/show', 'Рецепты'); ?>
+    <li><?php echo anchor('admin/receipts/show', 'Рецепты'); ?>
         <ul class="sub_menu">
             <li><?php echo anchor('admin/recipes/add', 'Добавить Рецепт'); ?></li>
             <li><?php echo anchor('admin/recipes/show', 'Список Рецептов'); ?></li>
         </ul>
     </li>
 
-    <li><?php echo anchor('admin/nutritions_categories/show', 'Вещества'); ?>
+    <li><?php echo anchor('admin/nutrition_categories/show', 'Вещества'); ?>
         <ul class="sub_menu">
-            <li><?php echo anchor('admin/nutritions_categories/add', 'Добавить Вещество'); ?></li>
-            <li><?php echo anchor('admin/nutritions_categories/show', 'Список Веществ'); ?></li>
+            <li><?php echo anchor('admin/nutrition_categories/edit', 'Добавить Вещество'); ?></li>
+            <li><?php echo anchor('admin/nutrition_categories/show', 'Список Веществ'); ?></li>
         </ul>
     </li>
 

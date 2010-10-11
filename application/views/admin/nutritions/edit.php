@@ -6,7 +6,7 @@
 		'value' => $nutrition->name);
 
 	$sel_category = array(
-		'options' => array_for_dropbox($nutritions_categories),
+		'options' => array_for_dropbox($nutrition_categories),
 		'name'  => 'nutritions_categories_id',
 		'id'    => 'nutritions_categories_id',
 		'class' => 'f_select wide',

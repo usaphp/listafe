@@ -41,8 +41,8 @@ class Nutritions extends MY_Controller {
         $this->load->library('form_validation');
 
         $nutrition = new Nutrition($id);
-		$nutritions_categories = new Nutritions_category();
-		$nutritions_categories->get();
+		$nutrition_categories = new Nutrition_category();
+		$nutrition_categories->get();
 		
         $rules = array(
             array('field' => 'nutrition_name', 'label' => 'Название Вещества', 'rules' => 'trim|required|xss_clean|_nutrition_name_exists')
@@ -59,9 +59,11 @@ class Nutritions extends MY_Controller {
             }else{
                 $this->data['form_error'] = $nutrition->error->string;
             }
+        }else{
+            $this->data['form_error'] = validation_errors();
         }
         $this->data['nutrition'] = $nutrition;
-        $this->data['nutritions_categories'] = $nutritions_categories;
+        $this->data['nutrition_categories'] = $nutrition_categories;
         $this->template->load('/admin/templates/main_template', '/admin/nutritions/edit', $this->data);
     }
 

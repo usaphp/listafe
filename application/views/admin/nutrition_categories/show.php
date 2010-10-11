@@ -8,13 +8,13 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach($nutritions_categories as $nutrition_category){ ?>
+            <?php foreach($nutrition_categories as $nutrition_category){ ?>
                 <tr>
                     <td><?php echo $nutrition_category->id; ?></td>
                     <td><?php echo $nutrition_category->name; ?></td>
                     <td class="r_aligned">
-                        <?php echo anchor('admin/nutritions_categories/edit/'.$nutrition_category->id, 'Редактировать', array('class' => 't_action'));?>
-                        <?php echo anchor('admin/nutritions_categories/delete/'.$nutrition_category->id, 'Удалить', array('class' => 't_action'));?>
+                        <?php echo anchor('admin/nutrition_categories/edit/'.$nutrition_category->id, 'Редактировать', array('class' => 't_action'));?>
+                        <?php echo anchor('admin/nutrition_categories/delete/'.$nutrition_category->id, 'Удалить', array('class' => 't_action'));?>
                     </td>
                 </tr>
             <?php } ?>

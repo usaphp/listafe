@@ -18,6 +18,8 @@
     'class' => 'f_textarea',
     'value' => $product->description);
     
+
+ /*
     $inp_calories = array(
     'name'  => 'calories',
     'id'    => 'calories',
@@ -41,7 +43,7 @@
     'id'    => 'carbo',
     'class' => 'f_input',
     'value' => $product->carbo);
-    
+ */ 
     $sel_mera = array(
     'options' => array_for_dropbox($mera_model),
     'name'  => 'mera_id',
@@ -95,7 +97,17 @@
         
         echo form_label('Категория', $sel_category['id'], array('class' => 'f_label'));
         echo form_dropdown($sel_category['name'], $sel_category['options'], $sel_category['selected'], 'id = "'.$sel_category['id'].'" class = "'.$sel_category['class'].'"');
-        
+            
+        foreach($nutrition_categories as $nutrition_category){
+            $inp_nutrition_category = array(
+                                    'name'  => 'nutrition_category'.$nutrition_category->id,        
+                                    'id'    => 'nutrition_category'.$nutrition_category->id,
+                                    'class' => 'f_input',
+                                    'value' => '');
+            echo form_label($nutrition_category->name, $inp_nutrition_category['id'], array('class' => 'f_label'));
+            echo form_input($inp_nutrition_category);
+        }
+   /*     
         echo form_label('Калорий', $inp_calories['id'], array('class' => 'f_label'));
         echo form_input($inp_calories);
         
@@ -107,7 +119,7 @@
         
         echo form_label('Углеводы', $inp_carbo['id'], array('class' => 'f_label'));
         echo form_input($inp_carbo);
-        
+    */    
         echo form_label('Мера измерения', $sel_mera['id'], array('class' => 'f_label'));
         echo form_dropdown($sel_mera['name'], $sel_mera['options'], $sel_mera['selected'], 'id = "'.$sel_mera['id'].'" class = "'.$sel_mera['class'].'"');
         

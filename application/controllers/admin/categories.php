@@ -10,7 +10,7 @@ class Categories extends MY_Controller {
         $this->data['form_error'] =  false;
 
 		# Js function from main.js which loads by default
-		$this->data['js_functions'] = array();
+		$this->data['js_functions'] = array();    
 	}
 	
 	function index()
@@ -23,7 +23,7 @@ class Categories extends MY_Controller {
         $categories = new Category();
         $categories->get();
         $this->data['categories'] = $categories;
-        $this->template->load('/admin/templates/main_template', '/admin/categories/categories_show', $this->data);
+        $this->template->load('/admin/templates/main_template', '/admin/categories/show', $this->data);
     }
     
     function delete($id = false){
@@ -37,9 +37,7 @@ class Categories extends MY_Controller {
     
     function edit($id = false){
         $this->load->library('form_validation');
-        
-        $this->data['form_success'] = false;
-        $this->data['form_error'] =  false;
+
 		array_push($this->data['js_functions'], array('name' => 'category_edit_init', 'data' => FALSE));
         
         $category = new Category($id);
@@ -51,16 +49,17 @@ class Categories extends MY_Controller {
         
         //if form validates
         if($this->form_validation->run()){
-            $category->name          = $this->input->post('category_name');
-            
+            $category->name = $this->input->post('category_name');
             if($category->save()){
                 $this->data['form_success'] = 'Категория добавлена';
             }else{
                 $this->data['form_error'] = $category->error->string;
             }
+        }else{
+            $this->data['form_error'] = validation_errors();
         }
         $this->data['category'] = $category;
-        $this->template->load('/admin/templates/main_template', '/admin/categories/categories_edit', $this->data);
+        $this->template->load('/admin/templates/main_template', '/admin/categories/edit', $this->data);
     }
     
     
