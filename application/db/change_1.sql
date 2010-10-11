@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50141
 File Encoding         : 65001
 
-Date: 2010-10-07 13:32:57
+Date: 2010-10-11 09:42:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=10
+AUTO_INCREMENT=13
 
 ;
 
@@ -33,7 +33,7 @@ AUTO_INCREMENT=10
 -- Records of categories
 -- ----------------------------
 BEGIN;
-INSERT INTO `categories` VALUES ('7', 'Овощи'), ('8', 'Фрукты'), ('9', 'Приправы');
+INSERT INTO `categories` VALUES ('11', 'Фрукты'), ('10', 'Овощи'), ('12', 'gghfh');
 COMMIT;
 
 -- ----------------------------
@@ -57,7 +57,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_bin
 -- Records of ci_sessions
 -- ----------------------------
 BEGIN;
-INSERT INTO `ci_sessions` VALUES ('7906ea501d619ea65261a2ef6dc6a774', '127.0.0.1', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) Ap', '1284961654', ''), ('98c91ebb160ac440ee7b0683176d184c', '127.0.0.1', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; ru; rv:1.', '1284985825', ''), ('a46bf6a510c39f2af7bd31a3b5a81deb', '127.0.0.1', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) Ap', '1284961654', '');
+INSERT INTO `ci_sessions` VALUES ('2e17c0e9d4db7ec49a9c14b7e4defe21', '127.0.0.1', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; ru; rv:1.', '1286538046', '');
 COMMIT;
 
 -- ----------------------------
@@ -83,25 +83,112 @@ INSERT INTO `meras` VALUES ('1', 'Грамы'), ('2', 'Штуки'), ('3', 'Ми
 COMMIT;
 
 -- ----------------------------
+-- Table structure for `nutrition_categories`
+-- ----------------------------
+DROP TABLE IF EXISTS `nutrition_categories`;
+CREATE TABLE `nutrition_categories` (
+`id`  int(50) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`name`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=7
+
+;
+
+-- ----------------------------
+-- Records of nutrition_categories
+-- ----------------------------
+BEGIN;
+INSERT INTO `nutrition_categories` VALUES ('1', 'Витамины'), ('2', 'Белки'), ('3', 'Жиры'), ('4', 'Углеводы'), ('5', 'Минералы'), ('6', 'Прочее');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for `nutritions`
+-- ----------------------------
+DROP TABLE IF EXISTS `nutritions`;
+CREATE TABLE `nutritions` (
+`id`  int(50) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`name`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`nutrition_category_id`  int(50) UNSIGNED NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=7
+
+;
+
+-- ----------------------------
+-- Records of nutritions
+-- ----------------------------
+BEGIN;
+INSERT INTO `nutritions` VALUES ('2', 'Железо', '5'), ('3', 'Витамин A', '1'), ('4', 'Сахар', '4'), ('6', 'Витамин C', '1');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for `product_detail_nutrition_facts`
+-- ----------------------------
+DROP TABLE IF EXISTS `product_detail_nutrition_facts`;
+CREATE TABLE `product_detail_nutrition_facts` (
+`id`  int(50) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`product_id`  int(50) UNSIGNED NOT NULL ,
+`ingredient_id`  int(50) UNSIGNED NOT NULL ,
+`value`  decimal(10,1) NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=3
+
+;
+
+-- ----------------------------
+-- Records of product_detail_nutrition_facts
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_detail_nutrition_facts` VALUES ('1', '22', '1', '0.5'), ('2', '24', '4', '12.5');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for `product_nutrition_facts`
+-- ----------------------------
+DROP TABLE IF EXISTS `product_nutrition_facts`;
+CREATE TABLE `product_nutrition_facts` (
+`id`  int(50) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`product_id`  int(50) UNSIGNED NOT NULL ,
+`nutrition_category_id`  int(50) UNSIGNED NOT NULL ,
+`value`  decimal(10,2) UNSIGNED NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=3
+
+;
+
+-- ----------------------------
+-- Records of product_nutrition_facts
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_nutrition_facts` VALUES ('1', '22', '3', '13.00'), ('2', '19', '5', '6.00');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for `products`
 -- ----------------------------
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
 `id`  smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `name`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`category_id`  tinyint(3) UNSIGNED NULL DEFAULT NULL ,
+`category_id`  tinyint(3) UNSIGNED NOT NULL ,
 `description`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `image`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
-`calories`  smallint(5) UNSIGNED NOT NULL ,
-`protein`  decimal(3,1) UNSIGNED NOT NULL ,
-`carbo`  decimal(3,1) UNSIGNED NOT NULL ,
-`fat`  decimal(3,1) UNSIGNED NOT NULL ,
-`mera_id`  tinyint(1) UNSIGNED NULL DEFAULT NULL ,
-`price`  decimal(8,2) UNSIGNED NOT NULL ,
-`units_for_price`  smallint(5) UNSIGNED NOT NULL ,
-`units_mera_id`  tinyint(1) UNSIGNED NOT NULL ,
-`created`  datetime NOT NULL ,
-`updated`  datetime NOT NULL ,
+`mera_id`  tinyint(1) UNSIGNED NOT NULL ,
+`price`  decimal(10,2) UNSIGNED NOT NULL ,
+`mera_for_price`  tinyint(3) UNSIGNED NOT NULL ,
+`units_for_price`  tinyint(3) UNSIGNED NOT NULL ,
 PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
@@ -114,7 +201,7 @@ AUTO_INCREMENT=25
 -- Records of products
 -- ----------------------------
 BEGIN;
-INSERT INTO `products` VALUES ('22', 'Вишня3', '7', 'фывыфв фыв ыфв ы', 'pi22.jpg', '123', '12.0', '12.0', '12.0', '1', '123.00', '12', '1', '2010-09-07 13:28:19', '2010-09-07 13:28:19'), ('24', 'Майонез', '9', 'фыв ыфв ыфв ыф выф впцкп укп укп ', 'pi24.jpg', '1234', '12.0', '5.0', '12.0', '1', '150.00', '150', '1', '2010-09-20 05:49:19', '2010-09-20 05:49:19'), ('19', 'Вишня', null, 'Вишня широко представлена в немецкой (киршвассер, штрудель) и украинской национальных кухнях (вареники с вишней). Из вишни готовят компоты, варенья, наливки, ликёры (в частности, португальская жинжинья).', 'pi19.jpg', '47', '1.0', '23.0', '0.2', '2', '120.00', '5', '5', '2010-08-12 01:02:50', '2010-08-13 17:36:39'), ('20', 'Вишня2', null, 'asdsa dsa dsa ds ad a', 'pi20.jpg', '17', '1.0', '12.0', '0.2', '2', '120.00', '100', '4', '2010-08-12 23:10:08', '2010-08-12 23:10:08'), ('21', 'Банан', '7', '', 'pi21.jpg', '123', '12.0', '12.0', '12.0', '2', '123.00', '100', '2', '2010-09-01 17:05:05', '2010-09-06 22:20:21');
+INSERT INTO `products` VALUES ('22', 'Вишня3', '7', 'фывыфв фыв ыфв ы', 'pi22.jpg', '1', '0.00', '0', '0'), ('24', 'Майонез', '9', 'фыв ыфв ыфв ыф выф впцкп укп укп ', 'pi24.jpg', '1', '0.00', '0', '0'), ('19', 'Вишня', '11', 'Вишня широко представлена в немецкой (киршвассер, штрудель) и украинской национальных кухнях (вареники с вишней). Из вишни готовят компоты, варенья, наливки, ликёры (в частности, португальская жинжинья).', 'pi19.jpg', '2', '0.00', '0', '0'), ('20', 'Вишня2', '10', 'asdsa dsa dsa ds ad a', 'pi20.jpg', '2', '0.00', '0', '0'), ('21', 'Банан', '7', '', 'pi21.jpg', '2', '0.00', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -142,63 +229,6 @@ BEGIN;
 COMMIT;
 
 -- ----------------------------
--- Table structure for `roles`
--- ----------------------------
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE `roles` (
-`id`  int(11) NOT NULL AUTO_INCREMENT ,
-`parent_id`  int(11) NOT NULL DEFAULT 0 ,
-`name`  varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-PRIMARY KEY (`id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8 COLLATE=utf8_bin
-AUTO_INCREMENT=3
-
-;
-
--- ----------------------------
--- Records of roles
--- ----------------------------
-BEGIN;
-INSERT INTO `roles` VALUES ('1', '0', 'User'), ('2', '0', 'Admin');
-COMMIT;
-
--- ----------------------------
--- Table structure for `users`
--- ----------------------------
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-`id`  int(11) NOT NULL AUTO_INCREMENT ,
-`role_id`  int(11) NOT NULL DEFAULT 1 ,
-`username`  varchar(25) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`password`  varchar(34) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`email`  varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`banned`  tinyint(1) NOT NULL DEFAULT 0 ,
-`ban_reason`  varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL ,
-`newpass`  varchar(34) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL ,
-`newpass_key`  varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL ,
-`newpass_time`  datetime NULL DEFAULT NULL ,
-`last_ip`  varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`last_login`  datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-`created`  datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-`modified`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
-PRIMARY KEY (`id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8 COLLATE=utf8_bin
-AUTO_INCREMENT=3
-
-;
-
--- ----------------------------
--- Records of users
--- ----------------------------
-BEGIN;
-INSERT INTO `users` VALUES ('1', '2', 'admin', '$1$780.C80.$aONlte.NrtiV/8jRDbgr10', 'admin@localhost.com', '0', null, null, null, null, '127.0.0.1', '2010-08-20 03:25:14', '2008-11-30 04:56:32', '2010-08-20 03:24:50'), ('2', '1', 'user', '$1$bO..IR4.$CxjJBjKJ5QW2/BaYKDS7f.', 'user@localhost.com', '0', null, null, null, null, '127.0.0.1', '2008-12-01 14:04:14', '2008-12-01 14:01:53', '2008-12-01 14:04:14');
-COMMIT;
-
--- ----------------------------
 -- Indexes structure for table `categories`
 -- ----------------------------
 CREATE UNIQUE INDEX `name` USING BTREE ON `categories`(`name`) ;
@@ -206,12 +236,32 @@ CREATE UNIQUE INDEX `name` USING BTREE ON `categories`(`name`) ;
 -- ----------------------------
 -- Auto increment value for `categories`
 -- ----------------------------
-ALTER TABLE `categories` AUTO_INCREMENT=10;
+ALTER TABLE `categories` AUTO_INCREMENT=13;
 
 -- ----------------------------
 -- Auto increment value for `meras`
 -- ----------------------------
 ALTER TABLE `meras` AUTO_INCREMENT=7;
+
+-- ----------------------------
+-- Auto increment value for `nutrition_categories`
+-- ----------------------------
+ALTER TABLE `nutrition_categories` AUTO_INCREMENT=7;
+
+-- ----------------------------
+-- Auto increment value for `nutritions`
+-- ----------------------------
+ALTER TABLE `nutritions` AUTO_INCREMENT=7;
+
+-- ----------------------------
+-- Auto increment value for `product_detail_nutrition_facts`
+-- ----------------------------
+ALTER TABLE `product_detail_nutrition_facts` AUTO_INCREMENT=3;
+
+-- ----------------------------
+-- Auto increment value for `product_nutrition_facts`
+-- ----------------------------
+ALTER TABLE `product_nutrition_facts` AUTO_INCREMENT=3;
 
 -- ----------------------------
 -- Indexes structure for table `products`
@@ -228,13 +278,3 @@ ALTER TABLE `products` AUTO_INCREMENT=25;
 -- Auto increment value for `recipes`
 -- ----------------------------
 ALTER TABLE `recipes` AUTO_INCREMENT=1;
-
--- ----------------------------
--- Auto increment value for `roles`
--- ----------------------------
-ALTER TABLE `roles` AUTO_INCREMENT=3;
-
--- ----------------------------
--- Auto increment value for `users`
--- ----------------------------
-ALTER TABLE `users` AUTO_INCREMENT=3;
