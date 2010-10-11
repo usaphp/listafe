@@ -41,7 +41,7 @@ class Products extends MY_Controller {
         
         $category	= new Category();
         $mera		= new Mera();
-		$nutritions_categories = new Nutritions_category();
+		$nutritions_categories = new Nutrition_category();
 		
   		
         
