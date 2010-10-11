@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50141
 File Encoding         : 65001
 
-Date: 2010-10-11 09:42:34
+Date: 2010-10-11 11:35:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=13
+AUTO_INCREMENT=14
 
 ;
 
@@ -33,7 +33,7 @@ AUTO_INCREMENT=13
 -- Records of categories
 -- ----------------------------
 BEGIN;
-INSERT INTO `categories` VALUES ('11', 'Фрукты'), ('10', 'Овощи'), ('12', 'gghfh');
+INSERT INTO `categories` VALUES ('11', 'Фрукты'), ('10', 'Овощи'), ('12', 'gghfh'), ('13', 'Мясо');
 COMMIT;
 
 -- ----------------------------
@@ -57,7 +57,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_bin
 -- Records of ci_sessions
 -- ----------------------------
 BEGIN;
-INSERT INTO `ci_sessions` VALUES ('2e17c0e9d4db7ec49a9c14b7e4defe21', '127.0.0.1', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; ru; rv:1.', '1286538046', '');
+INSERT INTO `ci_sessions` VALUES ('1d0655fa472f0fdba17d3ce3fa7eeeae', '127.0.0.1', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) Ap', '1286775795', '');
 COMMIT;
 
 -- ----------------------------
@@ -116,7 +116,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=7
+AUTO_INCREMENT=8
 
 ;
 
@@ -124,7 +124,7 @@ AUTO_INCREMENT=7
 -- Records of nutritions
 -- ----------------------------
 BEGIN;
-INSERT INTO `nutritions` VALUES ('2', 'Железо', '5'), ('3', 'Витамин A', '1'), ('4', 'Сахар', '4'), ('6', 'Витамин C', '1');
+INSERT INTO `nutritions` VALUES ('2', 'Железо', '5'), ('3', 'Витамин A', '1'), ('4', 'Сахар', '4'), ('7', 'Satured Fat', '3'), ('6', 'Витамин C', '1');
 COMMIT;
 
 -- ----------------------------
@@ -134,13 +134,13 @@ DROP TABLE IF EXISTS `product_detail_nutrition_facts`;
 CREATE TABLE `product_detail_nutrition_facts` (
 `id`  int(50) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `product_id`  int(50) UNSIGNED NOT NULL ,
-`ingredient_id`  int(50) UNSIGNED NOT NULL ,
+`nutrition_id`  int(50) UNSIGNED NOT NULL ,
 `value`  decimal(10,1) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=3
+AUTO_INCREMENT=4
 
 ;
 
@@ -148,7 +148,7 @@ AUTO_INCREMENT=3
 -- Records of product_detail_nutrition_facts
 -- ----------------------------
 BEGIN;
-INSERT INTO `product_detail_nutrition_facts` VALUES ('1', '22', '1', '0.5'), ('2', '24', '4', '12.5');
+INSERT INTO `product_detail_nutrition_facts` VALUES ('1', '22', '1', '0.5'), ('2', '24', '4', '12.5'), ('3', '25', '0', null);
 COMMIT;
 
 -- ----------------------------
@@ -164,7 +164,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=3
+AUTO_INCREMENT=5
 
 ;
 
@@ -172,7 +172,7 @@ AUTO_INCREMENT=3
 -- Records of product_nutrition_facts
 -- ----------------------------
 BEGIN;
-INSERT INTO `product_nutrition_facts` VALUES ('1', '22', '3', '13.00'), ('2', '19', '5', '6.00');
+INSERT INTO `product_nutrition_facts` VALUES ('1', '22', '3', '13.00'), ('2', '19', '5', '6.00'), ('3', '25', '3', '9.00'), ('4', '25', '4', '3.00');
 COMMIT;
 
 -- ----------------------------
@@ -188,12 +188,12 @@ CREATE TABLE `products` (
 `mera_id`  tinyint(1) UNSIGNED NOT NULL ,
 `price`  decimal(10,2) UNSIGNED NOT NULL ,
 `mera_for_price`  tinyint(3) UNSIGNED NOT NULL ,
-`units_for_price`  tinyint(3) UNSIGNED NOT NULL ,
+`units_for_price`  int(3) UNSIGNED NOT NULL ,
 PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=25
+AUTO_INCREMENT=26
 
 ;
 
@@ -201,7 +201,7 @@ AUTO_INCREMENT=25
 -- Records of products
 -- ----------------------------
 BEGIN;
-INSERT INTO `products` VALUES ('22', 'Вишня3', '7', 'фывыфв фыв ыфв ы', 'pi22.jpg', '1', '0.00', '0', '0'), ('24', 'Майонез', '9', 'фыв ыфв ыфв ыф выф впцкп укп укп ', 'pi24.jpg', '1', '0.00', '0', '0'), ('19', 'Вишня', '11', 'Вишня широко представлена в немецкой (киршвассер, штрудель) и украинской национальных кухнях (вареники с вишней). Из вишни готовят компоты, варенья, наливки, ликёры (в частности, португальская жинжинья).', 'pi19.jpg', '2', '0.00', '0', '0'), ('20', 'Вишня2', '10', 'asdsa dsa dsa ds ad a', 'pi20.jpg', '2', '0.00', '0', '0'), ('21', 'Банан', '7', '', 'pi21.jpg', '2', '0.00', '0', '0');
+INSERT INTO `products` VALUES ('22', 'Вишня3', '7', 'фывыфв фыв ыфв ы', 'pi22.jpg', '1', '0.00', '0', '0'), ('24', 'Майонез', '9', 'фыв ыфв ыфв ыф выф впцкп укп укп ', 'pi24.jpg', '1', '0.00', '0', '0'), ('19', 'Вишня', '11', 'Вишня широко представлена в немецкой (киршвассер, штрудель) и украинской национальных кухнях (вареники с вишней). Из вишни готовят компоты, варенья, наливки, ликёры (в частности, португальская жинжинья).', 'pi19.jpg', '2', '0.00', '0', '0'), ('20', 'Вишня2', '10', 'asdsa dsa dsa ds ad a', 'pi20.jpg', '2', '0.00', '0', '0'), ('21', 'Банан', '7', '', 'pi21.jpg', '2', '0.00', '0', '0'), ('25', 'Баранина', '13', 'adasdsa', null, '1', '200.00', '1', '1000');
 COMMIT;
 
 -- ----------------------------
@@ -236,7 +236,7 @@ CREATE UNIQUE INDEX `name` USING BTREE ON `categories`(`name`) ;
 -- ----------------------------
 -- Auto increment value for `categories`
 -- ----------------------------
-ALTER TABLE `categories` AUTO_INCREMENT=13;
+ALTER TABLE `categories` AUTO_INCREMENT=14;
 
 -- ----------------------------
 -- Auto increment value for `meras`
@@ -251,17 +251,17 @@ ALTER TABLE `nutrition_categories` AUTO_INCREMENT=7;
 -- ----------------------------
 -- Auto increment value for `nutritions`
 -- ----------------------------
-ALTER TABLE `nutritions` AUTO_INCREMENT=7;
+ALTER TABLE `nutritions` AUTO_INCREMENT=8;
 
 -- ----------------------------
 -- Auto increment value for `product_detail_nutrition_facts`
 -- ----------------------------
-ALTER TABLE `product_detail_nutrition_facts` AUTO_INCREMENT=3;
+ALTER TABLE `product_detail_nutrition_facts` AUTO_INCREMENT=4;
 
 -- ----------------------------
 -- Auto increment value for `product_nutrition_facts`
 -- ----------------------------
-ALTER TABLE `product_nutrition_facts` AUTO_INCREMENT=3;
+ALTER TABLE `product_nutrition_facts` AUTO_INCREMENT=5;
 
 -- ----------------------------
 -- Indexes structure for table `products`
@@ -272,7 +272,7 @@ CREATE INDEX `category_id` USING BTREE ON `products`(`category_id`) ;
 -- ----------------------------
 -- Auto increment value for `products`
 -- ----------------------------
-ALTER TABLE `products` AUTO_INCREMENT=25;
+ALTER TABLE `products` AUTO_INCREMENT=26;
 
 -- ----------------------------
 -- Auto increment value for `recipes`
