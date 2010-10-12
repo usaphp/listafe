@@ -1,6 +1,6 @@
 <?php
 
-class Nutritions extends MY_Controller {
+class Nutritions extends Admin_Controller {
 	
 	var $data = array();
 

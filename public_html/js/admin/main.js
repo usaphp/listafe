@@ -121,4 +121,12 @@ main.prototype.nutritions_edit_init = function(){
             }
     });
 }
+
+main.prototype.nutrition_categories_edit_init = function(){
+	$('#nutrition_categories_edit_form').validate({
+		rules : {
+			'nutrition_categories_name' : { required: true }	
+		}
+	})
+	}
 }

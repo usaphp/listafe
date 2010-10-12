@@ -1,6 +1,6 @@
 <?php
 
-class Recipes extends MY_Controller {
+class Recipes extends Admin_Controller {
 
 	function __construct()
 	{
