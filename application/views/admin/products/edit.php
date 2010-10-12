@@ -72,6 +72,7 @@
         echo form_label('Категория', $sel_category['id'], array('class' => 'f_label'));
         echo form_dropdown($sel_category['name'], $sel_category['options'], $sel_category['selected'], 'id = "'.$sel_category['id'].'" class = "'.$sel_category['class'].'"');
             
+		# Cikl po kategoriam veshestv
         foreach($nutrition_categories as $nutrition_category):
             $inp_nutrition_category = array(
                                     'name'  => 'nutrition_category'.$nutrition_category->id,        
@@ -81,23 +82,38 @@
             echo form_label($nutrition_category->name, $inp_nutrition_category['id'], array('class' => 'f_label'));
             echo form_input($inp_nutrition_category);
             echo anchor('#', '+', array('class' => 'f_joined f f_subinput_node'));
-            
             echo cleared_div();
+			
+			$nutritions_select = array(
+								    'options' => array_for_dropbox($nutrition_category->nutrition),
+								    'name'  => 'nutrition_'.$nutrition_category->id,
+								    'id'    => 'nutrition_'.$nutrition_category->id,
+								    'class' => 'f_select wide required',
+								    'selected' => '');
+			?>
+			<div>
+				<div>
+					<?php 
+						echo form_dropdown($nutritions_select['name'], $nutritions_select['options'], $nutritions_select['selected'], 'id = ""'.$nutritions_select['id'].'" class = "'.$nutritions_select['class'].'""');
+						echo form_input('', '');
+						echo anchor('#', '+'); 
+					?>
+				</div>
+				<?php if($product_nutrition_facts): ?>
+				<div>
+					<?php foreach($product_nutrition_facts as $nf):
+					echo $nf->nutrition_name."<br/>";
+						if($nf->nutrition_category_id == $nutrition_category->id):
+							echo $nf->nutrition_name."<br/>";
+						endif;
+					endforeach; ?>
+				</div>
+				<?php endif; ?>
+			</div>
+			<?php
             
         endforeach;
-   /*     
-        echo form_label('Калорий', $inp_calories['id'], array('class' => 'f_label'));
-        echo form_input($inp_calories);
-        
-        echo form_label('Белки', $inp_protein['id'], array('class' => 'f_label'));
-        echo form_input($inp_protein);
-        
-        echo form_label('Жиры', $inp_fat['id'], array('class' => 'f_label'));
-        echo form_input($inp_fat);
-        
-        echo form_label('Углеводы', $inp_carbo['id'], array('class' => 'f_label'));
-        echo form_input($inp_carbo);
-    */    
+		
         echo form_label('Мера измерения', $sel_mera['id'], array('class' => 'f_label'));
         echo form_dropdown($sel_mera['name'], $sel_mera['options'], $sel_mera['selected'], 'id = "'.$sel_mera['id'].'" class = "'.$sel_mera['class'].'"');
         

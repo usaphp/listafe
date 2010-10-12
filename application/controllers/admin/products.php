@@ -41,25 +41,33 @@ class Products extends Admin_Controller {
         $category	= new Category();
         $mera		= new Mera();
 		$nutrition_categories = new Nutrition_category();
+		$nutrition_categories_arr = array();
+		foreach($nutrition_categories->get() as $nc) {
+			$nutrition = new Nutrition();
+			$nutrition->where(array('nutrition_category_id' => $nc->id))->get();
+			$nc->nutritions = $nutrition;
+			array_push($nutrition_categories_arr, $nc);
+		}
+		
+		if($id){
+			$product_nutrition_facts = new Product_nutrition_fact();
+			$product_nutrition_facts->where(array('product_id' => $id))->include_related('nutrition')->include_related('nutrition_category')->get();
+			$this->data['product_nutrition_facts'] = $product_nutrition_facts;
+		}
 		
         $product = new Product($id);
         
         #TODO finish all the validation
         $rules = array(
             array('field' => 'product_name', 'label' => 'Название продукта', 'rules' => 'trim|required|xss_clean|_product_name_exists'),
-            //array('field' => 'fat', 'label' => 'Жир', 'rules' => 'required|number'),
-            //array('field' => 'mera_id', 'label' => 'Мера измерения', 'rules' => 'required|integer'),
-            //array('field' => 'category_id', 'label' => 'Категория', 'rules' => 'required|integer'),
-            //array('field' => 'protein', 'label' => 'Белки', 'rules' => 'required|number'),
-            //array('field' => 'carbo', 'label' => 'Углеводы', 'rules' => 'required|number'),
             array('field' => 'price', 'label' => 'Цена', 'rules' => 'required|number'),
             array('field' => 'units_for_price', 'label' => 'Цена за единиц', 'rules' => 'required|number'),
             array('field' => 'units_mera_id', 'label' => 'Мера измерения', 'rules' => 'required|number'),
             array('field' => 'calories', 'label' => 'Калорий', 'rules' => 'required|integer'),
         );
         # ^ dinamic filling categories from DB         
-        foreach($nutrition_categories as $nutrition_category){
-            array_push($rulels,array('field' => 'nutrition_category'.$nutrition_category->id, 'label' => $nutrition_category->name, 'rules' => 'required|number'));
+        foreach($nutrition_categories_arr as $nutrition_category){
+            array_push($rules, array('field' => 'nutrition_category'.$nutrition_category->id, 'label' => $nutrition_category->name, 'rules' => 'required|number'));
         }
         
         $this->form_validation->set_rules($rules);
@@ -89,7 +97,7 @@ class Products extends Admin_Controller {
 
         $this->data['category_model']	= $category->get_iterated();
         $this->data['mera_model']		= $mera->get_iterated();
-        $this->data['nutrition_categories'] = $nutrition_categories->get_iterated();
+        $this->data['nutrition_categories'] = $nutrition_categories_arr;
         $this->data['product'] 			= $product;
 		
 		
