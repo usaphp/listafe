@@ -102,7 +102,6 @@
 				<?php if($product_nutrition_facts): ?>
 				<div>
 					<?php foreach($product_nutrition_facts as $nf):
-					echo $nf->nutrition_name."<br/>";
 						if($nf->nutrition_category_id == $nutrition_category->id):
 							echo $nf->nutrition_name."<br/>";
 						endif;
