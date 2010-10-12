@@ -1,16 +1,12 @@
 <?php
 
-class Nutrition_categories extends MY_Controller {
+class Nutrition_categories extends Admin_Controller {
     
     var $data = array();
     
 	function __construct()
 	{
 		parent::__construct();
-        $this->_forse_login(TRUE);
-		$this->data = array();
-        $this->data['form_success'] = FALSE;
-        $this->data['form_error'] =  FALSE;
 	}
 	
 	function index()
@@ -38,6 +34,7 @@ class Nutrition_categories extends MY_Controller {
     function edit($id = false){
         $this->load->library('form_validation');
         
+		array_push($this->data['js_functions'], array('name' => 'nutrition_categories_edit_init', 'data' => FALSE));
         
         $nutrition_categories = new Nutrition_category($id);
         

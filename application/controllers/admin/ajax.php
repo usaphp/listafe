@@ -1,6 +1,6 @@
 <?php
 
-class Ajax extends MY_Controller {
+class Ajax extends Admin_Controller {
 
 	function __construct()
 	{
