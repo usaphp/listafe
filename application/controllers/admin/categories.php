@@ -5,12 +5,7 @@ class Categories extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct();
-        $this->_forse_login(TRUE);
-		$this->data['form_success'] = false;
-        $this->data['form_error'] =  false;
-
-		# Js function from main.js which loads by default
-		$this->data['js_functions'] = array();    
+        
 	}
 	
 	function index()
@@ -37,8 +32,9 @@ class Categories extends Admin_Controller {
     
     function edit($id = false){
         $this->load->library('form_validation');
-
-		array_push($this->data['js_functions'], array('name' => 'category_edit_init', 'data' => FALSE));
+        # Js function from main.js which loads by default  
+		array_push($this->data['js_functions'], array('name' => 'categories_edit_init', 'data' => FALSE));   
+		
         
         $category = new Category($id);
         

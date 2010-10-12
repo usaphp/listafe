@@ -2,14 +2,14 @@
     $inp_product_name = array(
     'name'  => 'product_name',
     'id'    => 'product_name',
-    'class' => 'f_input',
+    'class' => 'f_input required',
     'value' => $product->name);
     
     $sel_category = array(
     'options' => array_for_dropbox($category_model),
     'name'  => 'category_id',
     'id'    => 'category_id',
-    'class' => 'f_select wide',
+    'class' => 'f_select wide required',
     'selected' => $product->category_id);
 	
     $txt_description = array(
@@ -17,33 +17,7 @@
     'id'    => 'description',
     'class' => 'f_textarea',
     'value' => $product->description);
-    
-
- /*
-    $inp_calories = array(
-    'name'  => 'calories',
-    'id'    => 'calories',
-    'class' => 'f_input',
-    'value' => $product->calories);
-    
-    $inp_protein = array(
-    'name'  => 'protein',
-    'id'    => 'protein',
-    'class' => 'f_input',
-    'value' => $product->protein);
-    
-    $inp_fat = array(
-    'name'  => 'fat',
-    'id'    => 'fat',
-    'class' => 'f_input',
-    'value' => $product->fat);
-    
-    $inp_carbo = array(
-    'name'  => 'carbo',
-    'id'    => 'carbo',
-    'class' => 'f_input',
-    'value' => $product->carbo);
- */ 
+   
     $sel_mera = array(
     'options' => array_for_dropbox($mera_model),
     'name'  => 'mera_id',
@@ -54,14 +28,14 @@
     $inp_price = array(
     'name'  => 'price',
     'id'    => 'price',
-    'class' => 'f_input',
+    'class' => 'f_input required',
     'value' => $product->price
     );
     
     $inp_units_for_price = array(
     'name'  => 'units_for_price',
     'id'    => 'units_for_price',
-    'class' => 'f_input f_joined',
+    'class' => 'f_input f_joined number required',
     'value' => $product->units_for_price
     );
     
@@ -87,7 +61,7 @@
         <li><a href="#" id="pe_additional">Дополнительное</a></li>
     </ul>
     <div class="clear"></div>
-<?php echo form_open_multipart('/admin/products/edit/'.$product->id, array('id' => 'product_edit_form', 'class' => 'f_form'));?>
+<?php echo form_open_multipart('/admin/products/edit/'.$product->id, array('id' => 'product_edit_form', 'class' => 'f_form f_validate'));?>
     <div class="f_content">
         <?php echo form_success_error($form_error, $form_success); ?>
         <div id="pe_main_tab" class="tab_content">
@@ -98,15 +72,19 @@
         echo form_label('Категория', $sel_category['id'], array('class' => 'f_label'));
         echo form_dropdown($sel_category['name'], $sel_category['options'], $sel_category['selected'], 'id = "'.$sel_category['id'].'" class = "'.$sel_category['class'].'"');
             
-        foreach($nutrition_categories as $nutrition_category){
+        foreach($nutrition_categories as $nutrition_category):
             $inp_nutrition_category = array(
                                     'name'  => 'nutrition_category'.$nutrition_category->id,        
                                     'id'    => 'nutrition_category'.$nutrition_category->id,
-                                    'class' => 'f_input',
+                                    'class' => 'f_input f_joined',
                                     'value' => '');
             echo form_label($nutrition_category->name, $inp_nutrition_category['id'], array('class' => 'f_label'));
             echo form_input($inp_nutrition_category);
-        }
+            echo anchor('#', '+', array('class' => 'f_joined f f_subinput_node'));
+            
+            echo cleared_div();
+            
+        endforeach;
    /*     
         echo form_label('Калорий', $inp_calories['id'], array('class' => 'f_label'));
         echo form_input($inp_calories);
@@ -153,6 +131,3 @@
     </div>
 <?php echo form_close(); ?>
 </div>
-<script type="text/javascript">
-    imain.product_edit_init();
-</script>

@@ -45,6 +45,7 @@ a { color:#0076c8; outline:none;}
 	        .f_input.tiny	{ width:60px; }
 	        .f_input.wide	{ width:260px; }
 	        .f_input:focus	{ border-color:#5f5f5f #bfbfbf #bfbfbf #5f5f5f; }
+            .f_subinput_node {text-decoration: none; font-size:18px;}
 	    .f_select		{ display:block; border:1px solid #cbcbcb; padding:5px 4px;  width:200px; border-color:#cbcbcb #e8e8e8 #e8e8e8 #cbcbcb;}
 	        .f_select.wide	{width:300px;}
 	    .f_textarea		{ display:block; border:1px solid #cbcbcb; padding:6px 4px; border-color:#cbcbcb #e8e8e8 #e8e8e8 #cbcbcb; margin-bottom:0px; }

@@ -5,10 +5,7 @@ class Products extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct();
-        $this->_forse_login(TRUE);
-		$this->data = array();
-		$this->data['form_error'] = FALSE;
-		$this->data['form_success'] = FALSE;
+        
 	}
 	
 	function index()
@@ -38,13 +35,13 @@ class Products extends Admin_Controller {
     function edit($id = false)
     {
         $this->load->library('form_validation');
+        # Js function from main.js which loads by default  
+        array_push($this->data['js_functions'], array('name' => 'products_edit_init', 'data' => FALSE));
         
         $category	= new Category();
         $mera		= new Mera();
 		$nutrition_categories = new Nutrition_category();
 		
-  		
-        
         $product = new Product($id);
         
         #TODO finish all the validation
@@ -60,9 +57,11 @@ class Products extends Admin_Controller {
             array('field' => 'units_mera_id', 'label' => 'Мера измерения', 'rules' => 'required|number'),
             array('field' => 'calories', 'label' => 'Калорий', 'rules' => 'required|integer'),
         );
+        # ^ dinamic filling categories from DB         
         foreach($nutrition_categories as $nutrition_category){
             array_push($rulels,array('field' => 'nutrition_category'.$nutrition_category->id, 'label' => $nutrition_category->name, 'rules' => 'required|number'));
         }
+        
         $this->form_validation->set_rules($rules);
         //if form validates
         if($this->form_validation->run()){

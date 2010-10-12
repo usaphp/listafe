@@ -2,6 +2,10 @@ function main(){
 
 main.admin_url = 'http://local.povarenok/admin/';
 
+main.prototype.general_init = function(){
+    $('form.f_validate').validate();
+}
+
 main.prototype.dropdown_init = function(){
     $("ul.dropdown li").hover(function(){
         $(this).addClass("hover");
@@ -113,20 +117,28 @@ main.prototype.process_ajax_response = function(response, form_name){
     }
 }
 
-main.prototype.nutritions_edit_init = function(){
-    $('#nutrition_edit_form').validate({
-        rules : {
-            'nutrition_name'				: "required",
-            'nutritions_categories_id'		: "required"
-            }
-    });
-}
+    main.prototype.nutritions_edit_init = function(){
+        $('#nutrition_edit_form').validate({
+            rules : {
+                'nutrition_name'				: "required",
+                'nutritions_categories_id'		: "required"
+                }
+        });
+    }
 
-main.prototype.nutrition_categories_edit_init = function(){
-	$('#nutrition_categories_edit_form').validate({
-		rules : {
-			'nutrition_categories_name' : { required: true }	
-		}
-	})
+    main.prototype.products_edit_init = function(){
+    
+    }
+    main.prototype.categories_edit_init = function(){
+        
+    }
+    main.prototype.nutrition_categories_edit_init = function(){
+        
+	}
+    main.prototype.nutritions_edit_init = function(){
+        
+	}
+    main.prototype.recipes_edit_init = function(){
+        
 	}
 }

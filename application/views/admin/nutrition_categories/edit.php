@@ -2,13 +2,13 @@
     $nutrition_categories_name = array(
     'name'  => 'nutrition_categories_name',
     'id'    => 'nutrition_categories_name',
-    'class' => 'f_input',
+    'class' => 'f_input required',
     'value' => $nutrition_categories->name);
     
     ?>
 <div class="span-24 content" id="product_edit_w">  
-    <div class="f_header">Добавить Категорию</div>
-<?php echo form_open_multipart('admin/nutrition_categories/edit/'.$nutrition_categories->id, array('id' => 'nutrition_categories_edit_form', 'class' => 'f_form'));?>
+    <div class="f_header">Добавить Вещество</div>
+<?php echo form_open_multipart('admin/nutrition_categories/edit/'.$nutrition_categories->id, array('id' => 'nutrition_categories_edit_form', 'class' => 'f_form f_validate'));?>
     <div class="f_content">
         <?php
         form_success_error($form_error, $form_success);

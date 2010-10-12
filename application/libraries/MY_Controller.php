@@ -14,11 +14,11 @@ class Admin_Controller extends Controller {
         $this->_forse_login(TRUE);
 		
 		$this->data = array();
-        
         $this->data['form_success'] = FALSE;
         $this->data['form_error'] =  FALSE;
 		
 		$this->data['js_functions'] = array();
+		array_push($this->data['js_functions'], array('name' => 'general_init', 'data' => FALSE));
 		array_push($this->data['js_functions'], array('name' => 'tabs_init', 'data' => FALSE));
 		array_push($this->data['js_functions'], array('name' => 'dropdown_init', 'data' => FALSE));
 		

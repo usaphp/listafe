@@ -5,7 +5,7 @@ class Recipes extends Admin_Controller {
 	function __construct()
 	{
 		parent::Controller();
-        $this->_forse_login(TRUE);	
+        
 	}
 	
 	function index()
@@ -16,7 +16,8 @@ class Recipes extends Admin_Controller {
 	function add(){
 		/* Loading libraries */	
 		$this->load->library('form_validation');
-		
+		# Js function from main.js which loads by default  
+        array_push($this->data['js_functions'], array('name' => 'nutrition_categories_edit_init', 'data' => FALSE));
 		/* Get data for select boxes */
         $category	= new Category();
         $mera		= new Mera();

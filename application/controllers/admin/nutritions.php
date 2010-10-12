@@ -2,17 +2,8 @@
 
 class Nutritions extends Admin_Controller {
 	
-	var $data = array();
-
 	function __construct(){
 		parent::__construct();
-        $this->_forse_login(TRUE);
-		$this->data['form_success'] = false;
-        $this->data['form_error'] =  false;
-
-		# Js function from main.js which loads by default
-		$this->data['js_functions'] = array();
-		array_push($this->data['js_functions'], array('name' => 'nutritions_edit_init', 'data' => FALSE));
 	}
 
 	function index(){
@@ -39,7 +30,10 @@ class Nutritions extends Admin_Controller {
 
 	function edit($id = false){
         $this->load->library('form_validation');
-
+        # var $data['js_functions'] init from Admin_Controller
+		# Js function from main.js which loads by default  
+		array_push($this->data['js_functions'], array('name' => 'nutritions_edit_init', 'data' => FALSE));
+        
         $nutrition = new Nutrition($id);
 		$nutrition_categories = new Nutrition_category();
 		$nutrition_categories->get();

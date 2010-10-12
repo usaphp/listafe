@@ -2,19 +2,19 @@
     $nutrition_name = array(
 		'name'  => 'nutrition_name',
 		'id'    => 'nutrition_name',
-		'class' => 'f_input',
+		'class' => 'f_input required',
 		'value' => $nutrition->name);
 
 	$sel_category = array(
 		'options' => array_for_dropbox($nutrition_categories),
 		'name'  => 'nutritions_categories_id',
 		'id'    => 'nutritions_categories_id',
-		'class' => 'f_select wide',
+		'class' => 'f_select wide required',
 		'selected' => $nutrition->category_id);
     ?>
 <div class="span-24 content" id="product_edit_w">
     <div class="f_header">Добавить Ингридиент</div>
-<?php echo form_open_multipart('/admin/nutritions/edit/'.$nutrition->id, array('id' => 'nutrition_edit_form', 'class' => 'f_form'));?>
+<?php echo form_open_multipart('/admin/nutritions/edit/'.$nutrition->id, array('id' => 'nutrition_edit_form', 'class' => 'f_form f_validate'));?>
     <div class="f_content">
         <?php
         form_success_error($form_error, $form_success);

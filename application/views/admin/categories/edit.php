@@ -2,13 +2,13 @@
     $category_name = array(
     'name'  => 'category_name',
     'id'    => 'category_name',
-    'class' => 'f_input',
+    'class' => 'f_input required',
     'value' => $category->name);
     
     ?>
 <div class="span-24 content" id="product_edit_w">  
     <div class="f_header">Добавить Категорию</div>
-<?php echo form_open_multipart('/admin/categories/edit/'.$category->id, array('id' => 'category_edit_form', 'class' => 'f_form'));?>
+<?php echo form_open_multipart('/admin/categories/edit/'.$category->id, array('id' => 'category_edit_form', 'class' => 'f_form f_validate'));?>
     <div class="f_content">
         <?php
         form_success_error($form_error, $form_success);
