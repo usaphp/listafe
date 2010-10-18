@@ -26,8 +26,8 @@ class Nutrition_categories extends Admin_Controller {
             $nutrition_categories = new Nutrition_category($id);
             if($nutrition_categories->exists()) $nutrition_categories->delete();
         }
-        $this->session->set_flashdata('top_success', 'Категория удалена');
-        redirect('admin/categories/show');
+        $this->session->set_flashdata('top_success', 'Вещество  удалено');
+        redirect('admin/nutrition_categories/show');
     }
     
     function edit($id = false){

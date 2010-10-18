@@ -57,7 +57,6 @@
     <div class="f_header">Добавление продукта</div>  
     <ul class="span-24 tabs">
         <li><a href="#" id="pe_main" class="selected">Основное</a></li>
-        <li><a href="#" id="pe_vitamins">Витамины</a></li>
         <li><a href="#" id="pe_additional">Дополнительное</a></li>
     </ul>
     <div class="clear"></div>
@@ -74,43 +73,52 @@
             
 		# Cikl po kategoriam veshestv
         foreach($nutrition_categories as $nutrition_category):
+            
             $inp_nutrition_category = array(
-                                    'name'  => 'nutrition_category'.$nutrition_category->id,        
-                                    'id'    => 'nutrition_category'.$nutrition_category->id,
-                                    'class' => 'f_input f_joined',
-                                    'value' => '');
+	            'name'  => 'nutrition_category'.$nutrition_category->id,        
+	            'id'    => 'nutrition_category'.$nutrition_category->id,
+	            'class' => 'f_input f_joined',
+	            'value' => '');
+				
             echo form_label($nutrition_category->name, $inp_nutrition_category['id'], array('class' => 'f_label'));
             echo form_input($inp_nutrition_category);
-            echo anchor('#', '+', array('class' => 'f_joined f f_subinput_node'));
+            echo anchor('#', 'Show Details', array('class' => 'f_joined f_subinput_node'));
             echo cleared_div();
-			
-			$nutritions_select = array(
-								    'options' => array_for_dropbox($nutrition_category->nutrition),
-								    'name'  => 'nutrition_'.$nutrition_category->id,
-								    'id'    => 'nutrition_'.$nutrition_category->id,
-								    'class' => 'f_select wide required',
-								    'selected' => '');
 			?>
-			<div>
+			<div class='f_subinput_node_holder'>
 				<div>
-					<?php 
-						echo form_dropdown($nutritions_select['name'], $nutritions_select['options'], $nutritions_select['selected'], 'id = ""'.$nutritions_select['id'].'" class = "'.$nutritions_select['class'].'""');
-						echo form_input('', '');
-						echo anchor('#', '+'); 
+					<?php
+						$sel_nutritions = array(
+						    'options' => array_for_dropbox($nutrition_category->nutrition),
+						    'name'  => 'nutrition_'.$nutrition_category->id,
+						    'id'    => 'nutrition_'.$nutrition_category->id,
+						    'class' => 'f_select wide required f_joined',
+						    'selected' => '');
+						$inp_nutritions_value = array(
+				            'name'  => 'inp_nutrition_'.$nutrition_category->id,        
+				            'id'    => 'inp_nutrition_'.$nutrition_category->id,
+				            'class' => 'f_input f_joined',
+				            'value' => '');
+						echo form_dropdown($sel_nutritions['name'], $sel_nutritions['options'], $sel_nutritions['selected'], 'id = ""'.$sel_nutritions['id'].'" class = "'.$sel_nutritions['class'].'""');
+						echo form_input($inp_nutritions_value);
+						echo anchor('#', 'Add', array('class' => 'f_joined'));
+						echo cleared_div();
 					?>
 				</div>
-				<?php if($product_nutrition_facts): ?>
-				<div>
-					<?php foreach($product_nutrition_facts as $nf):
-						if($nf->nutrition_category_id == $nutrition_category->id):
-							echo $nf->nutrition_name."<br/>";
-						endif;
-					endforeach; ?>
-				</div>
-				<?php endif; ?>
+				<?php 
+					if($nutrition_category->product_nutrition_facts): ?>
+					<div>
+						<?php 
+							foreach($nutrition_category->product_nutrition_facts as $nf):
+								echo $nf->nutrition_name."- ".$nf->value."<br/>";
+							endforeach; 
+						?>
+					</div>
+				<?php 
+					endif; 
+				?>
 			</div>
-			<?php
-            
+	<?php
         endforeach;
 		
         echo form_label('Мера измерения', $sel_mera['id'], array('class' => 'f_label'));
@@ -125,10 +133,6 @@
         echo cleared_div();
         
         
-        ?>
-        </div>
-        <div id="pe_vitamins_tab" class="tab_content hidden">
-        <?php
         ?>
         </div>
         <div id="pe_additional_tab" class="tab_content hidden">

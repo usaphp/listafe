@@ -46,14 +46,14 @@ class Products extends Admin_Controller {
 			$nutrition = new Nutrition();
 			$nutrition->where(array('nutrition_category_id' => $nc->id))->get();
 			$nc->nutritions = $nutrition;
+			if($id){
+				$product_nutrition_facts = new Product_nutrition_fact();
+				$product_nutrition_facts->include_related('nutrition')->where(array('product_id' => $id, 'nutrition_category_id' => $nc->id))->get();
+				$nc->product_nutrition_facts = $product_nutrition_facts;
+			}
 			array_push($nutrition_categories_arr, $nc);
 		}
 		
-		if($id){
-			$product_nutrition_facts = new Product_nutrition_fact();
-			$product_nutrition_facts->where(array('product_id' => $id))->include_related('nutrition')->include_related('nutrition_category')->get();
-			$this->data['product_nutrition_facts'] = $product_nutrition_facts;
-		}
 		
         $product = new Product($id);
         

@@ -127,7 +127,10 @@ main.prototype.process_ajax_response = function(response, form_name){
     }
 
     main.prototype.products_edit_init = function(){
-    
+    	$('a.f_subinput_node').click(function(){
+    		$(this).nextAll('.f_subinput_node_holder:first').show();
+    		return false;
+    	})
     }
     main.prototype.categories_edit_init = function(){
         
