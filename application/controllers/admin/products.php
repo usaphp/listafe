@@ -56,35 +56,30 @@ class Products extends Admin_Controller {
 		
         $product = new Product($id);
         
-        #TODO finish all the validation
-        $rules = array(
-            array('field' => 'product_name', 'label' => 'Название продукта', 'rules' => 'trim|required|xss_clean|_product_name_exists'),
-            array('field' => 'price', 'label' => 'Цена', 'rules' => 'required|number'),
-            array('field' => 'units_for_price', 'label' => 'Цена за единиц', 'rules' => 'required|number'),
-            array('field' => 'units_mera_id', 'label' => 'Мера измерения', 'rules' => 'required|number'),
-            array('field' => 'calories', 'label' => 'Калорий', 'rules' => 'required|integer'),
-        );
         # ^ dinamic filling categories from DB         
         foreach($nutrition_categories_arr as $nutrition_category){
             array_push($rules, array('field' => 'nutrition_category'.$nutrition_category->id, 'label' => $nutrition_category->name, 'rules' => 'required|number'));
         }
         
-        $this->form_validation->set_rules($rules);
-        //if form validates
+        # if form validates
         if($this->form_validation->run()){
             $product->name              = $this->input->post('product_name');
             $product->category_id       = $this->input->post('category_id');
-            $product->calories          = $this->input->post('calories');
-            $product->protein           = $this->input->post('protein');
-            $product->fat               = $this->input->post('fat');
-            $product->carbo             = $this->input->post('carbo');
             $product->mera_id           = $this->input->post('mera_id');
             $product->price             = $this->input->post('price');
             $product->units_for_price   = $this->input->post('units_for_price');
             $product->units_mera_id     = $this->input->post('units_mera_id');
             $product->description       = $this->input->post('description');
-            //if products was saved to db successfully
+            # If products was saved to db successfully
             if($product->save()){
+				# Get data from post about nutirition facts
+				$hidden_nutrition_facts = $this->input->post('hidden_nutrition');
+				foreach($hidden_nutrition_facts as $nf){
+	            	$product_nutrition_facts = new Product_nutrition_fact();
+					$product_nutrition_facts->product_id = $product->id;
+					list($product_nutrition_facts->nutrition_id, $product_nutrition_facts->value) = explode('_', $nf);	
+				}
+				$hidden_nutrition_facts->save();
                 $image_upload_status = '';
                 if(!$this->_upload_product_images($product->id)) $data['form_error'] = $this->upload->display_errors();
                 $this->data['form_success'] = 'Продукт добавлен';
