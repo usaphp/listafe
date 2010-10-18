@@ -54,7 +54,6 @@ class Products extends Admin_Controller {
 			array_push($nutrition_categories_arr, $nc);
 		}
 		
-		
         $product = new Product($id);
         
         #TODO finish all the validation

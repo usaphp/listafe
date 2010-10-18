@@ -133,4 +133,5 @@ a { color:#0076c8; outline:none;}
 	ul.dropdown ul ul		{ left: 100%; top: 0; }
 	ul.dropdown li:hover > ul	{ visibility: visible; }
     
-.maksim{}
+/* Product edit */
+	.prod_nutritions_wrapper { padding-top:20px; }

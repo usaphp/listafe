@@ -72,11 +72,12 @@
         echo form_dropdown($sel_category['name'], $sel_category['options'], $sel_category['selected'], 'id = "'.$sel_category['id'].'" class = "'.$sel_category['class'].'"');
             
 		# Cikl po kategoriam veshestv
+		$nutrition_fact_count = 1;
         foreach($nutrition_categories as $nutrition_category):
             
             $inp_nutrition_category = array(
-	            'name'  => 'nutrition_category'.$nutrition_category->id,        
-	            'id'    => 'nutrition_category'.$nutrition_category->id,
+	            'name'  => 'nutrition_category_'.$nutrition_category->id,        
+	            'id'    => 'nutrition_category_'.$nutrition_category->id,
 	            'class' => 'f_input f_joined',
 	            'value' => '');
 				
@@ -92,7 +93,7 @@
 						    'options' => array_for_dropbox($nutrition_category->nutrition),
 						    'name'  => 'sel_nutrition_'.$nutrition_category->id,
 						    'id'    => 'sel_nutrition_'.$nutrition_category->id,
-						    'class' => 'f_select wide required f_joined',
+						    'class' => 'f_select wide f_joined',
 						    'selected' => '');
 						$inp_nutritions_value = array(
 				            'name'  => 'inp_nutrition_'.$nutrition_category->id,        
@@ -110,8 +111,20 @@
 					<div class='prod_nutritions_wrapper' id='prod_nutritions_wrapper_<?php echo $nutrition_category->id; ?>'>
 						<?php 
 							foreach($nutrition_category->product_nutrition_facts as $nf):
-								echo "<div>".$nf->nutrition_name." - ".$nf->value.' '.anchor('#','remove')."</div>";
-							endforeach; 
+								
+								echo '<div class="" id="hidden_nutrition_wrapper_'.$nutrition_fact_count.'">';
+								
+								$inp_hidden = array(
+									'name' => 'hidden_nutrition[]', 
+									'id' => 'hid_nutrition_fact_'.$nutrition_fact_count, 
+									'value' => $nf->nutrition_id.'_'.$nf->value );
+									
+								echo '<input type="hidden" name="hidden_nutrition[]" value="'.$inp_hidden['value'].'" id="hidden_nutrition_'.$inp_hidden['id'].'"/>';
+								echo $nf->nutrition_name." - ".$nf->value.' '.anchor('#','remove', array('class' => 'nutrition_fact_remove', 'id' => 'nutrition_fact_remove_'.$nutrition_fact_count));
+								
+								echo "</div>";
+								$nutrition_fact_count++;
+							endforeach;
 						?>
 					</div>
 				<?php 
@@ -148,5 +161,6 @@
     <div class="f_buttons">
         <?php echo form_submit('add_product','Сохранить');?>
     </div>
+    <input type='hidden' value='<?php echo $nutrition_fact_count; ?>' id='max_nutrition_fact'/>
 <?php echo form_close(); ?>
 </div>

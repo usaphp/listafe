@@ -133,13 +133,35 @@ main.prototype.process_ajax_response = function(response, form_name){
     		return false;
     	});
     	$('.add_nutrition_fact').click(function(){
+    		var next_id = $('#max_nutrition_fact').val();
     		
     		var elem_id = $(this).attr('id').replace('add_product_fact_', '');
+    		
     		var div_content = $('#sel_nutrition_' + elem_id + ' option:selected').text() + ' - ' + $('#inp_nutrition_' + elem_id).val() + ' ';
-    		var remove_link = $('<a>').attr('href', '#').text('remove');
-    		var nutrition_fact_div = $('<div>').html(div_content).append(remove_link);
+    		var remove_link = $('<a>').text('remove');
+    			remove_link.attr({
+    				'id' : 'nutrition_fact_remove_' + next_id,
+    				'href' : '#',
+    				'class' : 'nutrition_fact_remove'
+    			});
+    		
+    		var hidden_field = $('<input type="hidden">').val($('#sel_nutrition_' + elem_id).val() + '_' + $('#inp_nutrition_' + elem_id).val()).attr('name', 'hidden_nutrition[]');
+    		
+    		var nutrition_fact_div = $('<div>').html(div_content).append(hidden_field).append(remove_link);
+    			nutrition_fact_div.attr({
+    				'id' : 'hidden_nutrition_wrapper_' + next_id
+    			});
     		
     		$('#prod_nutritions_wrapper_' + elem_id).append(nutrition_fact_div);
+    		$('#max_nutrition_fact').val(parseInt(next_id)  + 1);
+    		
+    		return false;
+    	});
+    	
+    	// Click on remove nutrition factt button
+    	$('.nutrition_fact_remove').click(function(){
+    		elem_id = $(this).attr('id').replace('nutrition_fact_remove_', '');
+    		$('#hidden_nutrition_wrapper_' + elem_id).remove();
     		return false;
     	});
     }
