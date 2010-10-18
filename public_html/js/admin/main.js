@@ -63,7 +63,7 @@ main.prototype.recipe_add_init = function(){
 			'prep_time'		: { required : true, number : true },
 			'cook_time' 	: { required : true, number : true },
 			'servings' 		: { required : true, number : true },
-			'recipe_image'	: { required : true, number : true }
+			//'recipe_image'	: { required : true, number : true }
 		}
 	});
 	
