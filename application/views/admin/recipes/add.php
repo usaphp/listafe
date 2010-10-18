@@ -53,7 +53,7 @@ $image  = array(
 		for($i = 1; $i <= DEFAULT_PRODUCTS_IN_RECIPE; $i++){
 			$data['recipe_product_id'] = $i;
 			$data['mera_model'] = $mera_model;
-			$this->load->view('admin/recipes/subs/product.php', $data);
+			$this->load->view('/admin/recipes/subs/product.php', $data);
 		}
 		?>
 		</div>
