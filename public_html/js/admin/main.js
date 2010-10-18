@@ -128,10 +128,23 @@ main.prototype.process_ajax_response = function(response, form_name){
 
     main.prototype.products_edit_init = function(){
     	$('a.f_subinput_node').click(function(){
-    		$(this).nextAll('.f_subinput_node_holder:first').show();
+    		var elem_id = $(this).attr('id').replace('f_subinput_node_', '');
+    		$('#f_subinput_node_holder_' + elem_id).toggle();
     		return false;
-    	})
+    	});
+    	$('.add_nutrition_fact').click(function(){
+    		
+    		var elem_id = $(this).attr('id').replace('add_product_fact_', '');
+    		var div_content = $('#sel_nutrition_' + elem_id + ' option:selected').text() + ' - ' + $('#inp_nutrition_' + elem_id).val() + ' ';
+    		var remove_link = $('<a>').attr('href', '#').text('remove');
+    		var nutrition_fact_div = $('<div>').html(div_content).append(remove_link);
+    		
+    		$('#prod_nutritions_wrapper_' + elem_id).append(nutrition_fact_div);
+    		return false;
+    	});
     }
+    
+    
     main.prototype.categories_edit_init = function(){
         
     }

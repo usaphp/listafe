@@ -82,16 +82,16 @@
 				
             echo form_label($nutrition_category->name, $inp_nutrition_category['id'], array('class' => 'f_label'));
             echo form_input($inp_nutrition_category);
-            echo anchor('#', 'Show Details', array('class' => 'f_joined f_subinput_node'));
+            echo anchor('#', 'Details', array('class' => 'f_joined f_subinput_node', 'id' => 'f_subinput_node_'.$nutrition_category->id));
             echo cleared_div();
 			?>
-			<div class='f_subinput_node_holder'>
+			<div class='f_subinput_node_holder' id='f_subinput_node_holder_<?php echo $nutrition_category->id; ?>'>
 				<div>
 					<?php
 						$sel_nutritions = array(
 						    'options' => array_for_dropbox($nutrition_category->nutrition),
-						    'name'  => 'nutrition_'.$nutrition_category->id,
-						    'id'    => 'nutrition_'.$nutrition_category->id,
+						    'name'  => 'sel_nutrition_'.$nutrition_category->id,
+						    'id'    => 'sel_nutrition_'.$nutrition_category->id,
 						    'class' => 'f_select wide required f_joined',
 						    'selected' => '');
 						$inp_nutritions_value = array(
@@ -99,18 +99,18 @@
 				            'id'    => 'inp_nutrition_'.$nutrition_category->id,
 				            'class' => 'f_input f_joined',
 				            'value' => '');
-						echo form_dropdown($sel_nutritions['name'], $sel_nutritions['options'], $sel_nutritions['selected'], 'id = ""'.$sel_nutritions['id'].'" class = "'.$sel_nutritions['class'].'""');
+						echo form_dropdown($sel_nutritions['name'], $sel_nutritions['options'], $sel_nutritions['selected'], 'id = "'.$sel_nutritions['id'].'" class = "'.$sel_nutritions['class'].'"');
 						echo form_input($inp_nutritions_value);
-						echo anchor('#', 'Add', array('class' => 'f_joined'));
+						echo anchor('#', 'Add', array('class' => 'f_joined add_nutrition_fact', 'id' => 'add_product_fact_'.$nutrition_category->id));
 						echo cleared_div();
 					?>
 				</div>
 				<?php 
 					if($nutrition_category->product_nutrition_facts): ?>
-					<div>
+					<div class='prod_nutritions_wrapper' id='prod_nutritions_wrapper_<?php echo $nutrition_category->id; ?>'>
 						<?php 
 							foreach($nutrition_category->product_nutrition_facts as $nf):
-								echo $nf->nutrition_name."- ".$nf->value."<br/>";
+								echo "<div>".$nf->nutrition_name." - ".$nf->value.' '.anchor('#','remove')."</div>";
 							endforeach; 
 						?>
 					</div>
