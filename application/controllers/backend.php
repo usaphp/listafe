@@ -3,7 +3,7 @@ class Backend extends Controller
 {
 	function Backend()
 	{
-		parent::Controller();
+		parent::__construct();
 		
 		$this->load->library('Table');
 		$this->load->library('Pagination');

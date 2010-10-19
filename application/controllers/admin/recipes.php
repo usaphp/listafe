@@ -15,10 +15,12 @@ class Recipes extends Admin_Controller {
     
     function show(){
         $recipes = new Recipe();
-        $recipes->get_iterated();
+        $images = new Recipes_image();
+        $images->where('image_type',1);
         #$recigies->include_related('mera', array('name'))->get();
         #$recigies->include_related('category', array('name'))->get();
-        $data['recipes'] = $recipes;
+        $data['images'] = $images->get();
+        $data['recipes'] = $recipes->get();
         $this->template->load('/admin/templates/main_template', '/admin/recipes/show', $data);
     }
     
@@ -57,26 +59,34 @@ class Recipes extends Admin_Controller {
         array_push($this->data['js_functions'], array('name' => 'recipe_add_init', 'data' => FALSE));
 		/* Get data for select boxes */
         $meras = new Mera(); 
+        $meras->get();
         $recipes = new Recipe();
-        $products= new Product();
-        $product_recipes = new Product_Recipe();
+        $products = new Product();
 		/* Settting up validation rules */
-        echo  $this->input->post('recipe_name');
 		/* If validation passed try to save a recipe */
+  #get total number fields for product
+        $total_products = $this->input->post('total_products');
 		if ($this->form_validation->run('recipes_add'))
 		{
             $recipes->name = $this->input->post('recipe_name');
             $recipes->prepare_time = $this->input->post('prep_time');
             $recipes->cook_time = $this->input->post('cook_time');
             $recipes->servings = $this->input->post('servings');
-            $i=1;
-            $product= array();
-            while($this->input->post('product_'.$i)){
-                array_push($product,$this->input->post('product_'.$i))
-                $i++;
-            } 
-            $products->where();
+            #find filling fields of product and create array $product_name
+            
             if($recipes->save()){
+                for($i=1;$i<$total_products;$i++){
+                    $product_name = $this->input->post('product_'.$i);
+                    $product_qty = $this->input->post('qty_'.$i);
+                    $product_mera_id = $this->input->post('mera_'.$i);
+                    if ($product_name && $product_qty && $product_mera_id){
+                        $products_recipes_model = new Products_Recipe();
+                        $products_recipes_model->product_id = $products->where('name', $product_name)->get()->id;
+                        $products_recipes_model->mera_id = $product_mera_id;
+                        $products_recipes_model->value = $product_qty;
+                        $products_recipes_model->save($recipes);
+                    }
+                }
                 $this->data['form_success'] = 'Рецепт добавлена';
             }else{
                 $this->data['form_error'] = $recipes->error->string;
@@ -91,6 +101,8 @@ class Recipes extends Admin_Controller {
 		}
 		//$this->data['recipes'] = $recipes;
         $this->data['meras'] = $meras;
+        
+        $this->data['total_products'] = $total_products;
         $this->template->load('/admin/templates/main_template', '/admin/recipes/add', $this->data);
 	}
     

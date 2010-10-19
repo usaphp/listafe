@@ -49,11 +49,16 @@ $image  = array(
 		
 		<div class="f_sub_header">Ингредиенты</div>
 		<div id="recipe_products">
+        
 		<?php 
+        #$this->data['meras'] = $meras;
 		for($i = 1; $i <= DEFAULT_PRODUCTS_IN_RECIPE; $i++){
-			$data['recipe_product_id'] = $i;
-			$this->load->view('/admin/recipes/subs/product.php', $data);
+			$this->data['recipe_product_id'] = $i;
+            #
+            
+			$this->load->view('/admin/recipes/subs/product.php',$this->data);
 		}
+        #print_r($meras);
 		?>
 		</div>
 		<?php

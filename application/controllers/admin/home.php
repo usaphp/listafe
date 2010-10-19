@@ -4,7 +4,7 @@ class Home extends Admin_Controller {
 
 	function __construct()
 	{
-		parent::Controller();
+		parent::__construct();
         $this->_forse_login(TRUE);	
 	}
 	

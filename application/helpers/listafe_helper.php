@@ -11,8 +11,16 @@ function image_url($image, $type, $size = ''){
             $image_name = preg_replace('/(.+)\.(\w+)/iU', '$1_'.$size.'.$2', $image);
             $image_path = '/photos/product_images/'.$image_name;
             return $image_path;
+        case 'recipe':
+            $image_name = preg_replace('/(.+)\.(\w+)/iU', '$1_'.$size.'.$2', $image);
+            $image_path = '/images/recipes/'.$image_name;
+            return $image_path;
         break;
     }
+}
+# return name image for input recipe on show
+function get_name_image($image_id, $recipe_id, $size = ''){
+    return string('/images/recipes/'.'re_'.$image_id.'_'.$recipe_id.'_'.$size);
 }
 
 function top_success_error($top_error, $top_success){
