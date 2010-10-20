@@ -1,8 +1,7 @@
 <?php
-class Category extends DataMapper {
+class Product_category extends DataMapper {
     
-    var $has_many = array('product');
-    var $table = 'categories'; 
+    var $has_many = array('product'); 
     
     var $validation = array(
         'name' => array(

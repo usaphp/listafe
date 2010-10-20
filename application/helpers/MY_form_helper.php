@@ -42,4 +42,14 @@ if ( ! function_exists('form_hidden'))
 
 		return $form;
 	}
+    
+}
+
+function form_attr_hidden($attrs) {
+    $elem = '<input type="hidden" ';
+    foreach($attrs as $key => $attr){
+        $elem .= $key.'="'.$attr.'" ';
+    }
+    $elem .= '/>';
+    return $elem;
 }

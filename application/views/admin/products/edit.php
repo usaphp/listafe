@@ -5,12 +5,12 @@
     'class' => 'f_input required',
     'value' => $product->name);
     
-    $sel_category = array(
-    'options' => array_for_dropbox($category_model),
-    'name'  => 'category_id',
-    'id'    => 'category_id',
+    $sel_product_category = array(
+    'options' => array_for_dropbox($product_category_model),
+    'name'  => 'product_category_id',
+    'id'    => 'product_category_id',
     'class' => 'f_select wide required',
-    'selected' => $product->category_id);
+    'selected' => $product->product_category_id);
 	
     $txt_description = array(
     'name'  => 'description',
@@ -68,8 +68,8 @@
         echo form_label('Название продукта', $inp_product_name['id'], array('class' => 'f_label'));
         echo form_input($inp_product_name);
         
-        echo form_label('Категория', $sel_category['id'], array('class' => 'f_label'));
-        echo form_dropdown($sel_category['name'], $sel_category['options'], $sel_category['selected'], 'id = "'.$sel_category['id'].'" class = "'.$sel_category['class'].'"');
+        echo form_label('Категория', $sel_product_category['id'], array('class' => 'f_label'));
+        echo form_dropdown($sel_product_category['name'], $sel_product_category['options'], $sel_product_category['selected'], 'id = "'.$sel_product_category['id'].'" class = "'.$sel_product_category['class'].'"');
             
 		# Cikl po kategoriam veshestv
 		$nutrition_fact_count = 1;
@@ -115,12 +115,13 @@
 								echo '<div class="" id="hidden_nutrition_wrapper_'.$nutrition_fact_count.'">';
 								
 								$inp_hidden = array(
-									'name' => 'hidden_nutrition[]', 
+									'name' => 'hidden_nutrition_existed[]', 
 									'id' => 'hid_nutrition_fact_'.$nutrition_fact_count, 
-									'value' => $nf->nutrition_id.'_'.$nf->value );
-									
-								echo '<input type="hidden" name="hidden_nutrition[]" value="'.$inp_hidden['value'].'" id="hidden_nutrition_'.$inp_hidden['id'].'"/>';
-								echo $nf->nutrition_name." - ".$nf->value.' '.anchor('#','remove', array('class' => 'nutrition_fact_remove', 'id' => 'nutrition_fact_remove_'.$nutrition_fact_count));
+									'value' => $nf->id );
+								
+                                echo form_attr_hidden($inp_hidden);
+								
+								echo $nf->nutrition_name." - ".$nf->value.' '.anchor('#','remove', array('class' => 'nutrition_fact_remove nf_remove_from_db', 'id' => 'nutrition_fact_remove_'.$nutrition_fact_count));
 								
 								echo "</div>";
 								$nutrition_fact_count++;

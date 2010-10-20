@@ -16,9 +16,8 @@ class Recipes extends Admin_Controller {
     function show(){
         $recipes = new Recipe();
         $images = new Recipes_image();
-        $images->get();
-        #$recipes->get();
-        $recipes->where_related($images)->get();
+        $recipes = $recipes->get_full_info();
+        //$recipes->select('recipes.*, recipes_images.id as recipes_image_id')->where_related('recipes_image', 'image_type', 1)->get();
         /*
         $recipes_arr = array();
         foreach($recipes as $recipe){

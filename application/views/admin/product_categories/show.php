@@ -8,13 +8,13 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach($categories as $category){ ?>
+            <?php foreach($product_categories as $category){ ?>
                 <tr>
                     <td><?php echo $category->id; ?></td>
                     <td><?php echo $category->name; ?></td>
                     <td class="c_aligned">
-                        <?php echo anchor('admin/categories/edit/'.$category->id, 'Редактировать', array('class' => 't_action'));?>
-                        <?php echo anchor('admin/categories/delete/'.$category->id, 'Удалить', array('class' => 't_action'));?>
+                        <?php echo anchor('admin/product_categories/edit/'.$category->id, 'Редактировать', array('class' => 't_action'));?>
+                        <?php echo anchor('admin/product_categories/delete/'.$category->id, 'Удалить', array('class' => 't_action'));?>
                     </td>
                 </tr>
             <?php } ?>

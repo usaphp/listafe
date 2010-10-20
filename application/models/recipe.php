@@ -8,6 +8,13 @@ class Recipe extends DataMapper {
         parent::__construct($id);
     }
     
+    function get_full_info() {
+        return $this->db->select('recipes.*, recipes_images.id as recipes_image_id')
+                        ->from('recipes')
+                        ->join('recipes_images', 'recipes_images.recipe_id = recipes.id', 'left')
+                        ->get()
+                        ->result();
+    }
 }
 
 /* End of file name.php */

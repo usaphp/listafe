@@ -45,8 +45,8 @@ class Nutritions extends Admin_Controller {
 
         //if form validates
         if($this->form_validation->run()){
-            $nutrition->name				= $this->input->post('nutrition_name');
-            $nutrition->category_id          = $this->input->post('nutritions_categories_id');
+            $nutrition->name					= $this->input->post('nutrition_name');
+            $nutrition->nutrition_category_id	= $this->input->post('nutritions_categories_id');
 
             if($nutrition->save()){
                 $this->data['form_success'] = 'Вещество  добавлено';
