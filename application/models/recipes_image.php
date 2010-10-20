@@ -1,5 +1,5 @@
 <?php
-class Recipes_image extends DataMapper {
+class Recipes_Image extends DataMapper {
     
     var $has_one = array('recipe');
     
