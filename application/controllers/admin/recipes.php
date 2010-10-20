@@ -19,9 +19,9 @@ class Recipes extends Admin_Controller {
 		# Js function from main.js which loads by default  
         array_push($this->data['js_functions'], array('name' => 'nutrition_categories_edit_init', 'data' => FALSE));
 		/* Get data for select boxes */
-        $category	= new Category();
+        $category	= new Product_category();
         $mera		= new Mera();
-        $data['category_model']	= $category->get_iterated();
+        $data['product_category_model']	= $product_category->get_iterated();
         $data['mera_model']		= $mera->get_iterated();
 		
         /* Error and success messages for form - false by default */

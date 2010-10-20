@@ -18,7 +18,7 @@ class Categories extends Admin_Controller {
         $categories = new Category();
         $categories->get();
         $this->data['categories'] = $categories;
-        $this->template->load('/admin/templates/main_template', '/admin/categories/show', $this->data);
+        $this->template->load('/admin/templates/main_template', '/admin/product_categories/show', $this->data);
     }
     
     function delete($id = false){
@@ -27,7 +27,7 @@ class Categories extends Admin_Controller {
             if($category->exists()) $category->delete();
         }
         $this->session->set_flashdata('top_success', 'Категория удалена');
-        redirect('admin/categories/show');
+        redirect('admin/product_categories/show');
     }
     
     function edit($id = false){
