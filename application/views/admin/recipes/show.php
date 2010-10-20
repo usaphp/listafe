@@ -12,8 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach($recipes as $recipe){ 
-                $recipe->recipes_image->get();?>
+            <?php foreach($recipes as $recipe){?>
                 <tr>
                     <td><?php echo $recipe->id; ?></td>
                     <td><?php echo $recipe->name; ?></td>

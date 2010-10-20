@@ -51,3 +51,9 @@ function array_for_dropbox($obj, $caption = '', $value = 'id', $text = 'name'){
     }
     return $data;
 }
+
+function print_flex($arr){
+    echo '<pre>';
+        print_r($arr);
+    echo '</pre>';
+}

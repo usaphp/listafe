@@ -16,11 +16,26 @@ class Recipes extends Admin_Controller {
     function show(){
         $recipes = new Recipe();
         $images = new Recipes_image();
-        $images->where('image_type',1);
+        $recipes->where_related('recipes_image', 'image_type', 1)->get();
+        /*
+        $recipes_arr = array();
+        foreach($recipes as $recipe){
+            $recipe->recipes_image->get();
+            array_push($recipes_arr, $recipe);
+        }
+        */
+        #$recipes->get();
+        #$recipes->where_related('recipes_image','image_type',1);
+        //$images->include_related('recipes')->get();
+        #foreach($recipes as $recipe):
+            //print_flex ($recipes);
+            #echo $recipe->id;
+        #endforeach;
         #$recigies->include_related('mera', array('name'))->get();
         #$recigies->include_related('category', array('name'))->get();
-        $data['images'] = $images->get();
-        $data['recipes'] = $recipes->get();
+        
+        #$data['images'] = $images->get();
+        $data['recipes'] = $recipes;
         $this->template->load('/admin/templates/main_template', '/admin/recipes/show', $data);
     }
     
