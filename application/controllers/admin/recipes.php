@@ -16,7 +16,7 @@ class Recipes extends Admin_Controller {
     function show(){
         $recipes = new Recipe();
         $images = new Recipes_image();
-        $recipes = $recipes->get_full_info();
+         $recipes->get_full_info();
         //$recipes->select('recipes.*, recipes_images.id as recipes_image_id')->where_related('recipes_image', 'image_type', 1)->get();
         /*
         $recipes_arr = array();
@@ -36,7 +36,7 @@ class Recipes extends Admin_Controller {
         #$recigies->include_related('category', array('name'))->get();
         
         #$data['images'] = $images->get();
-        $data['recipes'] = $recipes;
+        $data['recipes'] = $recipes->data;
         $this->template->load('/admin/templates/main_template', '/admin/recipes/show', $data);
     }
     
