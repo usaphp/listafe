@@ -52,6 +52,9 @@ main.prototype.recipe_add_init = function(){
 			success : function(response){
 				$('#recipe_products').append(response);
 				$('#total_products').val(next_product_id);
+                $('.suggest_product').autocomplete(main.admin_url + "ajax/suggest_products", {
+        		      width : $(this).attr('width')
+                });
 			}
 		});
 		return false;
@@ -60,10 +63,10 @@ main.prototype.recipe_add_init = function(){
 	$('#add_recipe_form').validate({
 		rules : {
 			'recipe_name'	: { required : true },
-			'prep_time'		: { required : true, number : true },
-			'cook_time' 	: { required : true, number : true },
-			'servings' 		: { required : true, number : true },
-			'recipe_image'	: { required : true, number : true }
+			//'prep_time'		: { required : true, number : true },
+			//'cook_time' 	: { required : true, number : true },
+			//'servings' 		: { required : true, number : true },
+			//'recipe_image'	: { required : true, number : true }
 		}
 	});
 	

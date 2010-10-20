@@ -68,5 +68,4 @@ class Nutritions extends Admin_Controller {
 			return false;
 		return true;
 	}
-
 }

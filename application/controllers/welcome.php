@@ -4,7 +4,7 @@ class Welcome extends Controller {
 
 	function Welcome()
 	{
-		parent::Controller();	
+		parent::__construct();	
 	}
 	
 	function index()

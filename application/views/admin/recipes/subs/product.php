@@ -5,7 +5,7 @@
 	'class'	=> 'f_input f_joined suggest_product',
 	'value' => set_value('product_'.$recipe_product_id));
 	$mera	= array(
-	'options' => array_for_dropbox($mera_model, 'Мера Измерения'),
+	'options' => array_for_dropbox($meras, 'Мера Измерения'),
 	'id'	=> 'mera_'.$recipe_product_id,
 	'name'	=> 'mera_'.$recipe_product_id,
 	'selected' => set_value('mera_'.$recipe_product_id),

@@ -49,16 +49,11 @@ $image  = array(
 		
 		<div class="f_sub_header">Ингредиенты</div>
 		<div id="recipe_products">
-        
 		<?php 
-        #$this->data['meras'] = $meras;
 		for($i = 1; $i <= DEFAULT_PRODUCTS_IN_RECIPE; $i++){
-			$this->data['recipe_product_id'] = $i;
-            #
-            
-			$this->load->view('/admin/recipes/subs/product.php',$this->data);
+			$data['recipe_product_id'] = $i;
+			$this->load->view('/admin/recipes/subs/product.php', $data);
 		}
-        #print_r($meras);
 		?>
 		</div>
 		<?php
@@ -83,3 +78,6 @@ $image  = array(
 		<a href = '#' id = 'add_recipe' class = 'f_button green wide'>Сохранить Рецепт</a>
 	</div>
 	<?php echo form_close(); ?>
+<script type="text/javascript">
+    imain.recipe_add_init();
+</script>

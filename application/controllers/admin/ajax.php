@@ -4,7 +4,8 @@ class Ajax extends Admin_Controller {
 
 	function __construct()
 	{
-		parent::Controller();
+		parent::__construct();
+        $this->output->enable_profiler(FALSE);
 	}
 	
 	function index()
@@ -25,10 +26,10 @@ class Ajax extends Admin_Controller {
     
 	/* Adds a product to recipe */
 	function add_recipe_product(){
-        $mera = new Mera();
-		$data['mera_model'] = $mera->get_iterated();
-		$data['recipe_product_id'] = $this->input->post('recipe_product_id');
-		$this->load->view('admin/recipes/subs/product', $data);
+        $meras = new Mera();
+		$this->data['meras'] = $meras->get_iterated();
+		$this->data['recipe_product_id'] = $this->input->post('recipe_product_id');
+		$this->load->view('admin/recipes/subs/product', $this->data);
 	}
 	
 	/* Adds a step to recipe */
