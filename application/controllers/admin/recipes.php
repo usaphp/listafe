@@ -16,7 +16,9 @@ class Recipes extends Admin_Controller {
     function show(){
         $recipes = new Recipe();
         $images = new Recipes_image();
-        $recipes->where_related('recipes_image', 'image_type', 1)->get();
+        $images->get();
+        #$recipes->get();
+        $recipes->where_related($images)->get();
         /*
         $recipes_arr = array();
         foreach($recipes as $recipe){
@@ -28,7 +30,7 @@ class Recipes extends Admin_Controller {
         #$recipes->where_related('recipes_image','image_type',1);
         //$images->include_related('recipes')->get();
         #foreach($recipes as $recipe):
-            //print_flex ($recipes);
+           #print_flex ($recipes);
             #echo $recipe->id;
         #endforeach;
         #$recigies->include_related('mera', array('name'))->get();
