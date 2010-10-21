@@ -24,6 +24,7 @@ function get_name_image($image_id, $recipe_id, $size = ''){
     return $name;
 }
 
+
 function top_success_error($top_error, $top_success){
     if($top_error){
         echo "<div class='top_error'>".$top_error."</div>";

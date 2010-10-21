@@ -2,28 +2,38 @@
 $rec_name = array(
 'name'  => 'recipe_name',
 'id'    => 'recipe_name',
-'class' => 'f_input wide');
+'class' => 'f_input wide',
+'value' => $recipe->name
+);
 
 $prep_time = array(
 'name'	=> 'prep_time',
 'id'	=> 'prep_time',
-'class' => 'f_input');
+'class' => 'f_input',
+'value' => $recipe->prepare_time
+);
 
 $cook_time = array(
 'name'	=> 'cook_time',
 'id'	=> 'cook_time',
-'class' => 'f_input');
+'class' => 'f_input',
+'value' => $recipe->cook_time
+);
 
 $servings  = array(
 'name'	=> 'servings',
 'id'	=> 'servings',
-'class' => 'f_input');
+'class' => 'f_input',
+'value' => $recipe->servings
+);
 
-$image  = array(
+$image_upload = array(
 'name'	=> 'recipe_image',
 'id'	=> 'recipe_image',
-'class' => 'f_file_upload')
+'class' => 'f_file_upload');
 
+$image_current = array(
+'name' => '');
 ?>
 
 
@@ -44,14 +54,16 @@ $image  = array(
 		<?php echo form_label('Кол-во Порций', $servings['id'], array('class' => 'f_label')); ?>
 		<?php echo form_input($servings); ?>
 		
-		<?php echo form_label('Фотография', $image['id'], array('class' => 'f_label')); ?>
-		<?php echo form_upload($image); ?>
-		
+		<?php echo form_label('Фотография', $image_upload['id'], array('class' => 'f_label')); ?>
+		<?php echo form_upload($image_upload); ?>
+		<img src="<?php echo get_name_image($image->id, $recipe->id, 'tiny'); ?>"/>
 		<div class="f_sub_header">Ингредиенты</div>
 		<div id="recipe_products">
 		<?php 
-		for($i = 1; $i <= DEFAULT_PRODUCTS_IN_RECIPE; $i++){
-			$data['recipe_product_id'] = $i;
+		foreach($recipe->products as $key => $product){
+			$data['recipe_product_id'] = $key;
+            $data['name'] = $product->name;
+            $data['value'] = $product->value;
 			$this->load->view('/admin/recipes/subs/product.php', $data);
 		}
 		?>
@@ -67,10 +79,15 @@ $image  = array(
 		<div class="clear"></div>
 		<div class="f_sub_header">Приготовление</div>
 		<div id="recipe_steps">
-			<?php
-			$this->load->view('/admin/recipes/subs/step.php', $data);
-			echo form_hidden('total_steps', 1);
-			?>
+		<?php 
+            foreach($steps as $key => $step){
+                $data['step_id'] = $key;
+                $data['text'] = $step->text;
+                $data['image'] = $step->image;
+                $this->load->view('/admin/recipes/subs/step.php', $data);
+            }
+			echo form_hidden('total_steps', $key);
+		?>
 		</div>
 	</div>
 	<div class="f_buttons span-13">

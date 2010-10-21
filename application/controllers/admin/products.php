@@ -153,7 +153,7 @@ class Products extends Admin_Controller {
         $config['height']           = 40;
         $config['master_dim']       = 'width';
         $config['maintain_ratio']   = TRUE;
-        $this->load->library('image_lib', $config);
+        $this->load->library('image_lib',$config);
         $this->image_lib->resize();
     }
     

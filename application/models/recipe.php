@@ -2,7 +2,7 @@
 class Recipe extends DataMapper {
     
     var $has_many = array('product','recipes_image','recipes_step');
-                        
+    #var $has_one = array('products_recipe');
     function __construct($id = NULL)
     {
         parent::__construct($id);
@@ -15,6 +15,17 @@ class Recipe extends DataMapper {
                         ->get()
                         ->result();
         $this->data = $query;
+    }
+    function get_products(){
+        $query = $this->db->select('products_recipes.*,products.name')
+                            ->from('products_recipes')
+                            ->join('products','products.id = products_recipes.product_id') 
+                            ->where('products_recipes.recipe_id',$this->id)
+                            ->get()
+                            ->result();
+        $this->products = $query;
+        print_flex($query);
+        
     }
 }
 

@@ -7,6 +7,9 @@ class Recipes_Step extends DataMapper {
     {
         parent::__construct();
     }
+    function get_count(){
+        return $this->db->count_all_results('recipes_steps');
+    }
 }
 
 /* End of file name.php */
