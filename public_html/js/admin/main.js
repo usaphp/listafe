@@ -192,6 +192,54 @@ main.prototype.process_ajax_response = function(response, form_name){
         
 	}
     main.prototype.recipes_edit_init = function(){
-        
-	}
+       	$('#add_step').click(function(){
+    		var next_step = parseInt($('#total_steps').val()) + 1;
+    		$.ajax({
+    			url : main.admin_url + 'ajax/add_step',
+    			data : { 'step_id' : next_step },
+    			type : 'post',
+    			success : function(response){
+    				$('#recipe_steps').append(response);
+    				$('#total_steps').val(next_step);
+    			}
+    		});
+    		return false;	
+    	});
+    	
+    	$('#add_product_recipe').click(function(){
+    		var next_product_id = parseInt($('#total_products').val()) + 1;
+    		$.ajax({
+    			url : main.admin_url + 'ajax/add_recipe_product',
+    			data : { 'recipe_product_id' : next_product_id },
+    			type : 'post',
+    			success : function(response){
+    				$('#recipe_products').append(response);
+    				$('#total_products').val(next_product_id);
+                    $('.suggest_product').autocomplete(main.admin_url + "ajax/suggest_products", {
+            		      width : $(this).attr('width')
+                    });
+    			}
+    		});
+    		return false;
+    	})
+    	
+    	$('#add_recipe_form').validate({
+    		rules : {
+    			'recipe_name'	: { required : true },
+    			//'prep_time'		: { required : true, number : true },
+    			//'cook_time' 	: { required : true, number : true },
+    			//'servings' 		: { required : true, number : true },
+    			//'recipe_image'	: { required : true, number : true }
+    		}
+    	});
+    	
+    	$('#save_recipe').click(function(){
+    		$('#edit_recipe_form').submit();
+    		return false;
+    	})
+    	
+    	$('.suggest_product').autocomplete(main.admin_url + "ajax/suggest_products", {
+    		      width : $(this).attr('width')
+            });
+    	}
 }

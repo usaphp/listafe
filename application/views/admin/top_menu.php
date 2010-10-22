@@ -15,7 +15,6 @@
     <li><?php echo anchor('admin/recipes/show', 'Рецепты'); ?>
         <ul class="sub_menu">
             <li><?php echo anchor('admin/recipes/add', 'Добавить Рецепт'); ?></li>
-            <li><?php echo anchor('admin/recipes/edit', 'Редактировать Рецепт'); ?></li>
             <li><?php echo anchor('admin/recipes/show', 'Список Рецептов'); ?></li>
         </ul>
     </li>

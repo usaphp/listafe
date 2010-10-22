@@ -17,14 +17,13 @@ class Recipe extends DataMapper {
         $this->data = $query;
     }
     function get_products(){
-        $query = $this->db->select('products_recipes.*,products.name')
+        $query = $this->db->select('products_recipes.*,products.name,products.image')
                             ->from('products_recipes')
                             ->join('products','products.id = products_recipes.product_id') 
                             ->where('products_recipes.recipe_id',$this->id)
                             ->get()
                             ->result();
         $this->products = $query;
-        print_flex($query);
         
     }
 }

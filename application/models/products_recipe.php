@@ -1,7 +1,7 @@
 <?php
 class Products_Recipe extends DataMapper {
     
-    var $has_many = array('product','recipe');
+    var $has_one = array('product','recipe');
     
     
     function __construct($id = NULL)
