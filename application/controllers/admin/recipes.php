@@ -60,19 +60,16 @@ class Recipes extends Admin_Controller {
         $recipe_image->where_related($recipe);
         $recipe_image->where('image_type','1')->get();
         
-        #esli net svazannoi image to sozdaetsa novaia i zadaetsa budushii id
+        #esli net svazannoi image to sozdaetsa novaia i zadaetsa id
         if ($recipe_image->result_count()==0){ 
             $recipe_image_id = $recipe_image->get()->result_count()+1;
             $recipe_image = new Recipes_Image();
         }else {
             $recipe_image_id = $recipe_image->id; #beret sushestvushii ID image is Recipes_Image
         } 
+        $meras->get();
         #soedinit' sushestvuushie shagi
         $steps->where_related($recipe)->get();
-        $meras->get();
-        #print_flex($steps);
-        
-        #$recipes->get_full_info($id);
 		
 		/* Settting up validation rules */
         $rules = array(
@@ -137,8 +134,9 @@ class Recipes extends Admin_Controller {
                         
                         # v paramtrah func ukazivaetsa id recepta i ID step kotorii budet sozdan
                         # takze peredaetsa $i dla oboznach4enia nuznogo pola formi image
-                        # $recipes_step->get_count()-utilitnay func sozdanaia v modeli Recipes_Step() dla uproshenia i lu4shego vospriatia coda 
-                        $name_image = 'sp_'.$recipe->id.'_'.($recipes_step->get_count()).'.jpg'; #generiruet ima iz prefixa ID recepta i tekushey stroki v base
+                        # $recipes_step->get_count()-utilitnay func sozdanaia v modeli Recipes_Step() dla uproshenia i lu4shego vospriatia coda
+                        $name_image = ($recipes_step->id)?'sp_'.$recipe->id.'_'.$recipes_step->id.'.jpg':'sp_'.$recipe->id.'_'.($recipes_step->get_count()+1).'.jpg';
+                         #= $step_id; #generiruet ima iz prefixa ID recepta i tekushey stroki v base
                         $upload_path = $this->config->item('step_images_path');                     #kuda
                         $form_name = 'step_photo_'.$i;                                              #nazvanie form_upload
                         # esli image sozdal udachno to vozvrashaen ima image inache vozvrachaet false

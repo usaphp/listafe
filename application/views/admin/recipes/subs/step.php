@@ -22,5 +22,5 @@ echo form_textarea($step_description);
 echo form_label('Картинка', $step_image['id'], array('class' => 'f_label'));
 echo form_upload($step_image);
 ?>
-<img src="/images/steps/<?php echo $image = ($image!='')? substr($image,0,strpos($image,'.')).'_tiny.jpg': 'sp_empty_tiny.jpg'; ?>"/>
+<?php if ($image!='') echo '<img src="/images/steps/'.substr($image,0,strpos($image,'.')).'_tiny.jpg'.'"/>'; ?>
 </div>
