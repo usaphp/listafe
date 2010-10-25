@@ -1,5 +1,5 @@
 <?php
-class Product extends DataMapper {
+class Product extends Datamapper {
     
     var $has_one = array('product_category', 'mera');
     var $has_many = array('product_nutrition_fact', 'product_nutrition_category_fact', 'recipe'); 
