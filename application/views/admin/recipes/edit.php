@@ -56,7 +56,7 @@ $image_current = array(
 		
 		<?php echo form_label('Фотография', $image_upload['id'], array('class' => 'f_label')); ?>
 		<?php echo form_upload($image_upload); ?>
-		<img src="<?php echo get_name_image($image->id, $recipe->id, 'tiny'); ?>"/>
+		<?php if ($image->id) echo '<img src="'.get_name_image($image->id, $recipe->id, 'tiny').'"/>'; ?>
 		<div class="f_sub_header">Ингредиенты</div>
 		<div id="recipe_products">
 		<?php 
