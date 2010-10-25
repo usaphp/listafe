@@ -15,16 +15,16 @@ class Product_categories extends Admin_Controller {
     
     function show()
     {
-        $categories = new Product_category();
-        $categories->get();
-        $this->data['product_categories'] = $categories;
+        $product_categories = new Product_category();
+        $product_categories->get();
+        $this->data['product_categories'] = $product_categories;
         $this->template->load('/admin/templates/main_template', '/admin/product_categories/show', $this->data);
     }
     
     function delete($id = false){
         if($id){
-            $category = new Product_category($id);
-            if($category->exists()) $category->delete();
+            $product_category = new Product_category($id);
+            if($product_category->exists()) $product_category->delete();
         }
         $this->session->set_flashdata('top_success', 'Категория удалена');
         redirect('admin/product_categories/show');
@@ -36,7 +36,7 @@ class Product_categories extends Admin_Controller {
 		array_push($this->data['js_functions'], array('name' => 'categories_edit_init', 'data' => FALSE));   
 		
         
-        $category = new Product_category($id);
+        $product_category = new Product_category($id);
         
         $rules = array(
             array('field' => 'category_name', 'label' => 'Название Категории', 'rules' => 'trim|required|xss_clean|_category_name_exists')
@@ -49,13 +49,13 @@ class Product_categories extends Admin_Controller {
             if($category->save()){
                 $this->data['form_success'] = 'Категория добавлена';
             }else{
-                $this->data['form_error'] = $category->error->string;
+                $this->data['form_error'] = $product_category->error->string;
             }
         }else{
             $this->data['form_error'] = validation_errors();
         }
-        $this->data['category'] = $category;
-        $this->template->load('/admin/templates/main_template', '/admin/categories/edit', $this->data);
+        $this->data['product_category'] = $product_category;
+        $this->template->load('/admin/templates/main_template', '/admin/product_categories/edit', $this->data);
     }
     
     
