@@ -136,8 +136,10 @@ class Recipes extends Admin_Controller {
                         # takze peredaetsa $i dla oboznach4enia nuznogo pola formi image
                         # $recipes_step->get_count()-utilitnay func sozdanaia v modeli Recipes_Step() dla uproshenia i lu4shego vospriatia coda
                         $name_image = ($recipes_step->id)?'sp_'.$recipe->id.'_'.$recipes_step->id.'.jpg':'sp_'.$recipe->id.'_'.($recipes_step->get_count()+1).'.jpg';
+                        
                          #= $step_id; #generiruet ima iz prefixa ID recepta i tekushey stroki v base
                         $upload_path = $this->config->item('step_images_path');                     #kuda
+                        #echo $upload_path.$name_image;
                         $form_name = 'step_photo_'.$i;                                              #nazvanie form_upload
                         # esli image sozdal udachno to vozvrashaen ima image inache vozvrachaet false
                         if($this->_upload_images($form_name,$name_image,$upload_path)){ 
@@ -257,6 +259,35 @@ class Recipes extends Admin_Controller {
         $this->data['total_products'] = $total_products;
         $this->template->load('/admin/templates/main_template', '/admin/recipes/add', $this->data);
 	}
+    #delete recipe
+    function delete($id=false){
+        #esli ID ne peredaetsa to perehod na spisok
+        if(!$id){
+            $this->show();
+            return;
+        }
+        
+        $recipe = new Recipe();
+        $recipe->get_by_id($id);
+        $recipe->recipes_image->where_related()->get();
+        if ($recipe->id) {
+            $recipe_image_file = $this->config->item('recipe_images_path').'re_'.$recipe->recipes_image->id.'_'.$recipe->id;
+            unlink($recipe_image_file.'.jpg');
+            unlink($recipe_image_file.'_tiny.jpg');
+        } 
+        $recipe->recipes_image->delete();
+        $recipe->recipes_step->where_related()->get();
+        foreach($recipe->recipes_step as $step)
+            if ($step->image){ 
+                unlink($this->config->item('step_images_path').$step->image);
+                unlink($this->config->item('step_images_path').substr($step->image,0,strpos($step->image,'.')).'_tiny.jpg');
+            }
+        $recipe->recipes_step->delete();
+        $recipe->delete();
+        $this->show();
+        
+        
+    }
     function _save_recipe(){
         //code
     }

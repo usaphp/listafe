@@ -102,6 +102,3 @@ $image_current = array(
 		<a href = '#' id = 'save_recipe' class = 'f_button green wide'>Сохранить Рецепт</a>
 	</div>
 	<?php echo form_close(); ?>
-<script type="text/javascript">
-    imain.recipe_add_init();
-</script>

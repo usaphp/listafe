@@ -26,8 +26,7 @@
 	echo form_input($product);
 	echo form_dropdown($mera['name'], $mera['options'], $mera['selected'], 'id = "'.$mera['id'].'" class = "'.$mera['class'].'"');
 	echo form_input($qty);
-?>	
-    <?php if($image!='') echo '<img src="/photos/product_images/'.substr($image,0,strpos($image,'.')).'_tiny.jpg'.'"/>'; ?>
-    <?php
+    if($image!='') echo '<img src="/photos/product_images/'.substr($image,0,strpos($image,'.')).'_tiny.jpg'.'"/>';
     echo cleared_div();
-?>
+    #anchor('admin/resi')
+    ?>
