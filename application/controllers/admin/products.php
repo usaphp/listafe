@@ -16,6 +16,7 @@ class Products extends Admin_Controller {
     function show()
     {
         $products = new Product();
+        $this->mapper->load_data('Product', 'Nutrition_category', 'product_nutrition_category_facts');
         $products->get_iterated();
         $products->include_related('mera', array('name'))->get();
         $products->include_related('product_category', array('name'))->get();
