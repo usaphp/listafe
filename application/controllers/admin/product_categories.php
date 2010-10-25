@@ -1,6 +1,6 @@
 <?php
 
-class Categories extends Admin_Controller {
+class Product_categories extends Admin_Controller {
 
 	function __construct()
 	{
@@ -15,15 +15,15 @@ class Categories extends Admin_Controller {
     
     function show()
     {
-        $categories = new Category();
+        $categories = new Product_category();
         $categories->get();
-        $this->data['categories'] = $categories;
+        $this->data['product_categories'] = $categories;
         $this->template->load('/admin/templates/main_template', '/admin/product_categories/show', $this->data);
     }
     
     function delete($id = false){
         if($id){
-            $category = new Category($id);
+            $category = new Product_category($id);
             if($category->exists()) $category->delete();
         }
         $this->session->set_flashdata('top_success', 'Категория удалена');
@@ -36,7 +36,7 @@ class Categories extends Admin_Controller {
 		array_push($this->data['js_functions'], array('name' => 'categories_edit_init', 'data' => FALSE));   
 		
         
-        $category = new Category($id);
+        $category = new Product_category($id);
         
         $rules = array(
             array('field' => 'category_name', 'label' => 'Название Категории', 'rules' => 'trim|required|xss_clean|_category_name_exists')
@@ -61,7 +61,7 @@ class Categories extends Admin_Controller {
     
     //checks to see if category name already exists    
     function _category_name_exists($name){
-        $category = new Category();
+        $category = new Product_category();
         $category->where('name', $name)->get();
         if($category->exists()) return false;
         return true;
