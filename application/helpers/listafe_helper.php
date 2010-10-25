@@ -20,8 +20,10 @@ function image_url($image, $type, $size = ''){
 }
 # return name image for input recipe on show
 function get_name_image($image_id, $recipe_id, $size = ''){
-    return string('/images/recipes/'.'re_'.$image_id.'_'.$recipe_id.'_'.$size);
+    $name = '/images/recipes/'.'re_'.$image_id.'_'.$recipe_id.'_'.$size.'.jpg';
+    return $name;
 }
+
 
 function top_success_error($top_error, $top_success){
     if($top_error){
