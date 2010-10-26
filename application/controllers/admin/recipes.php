@@ -14,6 +14,9 @@ class Recipes extends Admin_Controller {
 	}
     
     function show(){
+        $this->load->library('upload_img_lib',array('type'=>'recipe','size'=>array('tiny','small')));
+        echo $this->upload_img_lib->upload_img('form_name','image_name');
+        return;
         $recipes = new Recipe();
         $images = new Recipes_image();
          $recipes->get_full_info();
@@ -40,7 +43,11 @@ class Recipes extends Admin_Controller {
         $this->template->load('/admin/templates/main_template', '/admin/recipes/show', $data);
     }
     
-	function edit($id){
+	function edit($id = false){
+        if(!$id){
+            $this->show();
+            return;
+        }
 		/* Loading libraries */	
 		$this->load->library('form_validation');
 		# Js function from main.js which loads by default  
@@ -55,7 +62,7 @@ class Recipes extends Admin_Controller {
         $recipe->get_by_id($id);
         #zagruzka neobhodimih produktod 4erez ActivRecord
         $recipe->get_products(); 
- 
+        
         #ne realizovana podderjka situacii so mnojestvom kartion na odin recipe
         $recipe_image->where_related($recipe);
         $recipe_image->where('image_type','1')->get();
@@ -83,7 +90,6 @@ class Recipes extends Admin_Controller {
 		{
 			/* Success on validation */
             # Zagruzka Recepta
-            
             $recipe->name = $this->input->post('recipe_name');
             $recipe->prepare_time = $this->input->post('prep_time');
             $recipe->cook_time = $this->input->post('cook_time');
@@ -99,12 +105,16 @@ class Recipes extends Admin_Controller {
                 if($this->_upload_images('recipe_image',$recipe_image_name,$recipe_image_path)) 
                     $recipe_image->save();
                 else $data['form_error'] = $this->upload->display_errors();
+                #zagruzka udaleniih productov 
+                $product_removed = $this->input->post('hidden_product_removed');
+                
+                if (!$product_removed) $product_removed = array(); 
                 #PRODUKTI
                 for($i=1;$i<=$total_products;$i++){
                     $product_name = $this->input->post('product_'.$i);
                     $product_qty = $this->input->post('qty_'.$i);
                     $product_mera_id = $this->input->post('mera_'.$i);
-                    if ($product_name && $product_qty && $product_mera_id){
+                    if ($product_name && $product_qty && $product_mera_id && !in_array($i,$product_removed)){
                         # beret ID producta po imeni dla bazi Products_Recipe();
                         $products_id_by_name = $product->where('name', $product_name)->get()->id; #
                         $products_recipe = new Products_Recipe();
@@ -117,8 +127,29 @@ class Recipes extends Admin_Controller {
                         $products_recipe->mera_id = $product_mera_id;
                         $products_recipe->value = $product_qty;
                         $products_recipe->save($recipe);
-                    }
+                    }    
                 }
+                # udalit' vibrannie producti
+                $products_name = array(); #peremenaia spiska productov
+                foreach($product_removed as $id){
+                    #sozdaet spisok udalaemih productov
+                    array_push($products_name,$this->input->post('product_'.$id));
+                }
+                #esli spisok udalaemih productov ne pust to vipolnaetsa uslovie 
+                if (!empty($product_removed)){
+                    $products = new Product();
+                    $products_recipe = new Products_Recipe();
+                    #berem iz bazi producti po spisku hidden
+                    $products->where_in('name',$products_name)->get();
+                    #berem producti tol'ko te 4to otnosatsa k dannomy recepty
+                    $products_recipe->where_related($recipe);
+                    #berem producti tol'ko te 4to otnosatsa k spisku hidden
+                    $products_recipe->where_related($products)->get();
+                    #udalaem vse 4to ostalos' v zaprose 
+                    $products_recipe->delete();
+                }
+                
+                #print_flex($products_recipe);
                 #SHAGI
                 $total_steps = $this->input->post('total_steps');
                 for($i=1;$i<=$total_steps;$i++){
@@ -132,6 +163,13 @@ class Recipes extends Admin_Controller {
                         $recipes_step->step = $i; 
                         $recipes_step->text = $step_descript;
                         
+                        
+                        $image_config = array('type'=>'step','size'=>array('small','original'));
+                        $this->load->library('upload_img_lib',$image_config);
+                        if($this->upload_img_lib->image($upload_path)){
+                            echo 1;
+                        }
+                        return;
                         # v paramtrah func ukazivaetsa id recepta i ID step kotorii budet sozdan
                         # takze peredaetsa $i dla oboznach4enia nuznogo pola formi image
                         # $recipes_step->get_count()-utilitnay func sozdanaia v modeli Recipes_Step() dla uproshenia i lu4shego vospriatia coda
@@ -157,7 +195,7 @@ class Recipes extends Admin_Controller {
                     
                 }
                 $this->data['form_success'] = 'Рецепт Сохранен';
-                redirect('admin/recipes/edit/'.$id);
+                #!redirect('admin/recipes/edit/'.$id);
             }else{
                  $this->data['form_error'] = $recipe->error->string;
             }
@@ -230,10 +268,11 @@ class Recipes extends Admin_Controller {
                         # v paramtrah func ukazivaetsa id recepta i ID step kotorii budet sozdan
                         # takze peredaetsa $i dla oboznach4enia nuznogo pola s image
                         # $recipes_step->get_count()-utilitnay func sozdanaia v modeli Recipes_Step() dla uproshenia i lu4shego vospriatia coda 
-                        $name_image = 'sp_'.$recipes->id.'_'.($recipes_step->get_count()+1).'.jpg'; #generiruet ima iz prefixa ID recepta i tekushey stroki v base
+                        $name_image = 'sp_'.$recipes->id.'_'.($recipes_step->get_count()+1).'.jpg'; #generiruet ima iz prefixa ID recepta i tekushey stroki v base''
                         $upload_path = $this->config->item('step_images_path');                     #kuda
                         $form_name = 'step_photo_'.$i;                                              #nazvanie form_upload
                         # esli image sozdal udachno to vozvrashaen ima image inache vozvrachaet false
+                        
                         if($this->_upload_images($form_name,$name_image,$upload_path)){ 
                             $recipes_step->image = $name_image;
                         }
@@ -266,7 +305,6 @@ class Recipes extends Admin_Controller {
             $this->show();
             return;
         }
-        
         $recipe = new Recipe();
         $recipe->get_by_id($id);
         $recipe->recipes_image->where_related()->get();

@@ -221,7 +221,22 @@ main.prototype.process_ajax_response = function(response, form_name){
     			}
     		});
     		return false;
-    	})
+    	});
+        
+        $('.f_remove').click(function(){
+    		var elem_id = $(this).attr('id').replace('remove_product_', '');
+            var hidden_remove = $('<input type="hidden">').val(elem_id).attr('name', 'hidden_product_removed[]');
+            
+            if(!$('input[type=hidden][value='+elem_id+'][name=hidden_product_removed[]]').length){
+                $('#remove_product_' + elem_id).text('restore').attr('class','f_remove f_button green');
+                $('#edit_recipe_form').append(hidden_remove);
+            }else{
+                $('#remove_product_' + elem_id).text('delete');
+                $('#remove_product_' + elem_id).text('delete').attr('class','f_remove f_button grey');
+                $('input[type=hidden][value='+elem_id+'][name=hidden_product_removed[]]').remove();
+            }
+    		return false;
+    	});
     	
     	$('#add_recipe_form').validate({
     		rules : {

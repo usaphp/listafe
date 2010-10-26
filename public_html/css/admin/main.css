@@ -42,7 +42,7 @@ a { color:#0076c8; outline:none;}
 	    .f_last			{ clear:right; }
 	    .f_label		{ display:block; padding-bottom:2px; margin-top:10px; }
 	    .f_input		{ display:block; border:1px solid #cbcbcb; padding:7px 4px;  width:200px; border-color:#bfbfbf #e8e8e8 #e8e8e8 #bfbfbf;}
-        .f_remove       { font-size:28px; color:#2f2f2f; margin-left:10px; text-decoration: none;}
+        .f_remove       { color:#2f2f2f; margin-left:10px; text-decoration: none;}
 	        .f_input.tiny	{ width:60px; }
 	        .f_input.wide	{ width:260px; }
 	        .f_input:focus	{ border-color:#5f5f5f #bfbfbf #bfbfbf #5f5f5f; }

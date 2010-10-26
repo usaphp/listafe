@@ -1,5 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes
@@ -36,8 +37,26 @@ define('FOPEN_READ_WRITE_CREATE', 				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT', 			'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
-
 /* Admin constants */
+/*
+|--------------------------------------------------------------------------
+|Size upload image for Upload_img_lib form MyLibrary 
+|--------------------------------------------------------------------------
+*/
+define('IMAGE_TINY_WIDTH', 40);
+define('IMAGE_TINY_HEIGHT', 40);
+define('IMAGE_SMALL_WIDTH', 60);
+define('IMAGE_SMALL_HEIGHT', 60);
+define('IMAGE_MEDIUM_WIDTH', 120);
+define('IMAGE_MEDIUM_HEIGHT', 120);
+define('IMAGE_LARGE_WIDTH', 240);
+define('IMAGE_LARGE_HEIGHT', 240);
+define('IMAGE_RECIPE_PREFIX','re_');
+define('IMAGE_PRODUCT_PREFIX','pi_');
+define('IMAGE_STEP_PREFIX','sp_');
+
+#--------------------------------------------------------------------------
+
 define('DEFAULT_PRODUCTS_IN_RECIPE', 5);
 /* End of file constants.php */
 /* Location: ./system/application/config/constants.php */
