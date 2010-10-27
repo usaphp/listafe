@@ -14,9 +14,10 @@ class Recipes extends Admin_Controller {
 	}
     
     function show(){
-        $this->load->library('upload_img_lib',array('type'=>'recipe','size'=>array('tiny','small')));
-        echo $this->upload_img_lib->upload_img('form_name','image_name');
-        return;
+        #$this->load->library('upload_img_lib',array('type'=>'recipe','size'=>array('tiny','small')));
+        #echo $this->upload_img_lib->upload_img('form_name','image_name');
+        
+        #return;
         $recipes = new Recipe();
         $images = new Recipes_image();
          $recipes->get_full_info();
@@ -98,13 +99,16 @@ class Recipes extends Admin_Controller {
             #find filling fields of product and create array $product_name
             
             if($recipe->save()){
-                #Dobavlenie Izmenenie resunka resepta
-                $recipe_image_name = 're_'.$recipe->id.'_'.$recipe_image_id.'.jpg';
-                $recipe_image_path = $upload_path = $this->config->item('recipe_images_path');
-                #esli zagruzka uda4na to sohranenie v baze   
-                if($this->_upload_images('recipe_image',$recipe_image_name,$recipe_image_path)) 
-                    $recipe_image->save();
-                else $data['form_error'] = $this->upload->display_errors();
+                #esli biblioteka my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i izmenaetsa
+                if ($this->load->library('upload_image_lib',array('type'=>'recipe', 'size' => 'small')))
+                    #vozvrashaet polnoe ima kartinki primer: re_id_id.jpg; v bazu sohranaetsa tol'ko $recipe_image_id
+                    if ($this->upload_image_lib->upload_resize_img('recipe_image',$recipe->id.'_'.$recipe_image_id))
+                        $recipe_image->save();
+                    else 
+                        $data['form_error'] = $this->upload->display_errors();     
+                #echo $this->my_upload_image_lib->resize_img('image_name'); #vivodit log oshibok 
+                     
+                
                 #zagruzka udaleniih productov 
                 $product_removed = $this->input->post('hidden_product_removed');
                 
@@ -164,12 +168,7 @@ class Recipes extends Admin_Controller {
                         $recipes_step->text = $step_descript;
                         
                         
-                        $image_config = array('type'=>'step','size'=>array('small','original'));
-                        $this->load->library('upload_img_lib',$image_config);
-                        if($this->upload_img_lib->image($upload_path)){
-                            echo 1;
-                        }
-                        return;
+                    
                         # v paramtrah func ukazivaetsa id recepta i ID step kotorii budet sozdan
                         # takze peredaetsa $i dla oboznach4enia nuznogo pola formi image
                         # $recipes_step->get_count()-utilitnay func sozdanaia v modeli Recipes_Step() dla uproshenia i lu4shego vospriatia coda
