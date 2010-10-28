@@ -25,6 +25,7 @@ class Recipe extends DataMapper {
         $this->products = $query;
         
     }
+    
 }
 
 /* End of file name.php */

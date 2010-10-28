@@ -14,13 +14,19 @@ class Recipes extends Admin_Controller {
 	}
     
     function show(){
-        #$this->load->library('upload_img_lib',array('type'=>'recipe','size'=>array('tiny','small')));
+        #$this->load->library('upload_image_lib',array('type'=>'recipe','size'=>array('tiny')));
+        #print_flex($this->upload_image_lib->delete_img('resipe','1_1.jpg'));
+        #return;
         #echo $this->upload_img_lib->upload_img('form_name','image_name');
         
         #return;
         $recipes = new Recipe();
         $images = new Recipes_image();
+        
+                
+        
          $recipes->get_full_info();
+        
         //$recipes->select('recipes.*, recipes_images.id as recipes_image_id')->where_related('recipes_image', 'image_type', 1)->get();
         /*
         $recipes_arr = array();
@@ -41,7 +47,7 @@ class Recipes extends Admin_Controller {
         
         #$data['images'] = $images->get();
         $data['recipes'] = $recipes->data;
-        $this->template->load('/admin/templates/main_template', '/admin/recipes/show', $data);
+        $this->template->load('/admin/templates/main_template', 'admin/recipes/show', $data);
     }
     
 	function edit($id = false){
@@ -68,13 +74,6 @@ class Recipes extends Admin_Controller {
         $recipe_image->where_related($recipe);
         $recipe_image->where('image_type','1')->get();
         
-        #esli net svazannoi image to sozdaetsa novaia i zadaetsa id
-        if ($recipe_image->result_count()==0){ 
-            $recipe_image_id = $recipe_image->get()->result_count()+1;
-            $recipe_image = new Recipes_Image();
-        }else {
-            $recipe_image_id = $recipe_image->id; #beret sushestvushii ID image is Recipes_Image
-        } 
         $meras->get();
         #soedinit' sushestvuushie shagi
         $steps->where_related($recipe)->get();
@@ -99,21 +98,27 @@ class Recipes extends Admin_Controller {
             #find filling fields of product and create array $product_name
             
             if($recipe->save()){
-                #esli biblioteka my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i izmenaetsa
-                if ($this->load->library('upload_image_lib',array('type'=>'recipe', 'size' => 'small')))
+                #RECIPE IMAGE
+                #esli net svazannoi image to sozdaetsa novaia i zadaetsa id
+                if ($recipe_image->result_count()==0){ 
+                    $recipe_image_id = $recipe_image->result_count()+1;
+                    $recipe_image = new Recipes_Image();
+                    $recipe_image->image_type = 1; 
+                }else {
+                    $recipe_image_id = $recipe_image->id; #beret sushestvushii ID image is Recipes_Image
+                }
+                #esli biblioteka my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i resize
+                $this->load->library('upload_image_lib',array('type'=>'recipe', 'size' => 'tiny'));
                     #vozvrashaet polnoe ima kartinki primer: re_id_id.jpg; v bazu sohranaetsa tol'ko $recipe_image_id
-                    if ($this->upload_image_lib->upload_resize_img('recipe_image',$recipe->id.'_'.$recipe_image_id))
-                        $recipe_image->save();
-                    else 
-                        $data['form_error'] = $this->upload->display_errors();     
-                #echo $this->my_upload_image_lib->resize_img('image_name'); #vivodit log oshibok 
-                     
+                if ($this->upload_image_lib->upload_resize_img('recipe_image',$recipe->id.'_'.$recipe_image_id))
+                        $recipe_image->save($recipe);
+                else 
+                        $this->data['form_error'] = $this->upload_image_lib->get_errors().' '.$this->upload->display_errors(); #vivodit log oshibok                                           
                 
-                #zagruzka udaleniih productov 
-                $product_removed = $this->input->post('hidden_product_removed');
-                
-                if (!$product_removed) $product_removed = array(); 
                 #PRODUKTI
+                #zagruzka udaleniih productov 
+                $product_removed = $this->input->post('hidden_product_removed');                
+                if (!$product_removed) $product_removed = array();                 
                 for($i=1;$i<=$total_products;$i++){
                     $product_name = $this->input->post('product_'.$i);
                     $product_qty = $this->input->post('qty_'.$i);
@@ -168,7 +173,7 @@ class Recipes extends Admin_Controller {
                         $recipes_step->text = $step_descript;
                         
                         
-                    
+                        /*--------starii variant
                         # v paramtrah func ukazivaetsa id recepta i ID step kotorii budet sozdan
                         # takze peredaetsa $i dla oboznach4enia nuznogo pola formi image
                         # $recipes_step->get_count()-utilitnay func sozdanaia v modeli Recipes_Step() dla uproshenia i lu4shego vospriatia coda
@@ -177,12 +182,25 @@ class Recipes extends Admin_Controller {
                          #= $step_id; #generiruet ima iz prefixa ID recepta i tekushey stroki v base
                         $upload_path = $this->config->item('step_images_path');                     #kuda
                         #echo $upload_path.$name_image;
-                        $form_name = 'step_photo_'.$i;                                              #nazvanie form_upload
+                        
                         # esli image sozdal udachno to vozvrashaen ima image inache vozvrachaet false
-                        if($this->_upload_images($form_name,$name_image,$upload_path)){ 
-                            $recipes_step->image = $name_image;
+                        #if($this->_upload_images($form_name,$name_image,$upload_path)){ 
+                        #    $recipes_step->image = $name_image;
+                        #}*/
+                        
+                        #dobavlenie image 4erez upload_image_lib
+                        $form_name  = 'step_photo_'.$i;                                              #nazvanie form_upload
+                        #generit name image : esli sushestviet to beret iz bazi esli net to zadaet 
+                        $image_name = ($recipes_step->id)?$recipe->id.'_'.$recipes_step->id:$recipe->id.'_'.($recipes_step->get_count()+1);
+                        #inizializiruet my_image_lib
+                        if($this->upload_image_lib->initialize(array('type'=>'step', 'size' => 'tiny'))){
+                            $image_name = $this->upload_image_lib->upload_resize_img($form_name,$image_name);
+                            if($image_name)
+                                $recipes_step->image = $image_name;    
+                            else $data['form_error'] = $this->upload_image_lib->get_errors().$this->upload->display_errors();
                         }
-                        else $data['form_error'] = $this->upload->display_errors();
+                        else
+                            echo $this->upload_image_lib->get_errors();
                         $recipes_step->save($recipe);
                     }elseif($total_steps == $i){
                         $recipes_step = new Recipes_Step();
@@ -194,7 +212,7 @@ class Recipes extends Admin_Controller {
                     
                 }
                 $this->data['form_success'] = 'Рецепт Сохранен';
-                #!redirect('admin/recipes/edit/'.$id);
+                redirect($this->linker->a_recipe_edit_by_id_link($recipe->id));
             }else{
                  $this->data['form_error'] = $recipe->error->string;
             }
@@ -238,6 +256,17 @@ class Recipes extends Admin_Controller {
             #find filling fields of product and create array $product_name
             
             if($recipes->save()){
+                #RECIPE IMAGE
+                $recipe_image = new Recipes_Image();                
+                $recipe_image_id = $recipe_image->get_count()+1;
+                $recipe_image->image_type = 1;
+                $this->load->library('upload_image_lib',array('type'=>'recipe', 'size' => 'tiny'));
+                #vozvrashaet polnoe ima kartinki primer: re_id_id.jpg ina4e false
+                if($this->upload_image_lib->upload_resize_img('recipe_image',$recipes->id.'_'.$recipe_image_id)){
+                        $recipe_image->save($recipes);echo 1;}
+                else 
+                        $this->data['form_error'] = $this->upload_image_lib->get_errors().$this->upload->display_errors(); #vivodit log oshibok
+                #PRODUCTS          
                 for($i=1;$i<=$total_products;$i++){
                     $product_name = $this->input->post('product_'.$i);
                     $product_qty = $this->input->post('qty_'.$i);
@@ -250,33 +279,26 @@ class Recipes extends Admin_Controller {
                         $products_recipes_model->save($recipes);
                     }
                 }
-                $image_upload_status = '';
-                if(!$this->_upload_recipe_images($recipes->id)) $data['form_error'] = $this->upload->display_errors();
-                
-                $total_steps = $this->input->post('total_steps');
-                
+                #STEPS                              
+                $total_steps = $this->input->post('total_steps');                
                 for($i=1;$i<=$total_steps;$i++){
-                    $step_descript = $this->input->post('step_description_'.$i);
-                   
-                    if($step_descript){
-                        
+                    $step_descript = $this->input->post('step_description_'.$i);                   
+                    if($step_descript){                        
                         $recipes_step = new Recipes_Step();
                         $recipes_step->step = $i; #nomer shaga opredelaet posledovatel'nost'
-                        $recipes_step->text = $step_descript;
-                        
-                        # v paramtrah func ukazivaetsa id recepta i ID step kotorii budet sozdan
-                        # takze peredaetsa $i dla oboznach4enia nuznogo pola s image
-                        # $recipes_step->get_count()-utilitnay func sozdanaia v modeli Recipes_Step() dla uproshenia i lu4shego vospriatia coda 
-                        $name_image = 'sp_'.$recipes->id.'_'.($recipes_step->get_count()+1).'.jpg'; #generiruet ima iz prefixa ID recepta i tekushey stroki v base''
-                        $upload_path = $this->config->item('step_images_path');                     #kuda
-                        $form_name = 'step_photo_'.$i;                                              #nazvanie form_upload
-                        # esli image sozdal udachno to vozvrashaen ima image inache vozvrachaet false
-                        
-                        if($this->_upload_images($form_name,$name_image,$upload_path)){ 
-                            $recipes_step->image = $name_image;
-                        }
-                        else $data['form_error'] = $this->upload->display_errors();
-                        $recipes_step->save($recipes);
+                        $recipes_step->text = $step_descript;                        
+                        #dobavlenie image 4erez upload_image_lib
+                        $form_name  = 'step_photo_'.$i;                                              #nazvanie form_upload
+                        #generit name image : esli sushestviet to beret iz bazi esli net to zadaet 
+                        $image_name = $recipes->id.'_'.($recipes_step->get_count()+1);
+                        #inizializiruet my_image_lib
+                        if($this->upload_image_lib->initialize(array('type'=>'step', 'size' => 'tiny')))
+                            if($this->upload_image_lib->upload_resize_img($form_name,$image_name))
+                                $recipes_step->image = $image_name;    
+                            else $data['form_error'] = $this->upload_image_lib->get_errors().' '.$this->upload->display_errors();
+                        else
+                            echo $this->upload_image_lib->get_errors();
+                        $recipes_step->save($recipes);                
                     }
                 }
                 $this->data['form_success'] = 'Рецепт добавлена';

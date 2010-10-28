@@ -1,9 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('Нет доступа к скрипту');
 
 class Upload_image_lib {
-    
+    private $image_sizes = array('tiny','small','medium','large');
     private $config = array();
-    private $log_error ;
+    private $log_error;
+    private $log_deleted;
     private $CI;
     #v construktor peredaetsa array( Tip risunka, Razmer )
     function __construct($cfg = false){
@@ -13,10 +14,9 @@ class Upload_image_lib {
     function initialize($cfg = false){
         $this->config['caller_method'] = 'initialize()';
         $this->log_error = '';
-        if (!$cfg)                  return $this->_return_error('configuration variable is not set');
-        if (!isset($cfg['size']))   return $this->_return_error('variable size is not set');
-        if (!isset($cfg['type']))   return $this->_return_error('variable type is not set');
-        #if (!isset($cfg['format'])) return $this->_return_error('variable type is not set');
+        if (!$cfg)                  return $this->_return_log_error('configuration variable is not set');
+        if (!isset($cfg['size']))   return $this->_return_log_error('variable size is not set');
+        if (!isset($cfg['type']))   return $this->_return_log_error('variable type is not set');
         
         #sozdaet array s razmerami 
         if (is_array($cfg['size']))
@@ -26,9 +26,9 @@ class Upload_image_lib {
         
         #viberaet put' dla sohranenia v zavisimosti ot tipa risunka
         if (!$this->_set_type_image($cfg['type']))
-            return $this->_return_error('type image don\'t select');
-        #
-        return $this->_error_exist(); 
+            return $this->_return_log_error('type image don\'t select');
+        
+        return !($this->_error_exist()); 
     }
     
     #v func upload peredaetsa Put' otkuda zagrujat' image i Ima (primer - 2_2) bez prefiksa
@@ -36,9 +36,9 @@ class Upload_image_lib {
     function upload_img($form_name = false,$image_name = false){
         $this->config['caller_method'] = 'upload_img()';
         #
-        if (!$image_name)           return $this->_return_error('image name not set');
-        if (!$form_name)            return $this->_return_error('form image not set');
-        if ($this->_error_exist())  return $this->_return_error('init error');
+        if (!$image_name)           return $this->_return_log_error('image name not set');
+        if (!$form_name)            return $this->_return_log_error('form image not set');
+        if ($this->_error_exist())  return $this->_return_log_error('init error');
         #
 		$this->config['allowed_types'] = 'jpg|png';
         $this->config['file_name'] = $this->_get_name_img($image_name);#! izmenit rasshiretie
@@ -47,18 +47,21 @@ class Upload_image_lib {
         $this->CI->upload->initialize($this->config);
         //try to upload file
         if ($this->CI->upload->do_upload($form_name)){
+            
             return $this->_get_name_img($image_name);
+            
         }else{
-            return $this->_return_error('?CI->upload->do_upload?');   
+            
+            return $this->_return_log_error('?CI->upload->do_upload?');   
         }
     }
     
     function resize_img($image_name = false){
-        $this->config['caller_method'] = '_resize_image()';
+        $this->config['caller_method'] = '_resize_img()';
         #for ERRORS init
         
-        if (!$image_name)           return   $this->_return_error('image name not set');
-        if ($this->_error_exist())  return   $this->_return_error('init error');
+        if (!$image_name)           return   $this->_return_log_error('image name not set');
+        if ($this->_error_exist())  return   $this->_return_log_error('init error');
          
         $config['source_image']     = $this->config['upload_path'].$this->_get_name_img($image_name); #!
         $config['master_dim']       = 'width';
@@ -67,20 +70,49 @@ class Upload_image_lib {
         $this->CI->load->library('image_lib');
         foreach($this->config['sizes'] as $size){
             $result = false;
-            if (!$this->_set_size($size)) return $this->_return_error('is not defined true size');
+            if (!$this->_set_size($size)) return $this->_return_log_error('is not defined true size');
             $config['upload_path'] = $this->config['upload_path']; 
             $config['thumb_marker']     = $this->config['thumb_marker'];
             $config['width']            = $this->config['width'];
             $config['height']           = $this->config['height'];           
             $this->CI->image_lib->initialize($config);
-            if (!$this->CI->image_lib->resize()) $this->_return_error('?CI->image_lib->resize()?');
+            if (!$this->CI->image_lib->resize()) $this->_return_log_error('?CI->image_lib->resize()?');
         }
         return $this->_error_exist();
     }
     
-    function upload_resize_img($upload_path,$name){  
-        $this->upload_img($upload_path,$name);
+    function upload_resize_img($form_name,$image_name){  
+        $result_image_name = $this->upload_img($form_name,$image_name);
         $this->resize_img($image_name);
+        #esli ne image ne zagruzilas^ to return false
+        return $result_image_name;
+    }
+    function delete_img($image_type, $image_name){
+        $this->config['caller_method'] = 'delete_img()'; 
+        #
+        $this->_set_type_image($image_type);
+        #sozdaet array(name,ext) name=> .. ,ext => '.jpg'               
+        $exp_name = $this->_explode_name_img($image_name);
+        #
+        if(unlink ($this->_get_name_img($exp_name['name'])))
+            $this->_delete_log($exp_name['name']);
+        foreach($this->image_sizes as $size){
+            if (unlink($this->_get_name_img($exp_name['name'],$size)))
+                $this->_delete_log($exp_name['name'],$size); 
+        }        
+        
+    }
+    #
+    function _delete_log($log){
+        $this->log_deleted .= $log.'; ';
+        return false;
+    }
+    #
+    function get_deleted(){
+        if ($this->log_deleted)
+            return $this->log_deleted;
+        else 
+            return false;
     }
     #konstanti beret iz application/constants
     private function _set_size($size){
@@ -128,12 +160,21 @@ class Upload_image_lib {
         $this->config['upload_path'] = $this->CI->config->item($path);
         return true;
     }
+    function _explode_name_img($name)
+	{
+		$ext = strrchr($name, '.');
+		$name = ($ext === FALSE) ? $name : substr($name, 0, -strlen($ext));
+		
+		return array('ext' => $ext, 'name' => $name);
+	}
     #
-    function _get_name_img($name){
+    function _get_name_img($name,$postfix = false){
         $prefix = $this->config['image_name_prefix'];
+        if ($postfix) 
+            return $prefix.$name.'_'.$postfix.'.jpg'; 
         return $prefix.$name.'.jpg';
     }
-    function _return_error($str = ''){
+    function _return_log_error($str = ''){
         $this->log_error .= ' Function->'.$this->config['caller_method'].' error:'.$str.'; ';
         return false;
     }
@@ -147,6 +188,7 @@ class Upload_image_lib {
         else 
             return false;
     }
+   	
 }
 
 ?>
