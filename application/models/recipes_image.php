@@ -7,6 +7,10 @@ class Recipes_Image extends DataMapper {
     {
         parent::__construct();
     }
+    function get_count(){
+        $query = $this->db->count_all_results('recipes_images');
+        return $query;
+    }
 }
 
 /* End of file name.php */

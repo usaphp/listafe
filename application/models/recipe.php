@@ -1,8 +1,7 @@
 <?php
 class Recipe extends DataMapper {
     
-    var $has_many = array('product','recipes_image','recipes_step');
-    #var $has_one = array('products_recipe');
+    var $has_many = array('product','recipes_image','recipes_step','products_recipe');
     function __construct($id = NULL)
     {
         parent::__construct($id);
@@ -26,6 +25,7 @@ class Recipe extends DataMapper {
         $this->products = $query;
         
     }
+    
 }
 
 /* End of file name.php */

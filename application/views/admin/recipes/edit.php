@@ -56,7 +56,7 @@ $image_current = array(
 		
 		<?php echo form_label('Фотография', $image_upload['id'], array('class' => 'f_label')); ?>
 		<?php echo form_upload($image_upload); ?>
-		<?php if ($image->id) echo '<img src="'.get_name_image($image->id, $recipe->id, 'tiny').'"/>'; ?>
+		<?php if ($image->id) echo '<img src="'.get_name_image($recipe->id,$image->id, 'tiny').'"/>'; ?>
 		<div class="f_sub_header">Ингредиенты</div>
 		<div id="recipe_products">
 		<?php 
@@ -102,6 +102,3 @@ $image_current = array(
 		<a href = '#' id = 'save_recipe' class = 'f_button green wide'>Сохранить Рецепт</a>
 	</div>
 	<?php echo form_close(); ?>
-<script type="text/javascript">
-    imain.recipe_add_init();
-</script>

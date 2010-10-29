@@ -26,8 +26,7 @@
 	echo form_input($product);
 	echo form_dropdown($mera['name'], $mera['options'], $mera['selected'], 'id = "'.$mera['id'].'" class = "'.$mera['class'].'"');
 	echo form_input($qty);
-?>	
-    <img src="/photos/product_images/<?php echo $image = ($image!='')? substr($image,0,strpos($image,'.')).'_tiny.jpg': 'pi_empty_tiny.jpg'; ?>"/>
-    <?php
+    if($image!='') echo '<img src="/photos/product_images/'.substr($image,0,strpos($image,'.')).'_tiny.jpg'.'"/>';
+    echo anchor('#','delete',array('id'=>'remove_product_'.$recipe_product_id,'class'=>'f_remove f_button grey'));
     echo cleared_div();
-?>
+    ?>
