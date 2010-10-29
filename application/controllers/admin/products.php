@@ -15,13 +15,19 @@ class Products extends Admin_Controller {
     
     function show()
     {
+        //$nutrition_categories = new Nutrition_category();
+        //$m_products = $this->mapper->load_data('Product', 'Nutrition_category', 'Product_nutrition_category_fact');
+        
         $products = new Product();
-        #$this->mapper->load_data('Product', 'Nutrition_category', 'product_nutrition_category_facts');
-        $products->get_iterated();
-        $products->include_related('mera', array('name'))->get();
-        $products->include_related('product_category', array('name'))->get();
-        $data['products'] = $products;
-        $this->template->load('/admin/templates/main_template', '/admin/products/show', $data);
+        $products->include_related('mera', array('name'));
+        $products->include_related('product_category', array('name'));
+        $products->nutrition_category->include_join_fields();
+        
+        $this->data['products'] = $products->get();
+        //$this->data['m_products'] = $m_products;
+        //$this->data['nutrition_categories'] = $nutrition_categories->get();
+        
+        $this->template->load('/admin/templates/main_template', '/admin/products/show', $this->data);
     }
     
     function delete($id = false){
