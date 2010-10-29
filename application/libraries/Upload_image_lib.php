@@ -3,17 +3,20 @@
 class Upload_image_lib {
     private $image_sizes = array('tiny','small','medium','large');
     private $config = array();
+    private $log = array();
     private $log_error;
-    private $log_deleted;
+    
     private $CI;
     #v construktor peredaetsa array( Tip risunka, Razmer )
     function __construct($cfg = false){
         $this->CI = & get_instance();
-        if($cfg) return $this->initialize($cfg);
+        $this->initialize($cfg);
     }
     function initialize($cfg = false){
         $this->config['caller_method'] = 'initialize()';
+        $this->log['deleted'] = '';
         $this->log_error = '';
+        
         if (!$cfg)                  return $this->_return_log_error('configuration variable is not set');
         if (!isset($cfg['size']))   return $this->_return_log_error('variable size is not set');
         if (!isset($cfg['type']))   return $this->_return_log_error('variable type is not set');
@@ -89,28 +92,31 @@ class Upload_image_lib {
     }
     function delete_img($image_type, $image_name){
         $this->config['caller_method'] = 'delete_img()'; 
-        #
-        $this->_set_type_image($image_type);
-        #sozdaet array(name,ext) name=> .. ,ext => '.jpg'               
-        $exp_name = $this->_explode_name_img($image_name);
-        #
-        if(unlink ($this->_get_name_img($exp_name['name'])))
-            $this->_delete_log($exp_name['name']);
-        foreach($this->image_sizes as $size){
-            if (unlink($this->_get_name_img($exp_name['name'],$size)))
-                $this->_delete_log($exp_name['name'],$size); 
-        }        
-        
+        #esli tip image ukazan ne verno to zapisivaet oshibku i vihodit
+        if(!($this->_set_type_image($image_type)))
+            return $this->_return_log_error('nepravel\'no ukazan tip risunka');
+        #sozdaet array(name,ext) name=> .. ,ext => '.jpg'
+        $exp_name = $this->_explode_name_img($image_name,$this->config['image_name_prefix']);
+        #eslit file sushestvuet to udalit i zapishet ima faila v log
+        if (file_exists($this->config['upload_path'].$this->_get_name_img($exp_name['name'])))
+            if(unlink ($this->config['upload_path'].$this->_get_name_img($exp_name['name'])))
+                $this->_deleted_log_img($this->_get_name_img($exp_name['name']));
+        echo $this->_get_name_img($exp_name['name']);
+        #udalaet faili dannogo ima so vsemi sushestviushimi rozresheniami;
+        foreach($this->image_sizes as $size)
+            if (file_exists($this->config['upload_path'].$this->_get_name_img($exp_name['name'],$size)))
+                if (unlink($this->config['upload_path'].$this->_get_name_img($exp_name['name'],$size)))
+                    $this->_deleted_log_img($this->_get_name_img($exp_name['name'],$size));
+        return true;
     }
     #
-    function _delete_log($log){
-        $this->log_deleted .= $log.'; ';
-        return false;
+    function _deleted_log_img($log){
+        $this->log['deleted'] .= $log.'; ';
     }
     #
-    function get_deleted(){
-        if ($this->log_deleted)
-            return $this->log_deleted;
+    function get_deleted_log_img(){
+        if (isset($this->log['deleted']))
+            return $this->log['deleted'];
         else 
             return false;
     }
@@ -160,11 +166,11 @@ class Upload_image_lib {
         $this->config['upload_path'] = $this->CI->config->item($path);
         return true;
     }
-    function _explode_name_img($name)
+    function _explode_name_img($name,$prefix = false)
 	{
 		$ext = strrchr($name, '.');
 		$name = ($ext === FALSE) ? $name : substr($name, 0, -strlen($ext));
-		
+        if($prefix) $name = str_replace($prefix,'',$name);
 		return array('ext' => $ext, 'name' => $name);
 	}
     #

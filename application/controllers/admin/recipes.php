@@ -5,7 +5,7 @@ class Recipes extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct();
-        
+        $this->load->library('upload_image_lib');
 	}
 	
 	function index()
@@ -15,17 +15,16 @@ class Recipes extends Admin_Controller {
     
     function show(){
         #$this->load->library('upload_image_lib',array('type'=>'recipe','size'=>array('tiny')));
-        #print_flex($this->upload_image_lib->delete_img('resipe','1_1.jpg'));
+        #$this->upload_image_lib->delete_img('recipe','4_3');
+        #echo $this->upload_image_lib->get_deleted_log_img();
+        #echo $this->upload_image_lib->get_errors();
         #return;
         #echo $this->upload_img_lib->upload_img('form_name','image_name');
         
         #return;
         $recipes = new Recipe();
         $images = new Recipes_image();
-        
-                
-        
-         $recipes->get_full_info();
+        $recipes->get_full_info();
         
         //$recipes->select('recipes.*, recipes_images.id as recipes_image_id')->where_related('recipes_image', 'image_type', 1)->get();
         /*
@@ -88,7 +87,7 @@ class Recipes extends Admin_Controller {
         #echo $total_products.'</br>'; #!
 		if ($this->form_validation->run())
 		{
-			/* Success on validation */
+  	/* Success on validation */
             # Zagruzka Recepta
             $recipe->name = $this->input->post('recipe_name');
             $recipe->prepare_time = $this->input->post('prep_time');
@@ -108,7 +107,7 @@ class Recipes extends Admin_Controller {
                     $recipe_image_id = $recipe_image->id; #beret sushestvushii ID image is Recipes_Image
                 }
                 #esli biblioteka my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i resize
-                $this->load->library('upload_image_lib',array('type'=>'recipe', 'size' => 'tiny'));
+                $this->upload_image_lib->initialize(array('type'=>'recipe', 'size' => 'tiny'));
                     #vozvrashaet polnoe ima kartinki primer: re_id_id.jpg; v bazu sohranaetsa tol'ko $recipe_image_id
                 if ($this->upload_image_lib->upload_resize_img('recipe_image',$recipe->id.'_'.$recipe_image_id))
                         $recipe_image->save($recipe);
@@ -260,7 +259,7 @@ class Recipes extends Admin_Controller {
                 $recipe_image = new Recipes_Image();                
                 $recipe_image_id = $recipe_image->get_count()+1;
                 $recipe_image->image_type = 1;
-                $this->load->library('upload_image_lib',array('type'=>'recipe', 'size' => 'tiny'));
+                $this->upload_image_lib->initialize(array('type'=>'recipe', 'size' => 'tiny'));
                 #vozvrashaet polnoe ima kartinki primer: re_id_id.jpg ina4e false
                 if($this->upload_image_lib->upload_resize_img('recipe_image',$recipes->id.'_'.$recipe_image_id)){
                         $recipe_image->save($recipes);echo 1;}
@@ -329,23 +328,17 @@ class Recipes extends Admin_Controller {
         $recipe = new Recipe();
         $recipe->get_by_id($id);
         $recipe->recipes_image->where_related()->get();
-        if ($recipe->id) {
-            $recipe_image_file = $this->config->item('recipe_images_path').'re_'.$recipe->recipes_image->id.'_'.$recipe->id;
-            unlink($recipe_image_file.'.jpg');
-            unlink($recipe_image_file.'_tiny.jpg');
-        } 
+        #
+        $this->upload_image_lib->delete_img('recipe',$recipe->id.'_'.$recipe->recipes_image->id);
         $recipe->recipes_image->delete();
+        #
         $recipe->recipes_step->where_related()->get();
+        #
         foreach($recipe->recipes_step as $step)
-            if ($step->image){ 
-                unlink($this->config->item('step_images_path').$step->image);
-                unlink($this->config->item('step_images_path').substr($step->image,0,strpos($step->image,'.')).'_tiny.jpg');
-            }
+            $this->upload_image_lib->delete_img('step',$step->image);
         $recipe->recipes_step->delete();
         $recipe->delete();
         $this->show();
-        
-        
     }
     function _save_recipe(){
         //code
@@ -404,19 +397,7 @@ class Recipes extends Admin_Controller {
             return false;   
         }
     }
-    function _resize_image($image_path, $width=40, $height=40){
-        
-        $config['source_image']     = $image_path;
-        $config['create_thumb']     = TRUE;
-        $config['thumb_marker']     = '_tiny';
-        $config['width']            = $width;
-        $config['height']           = $height;
-        $config['master_dim']       = 'width';
-        $config['maintain_ratio']   = TRUE;
-        $this->load->library('image_lib');
-        $this->image_lib->initialize($config);
-        $this->image_lib->resize();
-    }
+
     
 }
 
