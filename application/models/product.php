@@ -2,7 +2,7 @@
 class Product extends Datamapper {
     
     var $has_one = array('product_category', 'mera');
-    var $has_many = array('product_nutrition_fact', 'product_nutrition_category_fact', 'recipe'); 
+    var $has_many = array('product_nutrition_fact', 'recipe', 'nutrition_category'); 
     
     var $validation = array(
         'name' => array(

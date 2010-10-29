@@ -5,10 +5,11 @@
                 <th>ID</th>
                 <th>Название</th>
                 <th>Категория</th>
-                <th>Калорий</th>
-                <th>Белки</th>
-                <th>Жиры</th>
-                <th>Углеводы</th>
+                <?php /*
+                foreach($nutrition_categories as $nc){
+                    echo '<th>'.$nc->name.'</th>';    
+                }*/
+                ?>
                 <th>Единицы Измения</th>
                 <th>Фото</th>
                 <th class="c_aligned">Действия</th>
@@ -19,12 +20,13 @@
                 <tr>
                     <td><?php echo $product->id; ?></td>
                     <td><?php echo $product->name; ?></td>
-                    <td><?php echo $product->category_name; ?></td>
-                    <td><?php echo $product->calories; ?></td>
-                    <td><?php echo $product->protein; ?></td>
-                    <td><?php echo $product->fat; ?></td>
-                    <td><?php echo $product->carbo; ?></td>
-                    <td><?php echo $product->default_mera_name; ?></td>
+                    <td><?php echo $product->product_category_name; ?></td>
+                    <?php /*
+                    foreach($product->nutrition_categories as $pnc){
+                        echo '<td>'.$pnc->value.'</td>';
+                    }*/
+                    ?>
+                    <td><?php echo $product->mera_name; ?></td>
                     <td><img src="<?php echo image_url($product->image, 'product', 'tiny'); ?>"/></td>
                     <td class="c_aligned">
                         <?php echo anchor('admin/products/edit/'.$product->id, 'Редактировать', array('class' => 't_action'));?> 
