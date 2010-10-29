@@ -15,6 +15,15 @@ class Products extends Admin_Controller {
     
     function show()
     {
+        $nutrition_categories   = new Nutrition_category();
+        $nutrition              = new Nutrition();
+        
+        $nutrition_categories->get_iterated();
+        $nutr_categor_iter = $nutrition_categories->getIterator();
+        #$nutrition->where_related($nutr_categor_iter->current());
+        $nutr_categor_iter->current()->nutrition->where_related()->get();
+        print_flex($nutr_categor_iter->current());
+        return;
         //$nutrition_categories = new Nutrition_category();
         //$m_products = $this->mapper->load_data('Product', 'Nutrition_category', 'Product_nutrition_category_fact');
         
@@ -45,6 +54,94 @@ class Products extends Admin_Controller {
         # Js function from main.js which loads by default  
         array_push($this->data['js_functions'], array('name' => 'products_edit_init', 'data' => FALSE));
         
+        # if form validates
+        if($this->form_validation->run('products_edit')){
+            $product->name              = $this->input->post('product_name');
+            $product->product_category_id = $this->input->post('product_category_id');
+            $product->mera_id           = $this->input->post('mera_id');
+            $product->price             = $this->input->post('price');
+            $product->units_for_price   = $this->input->post('units_for_price');
+            $product->units_mera_id     = $this->input->post('units_mera_id');
+            $product->description       = $this->input->post('description');
+            # If products was saved to db successfully
+            if($product->save()){
+                # Get all nutrition categories from post
+                foreach($nutrition_categories->get() as $nc) {
+                    # If its not in post array then skip iteration
+                    if(!$this->input->post('nutrition_category_'.$nc->id)) continue;
+                    $nutrition_categories_products = new Nutrition_categories_Products();
+                    $nutrition_categories_products->value = $this->input->post('nutrition_category_'.$nc->id);
+                    $nutrition_categories_products->save(array($product, $nc));
+                }
+                
+                # Get all the nutrition facts that have to be removed
+                $hidden_nutrition_facts_remove = $this->input->post('hidden_nutrition_removed');
+                # Deleted all the removed nutrition facts
+                if($hidden_nutrition_facts_remove){
+                    foreach($hidden_nutrition_facts_remove as $nfr) {
+                        $product_nutrition_facts = new Nutritions_Products();
+                        $product_nutrition_facts->where('id', $nfr)->get()->delete();
+                    }
+                }
+				# Get data from post about nutirition facts
+				$hidden_nutrition_facts = $this->input->post('hidden_nutrition');
+                # Save all new nutrition facts
+                if($hidden_nutrition_facts){
+    				foreach($hidden_nutrition_facts as $nf){
+    	            	$product_nutrition_facts = new Product_nutrition_fact();
+    					
+    					list($nutrition_id, $nutrition_value) = explode('_', $nf);
+    					
+    					$product_nutrition_facts->where(array('product_id' => $product->id, 'nutrition_id' => $nutrition_id))->get();
+    					$product_nutrition_facts->nutrition_id = $nutrition_id;
+    					$product_nutrition_facts->value = $nutrition_value;
+    					
+    					$product_nutrition_facts->save($product);
+    				}
+                }
+                $image_upload_status = '';
+                if(!$this->_upload_product_images($product->id)) $data['form_error'] = $this->upload->display_errors();
+                $this->data['form_success'] = 'Продукт добавлен';
+            }else{
+                $this->data['form_error'] = $product->error->string;
+            }
+        }else{
+        	echo validation_errors();
+        }
+        #
+        $product                = new Product($id);
+        $product_categories     = new Product_category();
+        $nutrition_categories   = new Nutrition_category();
+        $meras                  = new Mera();
+        #
+        $product_categories->get_iterated();
+        $nutrition_categories->where_related($product)->get();
+        $nutrition_categories->get_values($product->id);
+        return ;
+        $meras->get_iterated();
+        #
+		foreach($nutrition_categories as $key => $nc){
+			
+            $nutrition_categories->all[$key]->nutrition->where_related()->get();
+            $nutrition_categories->all[$key]->nutrition->nutritions_product->where_related($product)->get();
+            
+            print_flex($nutrition_categories->all[$key]);
+            return;
+		}
+        #
+        $this->data['product'] 			        = $product;
+        $this->data['product_categories']	    = $product_categories;
+        $this->data['nutrition_categories']     = $nutrition_categories;
+        $this->data['meras']                    = $meras;
+        $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
+    }
+    
+    function edit_tamik_($id = false) # :(
+    {
+        $this->load->library('form_validation');
+        # Js function from main.js which loads by default  
+        array_push($this->data['js_functions'], array('name' => 'products_edit_init', 'data' => FALSE));
+        
         $product_category	= new Product_category();
         $mera		= new Mera();
 		$nutrition_categories = new Nutrition_category();
@@ -65,9 +162,9 @@ class Products extends Admin_Controller {
                 foreach($nutrition_categories->get() as $nc) {
                     # If its not in post array then skip iteration
                     if(!$this->input->post('nutrition_category_'.$nc->id)) continue;
-                    $product_nutrition_category_facts = new Product_nutrition_category_fact();
-                    $product_nutrition_category_facts->value = $this->input->post('nutrition_category_'.$nc->id);
-                    $product_nutrition_category_facts->save(array($product, $nc));
+                    $nutrition_categories_products = new Nutrition_categories_Products();
+                    $nutrition_categories_products->value = $this->input->post('nutrition_category_'.$nc->id);
+                    $nutrition_categories_products->save(array($product, $nc));
                 }
                 
                 # Get all the nutrition facts that have to be removed
@@ -75,7 +172,7 @@ class Products extends Admin_Controller {
                 # Deleted all the removed nutrition facts
                 if($hidden_nutrition_facts_remove){
                     foreach($hidden_nutrition_facts_remove as $nfr) {
-                        $product_nutrition_facts = new Product_nutrition_fact();
+                        $product_nutrition_facts = new Nutritions_Products();
                         $product_nutrition_facts->where('id', $nfr)->get()->delete();
                     }
                 }
@@ -111,7 +208,7 @@ class Products extends Admin_Controller {
 			$nutrition->where(array('nutrition_category_id' => $nc->id))->get();
 			$nc->nutritions = $nutrition;
 			if($id){
-				$product_nutrition_facts = new Product_nutrition_fact();
+				$product_nutrition_facts = new Nutritions_Products();
 				$product_nutrition_facts->include_related('nutrition')->where(array('product_id' => $id, 'nutrition_category_id' => $nc->id))->get();
 				$nc->product_nutrition_facts = $product_nutrition_facts;
 			}

@@ -6,7 +6,7 @@
     'value' => $product->name);
     
     $sel_product_category = array(
-    'options' => array_for_dropbox($product_category_model),
+    'options' => array_for_dropbox($product_categories),
     'name'  => 'product_category_id',
     'id'    => 'product_category_id',
     'class' => 'f_select wide required',
@@ -19,7 +19,7 @@
     'value' => $product->description);
    
     $sel_mera = array(
-    'options' => array_for_dropbox($mera_model),
+    'options' => array_for_dropbox($meras),
     'name'  => 'mera_id',
     'id'    => 'mera_id',
     'class' => 'f_select wide',
@@ -40,7 +40,7 @@
     );
     
     $sel_units_mera = array(
-    'options' => array_for_dropbox($mera_model),
+    'options' => array_for_dropbox($meras),
     'name'  => 'units_mera_id',
     'id'    => 'units_mera_id',
     'class' => 'f_select wide f_joined',
@@ -73,13 +73,13 @@
             
 		# Cikl po kategoriam veshestv
 		$nutrition_fact_count = 1;
-        foreach($nutrition_categories as $nutrition_category):
+        foreach($nutrition_categories->all as $nutrition_category):
             
             $inp_nutrition_category = array(
 	            'name'  => 'nutrition_category_'.$nutrition_category->id,        
 	            'id'    => 'nutrition_category_'.$nutrition_category->id,
 	            'class' => 'f_input f_joined',
-	            'value' => '');
+	            'value' => '$nutrition_category->');
 				
             echo form_label($nutrition_category->name, $inp_nutrition_category['id'], array('class' => 'f_label'));
             echo form_input($inp_nutrition_category);
