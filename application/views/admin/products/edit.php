@@ -1,4 +1,4 @@
-    <?php
+     <?php
     $inp_product_name = array(
     'name'  => 'product_name',
     'id'    => 'product_name',
@@ -73,13 +73,15 @@
             
 		# Cikl po kategoriam veshestv
 		$nutrition_fact_count = 1;
-        foreach($nutrition_categories->all as $nutrition_category):
-            
+        foreach($all_nutrition_categories as $nutrition_category):
+            $value = '';
+            foreach($current_nutrition_categories as $curr_nutr_cat) 
+                                if($curr_nutr_cat->nutrition_category_id == $nutrition_category->id) $value = $curr_nutr_cat->value;                               
             $inp_nutrition_category = array(
 	            'name'  => 'nutrition_category_'.$nutrition_category->id,        
 	            'id'    => 'nutrition_category_'.$nutrition_category->id,
 	            'class' => 'f_input f_joined',
-	            'value' => '$nutrition_category->');
+	            'value' => $value);
 				
             echo form_label($nutrition_category->name, $inp_nutrition_category['id'], array('class' => 'f_label'));
             echo form_input($inp_nutrition_category);
@@ -106,31 +108,25 @@
 						echo cleared_div();
 					?>
 				</div>
-				<?php 
-					if($nutrition_category->product_nutrition_facts): ?>
 					<div class='prod_nutritions_wrapper' id='prod_nutritions_wrapper_<?php echo $nutrition_category->id; ?>'>
-						<?php 
-							foreach($nutrition_category->product_nutrition_facts as $nf):
-								
-								echo '<div class="" id="hidden_nutrition_wrapper_'.$nutrition_fact_count.'">';
-								
-								$inp_hidden = array(
-									'name' => 'hidden_nutrition_existed[]', 
-									'id' => 'hid_nutrition_fact_'.$nutrition_fact_count, 
-									'value' => $nf->id );
-								
-                                echo form_attr_hidden($inp_hidden);
-								
-								echo $nf->nutrition_name." - ".$nf->value.' '.anchor('#','remove', array('class' => 'nutrition_fact_remove nf_remove_from_db', 'id' => 'nutrition_fact_remove_'.$nutrition_fact_count));
-								
-								echo "</div>";
-								$nutrition_fact_count++;
+						<?php
+                            $nutrition_fact_count = 0;
+							foreach($nutritions as $nutrition):                          
+                                echo $nutrition->nutrition_category_id .'-'. $nutrition_category->id;                                                                                                
+                                if($nutrition->nutrition_category_id == $nutrition_category->id){																
+                                    echo '<div class="" id="hidden_nutrition_wrapper_'.$nutrition_fact_count.'">';								
+    								$inp_hidden = array(
+    									'name' => 'hidden_nutrition_existed[]', 
+    									'id' => 'hid_nutrition_fact_'.$nutrition_fact_count, 
+    									'value' => $nutrition->id );								
+                                    echo form_attr_hidden($inp_hidden);								
+    								echo $nutrition->name." - ".$nutrition->value.' '.anchor('#','remove', array('class' => 'nutrition_fact_remove nf_remove_from_db', 'id' => 'nutrition_fact_remove_'.$nutrition_fact_count));								
+    								echo "</div>";
+    								$nutrition_fact_count++;
+                                }
 							endforeach;
 						?>
 					</div>
-				<?php 
-					endif; 
-				?>
 			</div>
 	<?php
         endforeach;

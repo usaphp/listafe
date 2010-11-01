@@ -1,8 +1,8 @@
 <?php
 class Nutrition extends DataMapper {
 	
-	var $has_one = array('nutrition_category', 'product');
-	var $has_many = array('nutritions_product');
+	var $has_one = array('nutrition_category');
+	var $has_many = array('nutritions_product','product');
                           
 	var $validation = array(
 		'name' => array(
