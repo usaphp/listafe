@@ -63,10 +63,10 @@ main.prototype.recipe_add_init = function(){
 	$('#add_recipe_form').validate({
 		rules : {
 			'recipe_name'	: { required : true },
-			//'prep_time'		: { required : true, number : true },
-			//'cook_time' 	: { required : true, number : true },
-			//'servings' 		: { required : true, number : true },
-			//'recipe_image'	: { required : true, number : true }
+			'prep_time'		: { required : true, number : true },
+			'cook_time' 	: { required : true, number : true },
+			'servings' 		: { required : true, number : true },
+			'recipe_image'	: { required : true, number : true }
 		}
 	});
 	
