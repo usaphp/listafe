@@ -45,8 +45,8 @@ class Product_categories extends Admin_Controller {
         
         //if form validates
         if($this->form_validation->run()){
-            $category->name = $this->input->post('category_name');
-            if($category->save()){
+            $product_category->name = $this->input->post('category_name');
+            if($product_category->save()){
                 $this->data['form_success'] = 'Категория добавлена';
             }else{
                 $this->data['form_error'] = $product_category->error->string;

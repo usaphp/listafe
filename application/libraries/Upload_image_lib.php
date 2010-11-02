@@ -25,12 +25,10 @@ class Upload_image_lib {
         if (is_array($cfg['size']))
             $this->config['sizes'] = $cfg['size'];
         else
-            $this->config['sizes'] = array($cfg['size']);
-        
+            $this->config['sizes'] = array($cfg['size']);        
         #viberaet put' dla sohranenia v zavisimosti ot tipa risunka
         if (!$this->_set_type_image($cfg['type']))
-            return $this->_return_log_error('type image don\'t select');
-        
+            return $this->_return_log_error('type image don\'t select');        
         return !($this->_error_exist()); 
     }
     
@@ -49,12 +47,9 @@ class Upload_image_lib {
         $this->CI->load->library('upload');
         $this->CI->upload->initialize($this->config);
         //try to upload file
-        if ($this->CI->upload->do_upload($form_name)){
-            
-            return $this->_get_name_img($image_name);
-            
-        }else{
-            
+        if ($this->CI->upload->do_upload($form_name)){            
+            return $this->_get_name_img($image_name);            
+        }else{            
             return $this->_return_log_error('?CI->upload->do_upload?');   
         }
     }
@@ -84,8 +79,10 @@ class Upload_image_lib {
         return $this->_error_exist();
     }
     
-    function upload_resize_img($form_name,$image_name){  
+    function upload_resize_img($form_name,$image_name){
+        #
         $result_image_name = $this->upload_img($form_name,$image_name);
+        #
         $this->resize_img($image_name);
         #esli ne image ne zagruzilas^ to return false
         return $result_image_name;
@@ -196,5 +193,4 @@ class Upload_image_lib {
     }
    	
 }
-
 ?>

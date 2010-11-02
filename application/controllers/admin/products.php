@@ -94,13 +94,12 @@ class Products extends Admin_Controller {
                 if($hidden_nutrition_facts_remove){
                     foreach($hidden_nutrition_facts_remove as $nfr) {
                         $product_nutrition_facts = new Nutritions_Product();
-                        $product_nutrition_facts->where('nutrition_id', $nfr);
-                        $product_nutrition_facts->where('product_id', $nfr)->get();
-                        
+                        $product_nutrition_facts->where_related($product);
+                        $product_nutrition_facts->where('nutrition_id', $nfr)->get();                    
                         $product_nutrition_facts->delete();
                     }
                 }
-                print_flex($hidden_nutrition_facts_remove );
+                
 				# Get data from post about nutirition facts
 				$hidden_nutrition_facts = $this->input->post('hidden_nutrition');
                 # Save all new nutrition facts
@@ -138,16 +137,20 @@ class Products extends Admin_Controller {
         $meras->get_iterated();
         $product_categories->get_iterated();
         $nutrition_categories->get_iterated();
+        
         #
         $nutr_categor_products->where_related($product)->include_related('nutrition_category')->get();
         #
         $nutritions->where_related($product)->include_related('nutrition_category')->get();
+        $nutr_product->include_related($nutritions)->get();
+        #print_flex($nutr_product);
+        #return;
         #
         $this->data['product']                      = $product;
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;
         $this->data['current_nutrition_categories'] = $nutr_categor_products;
-        $this->data['nutritions']                   = $nutritions;
+        $this->data['nutritions']                   = $nutr_product;
         $this->data['meras']                        = $meras;
         $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
     }
@@ -173,6 +176,7 @@ class Products extends Admin_Controller {
             $product->units_mera_id     = $this->input->post('units_mera_id');
             $product->description       = $this->input->post('description');
             # If products was saved to db successfully
+            
             if($product->save()){
                 # Get all nutrition categories from post
                 foreach($nutrition_categories->get() as $nc) {
@@ -233,8 +237,8 @@ class Products extends Admin_Controller {
 
         $this->data['product_category_model']	= $product_category->get_iterated();
         $this->data['mera_model']		= $mera->get_iterated();
-        $this->data['nutrition_categories'] = $nutrition_categories_arr;
-        $this->data['product'] 			= $product;
+        $this->data['nutrition_categories']     = $nutrition_categories_arr;
+        $this->data['product'] 			          = $product;
 		
 		
         $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);

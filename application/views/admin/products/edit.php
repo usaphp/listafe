@@ -1,4 +1,5 @@
      <?php
+     
     $inp_product_name = array(
     'name'  => 'product_name',
     'id'    => 'product_name',
@@ -111,16 +112,15 @@
 					<div class='prod_nutritions_wrapper' id='prod_nutritions_wrapper_<?php echo $nutrition_category->id; ?>'>
 						<?php
                             $nutrition_fact_count = 0;
-							foreach($nutritions as $nutrition):                          
-                                echo $nutrition->nutrition_category_id .'-'. $nutrition_category->id;                                                                                                
-                                if($nutrition->nutrition_category_id == $nutrition_category->id){																
+							foreach($nutritions as $nutrition):                                                                                                                                                   
+                                if($nutrition->nutrition_nutrition_category_id == $nutrition_category->id){																
                                     echo '<div class="" id="hidden_nutrition_wrapper_'.$nutrition_fact_count.'">';								
     								$inp_hidden = array(
     									'name' => 'hidden_nutrition_existed[]', 
     									'id' => 'hid_nutrition_fact_'.$nutrition_fact_count, 
-    									'value' => $nutrition->id );								
+    									'value' => $nutrition->nutrition_id);								
                                     echo form_attr_hidden($inp_hidden);								
-    								echo $nutrition->name." - ".$nutrition->value.' '.anchor('#','remove', array('class' => 'nutrition_fact_remove nf_remove_from_db', 'id' => 'nutrition_fact_remove_'.$nutrition_fact_count));								
+    								echo $nutrition->nutrition_name." - ".$nutrition->value.' '.anchor('#','remove', array('class' => 'nutrition_fact_remove nf_remove_from_db', 'id' => 'nutrition_fact_remove_'.$nutrition_fact_count));								
     								echo "</div>";
     								$nutrition_fact_count++;
                                 }
