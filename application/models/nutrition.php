@@ -15,4 +15,5 @@ class Nutrition extends DataMapper {
         parent::__construct($id);
     }
 
+
 }

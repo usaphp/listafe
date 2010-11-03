@@ -71,7 +71,20 @@
 		$string = preg_replace('/.*\-$/', '', $string);*/
 		return $string;
 	}
-
+    function explode_ext($var){
+        list($id,$val) = explode('_',$var);
+        return array('id'=>$id,'value'=>$val);
+    }
+    function return_subarray_by_key($search_key,array $input_array){
+        $result_array = array();
+        foreach($input_array as $val)
+            array_push($result_array, $val[$search_key]);
+        return $result_array;
+    }
+ 
+    function array_wrap($var){
+        return array($var);
+    }
     function print_flex($arr){
         echo '<pre>';
             print_r($arr);

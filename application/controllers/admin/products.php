@@ -5,7 +5,7 @@ class Products extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct();
-        
+        $this->load->library('upload_image_lib');
 	}
 	
 	function index()
@@ -19,8 +19,7 @@ class Products extends Admin_Controller {
         $nutrition              = new Nutrition();
         
         $nutrition_categories->get_iterated();
-        $nutr_categor_iter = $nutrition_categories->getIterator();
-        #$nutrition->where_related($nutr_categor_iter->current());
+        $nutr_categor_iter = $nutrition_categories->getIterator();        
         $nutr_categor_iter->current()->nutrition->where_related()->get();
         //$nutrition_categories = new Nutrition_category();
         //$m_products = $this->mapper->load_data('Product', 'Nutrition_category', 'Product_nutrition_category_fact');
@@ -54,17 +53,20 @@ class Products extends Admin_Controller {
         $product                = new Product($id);
         # if form validates
         if($this->form_validation->run('products_edit')){            
-            if($this->_save($id)){
-                $image_upload_status = '';                
-                if(!$this->_upload_product_images($id)) $data['form_error'] = $this->upload->display_errors();
+            if($this->_save($id)){                
+                #esli biblioteka my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i resize
+                $this->upload_image_lib->initialize(array('type'=>'product', 'size' => 'tiny'));
+                #vozvrashaet polnoe ima kartinki primer: re_id_id.jpg; v bazu sohranaetsa tol'ko $recipe_image_id
+                $image_name = $this->upload_image_lib->upload_resize_img('image',$product->id);                
+                if($image_name){
+                    $product->image = $image_name;
+                    $product->save();
+                } 
                 $this->data['form_success'] = 'Продукт добавлен';
-            }else{
-                $this->data['form_error'] = $product->error->string;
-            }
-        }else{
-        	echo validation_errors();
-        }       
-        #return;        
+            }else
+                $this->data['form_error'] = $product->error->string;            
+        }else
+        	echo validation_errors();                  
         #
         $meras                  = new Mera();
         $product                = new Product($id);
@@ -90,16 +92,10 @@ class Products extends Admin_Controller {
         $this->data['meras']                        = $meras;
         $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
     }
-    
 
     function _save($id = false){
         
-        $product                        = new Product($id);
-        $product_categories             = new Product_category();
-        
-        #$meras                         = new Mera();
-        #$nutr_categor_product          = new Nutrition_categories_product();
-        
+        $product                        = new Product($id);             
         $product->name                  = $this->input->post('product_name');
         $product->product_category_id   = $this->input->post('product_category_id');
         $product->mera_id               = $this->input->post('mera_id');
@@ -115,80 +111,33 @@ class Products extends Admin_Controller {
             #
             foreach($nutrition_categories as $nc){            
                 if(!$this->input->post('nutrition_category_'.$nc->id)) continue;
+                $nc->save($product);
                 $nc->set_join_field($product,'value', $this->input->post('nutrition_category_'.$nc->id));
-            }            
-			
-                                     
-            # Save all new nutrition facts
-            
-            $hidden_nutrition_add    = array();
-			$hidden_nutrition_remove = array();
-            $final_nutrition_list    = array();
-            
-            if($this->input->post('hidden_nutrition'))
-                foreach($this->input->post('hidden_nutrition') as $nf){
-                    list($key,$val) = explode('_', $nf);
-    				array_push($hidden_nutrition_add, array($key => $val));
-                }            
-            if($this->input->post('hidden_nutrition_removed'))    
-                foreach($this->input->post('hidden_nutrition_removed') as $nfr)
-                    list($key,$val) = explode('_', $nf);
-                    array_push($hidden_nutrition_remove,array($key => $val));
-                
-            $final_nutrition_list = array_merge_recursive($hidden_nutrition_remove,$hidden_nutrition_add);
-            print_flex($final_nutrition_list);
-            $nutrition = new Nutrition();
-            foreach($final_nutrition_list as $nf){
-                $nutrition->get_by_id($nfr[0]);
-                if(is_array($nfr)){                                    
-                    $nutrition->save($product);
-                    $nutrition->set_join_field($product,'value',$nfr[1]);
-                }else{
-                    $nutrition->delete($product);
-                }                        
-            }                                                              
+            }                                               
+            # Save all new nutrition facts            
+            $hidden_nutrition_add = ($this->input->post('hidden_nutrition'))?$this->input->post('hidden_nutrition'):array();
+            $hidden_nutrition_remove = ($this->input->post('hidden_nutrition_removed'))?$this->input->post('hidden_nutrition_removed'):array();                                                                                                                 
+            #
+            $hidden_nutrition_add = array_map('explode_ext',$hidden_nutrition_add);
+            #
+            $hidden_nutrition_remove = array_diff($hidden_nutrition_remove,return_subarray_by_key('id',$hidden_nutrition_add));
+            #
+            $nutrition = new Nutrition();                            
+            foreach($hidden_nutrition_add as $hn_add){
+                $nutrition->get_by_id($hn_add['id']);
+                $product->save($nutrition);
+                $product->set_join_field($nutrition,'value',$hn_add['value']);                            
+            }
+            #
+            if($hidden_nutrition_remove){
+                $nutrition->where_in('id',$hidden_nutrition_remove)->get();
+                $product->delete($nutrition->all);
+            }                                                                                      
         }else{
             return false;
         }
         return true;            
     }
-    //uploads products image
-    function _upload_product_images($product_id){
-        //set all the appropriate data
-        $product = new Product($product_id);
-        $image_name = 'pi'.$product_id.'.jpg';
-        $product->image = $image_name;
-        
-        //define upload class with configs
-        $config['upload_path'] = $this->config->item('product_images_path');
-		$config['allowed_types'] = 'gif|jpg|png';
-        $config['file_name'] = $image_name;
-        $config['overwrite'] = TRUE;
-        $this->load->library('upload', $config);
-        
-        //try to upload file
-        if ($this->upload->do_upload('image')){
-            $product->save();
-            $upload_data = $this->upload->data();
-            $this->_resize_image($upload_data['full_path']);
-            return true;
-        }else{
-            return false;   
-        }
-    }
-    
-    function _resize_image($image_path){
-        $config['source_image']     = $image_path;
-        $config['create_thumb']     = TRUE;
-        $config['thumb_marker']     = '_tiny';
-        $config['width']            = 40;
-        $config['height']           = 40;
-        $config['master_dim']       = 'width';
-        $config['maintain_ratio']   = TRUE;
-        $this->load->library('image_lib',$config);
-        $this->image_lib->resize();
-    }
-    
     //checks to see if product name already exists    
     function _product_name_exists($product_name){
         $product = new Product();
@@ -199,95 +148,5 @@ class Products extends Admin_Controller {
 }
 
 /* End of file admin.php */
-/* Location: ./system/application/controllers/admin/products.php 
-    function edit_tamik_($id = false) # :(
-    {
-        $this->load->library('form_validation');
-        # Js function from main.js which loads by default  
-        array_push($this->data['js_functions'], array('name' => 'products_edit_init', 'data' => FALSE));
-        
-        $product_category	= new Product_category();
-        $mera		= new Mera();
-		$nutrition_categories = new Nutrition_category();
-        $product = new Product($id);
-        
-        # if form validates
-        if($this->form_validation->run('products_edit')){
-            $product->name              = $this->input->post('product_name');
-            $product->product_category_id = $this->input->post('product_category_id');
-            $product->mera_id           = $this->input->post('mera_id');
-            $product->price             = $this->input->post('price');
-            $product->units_for_price   = $this->input->post('units_for_price');
-            $product->units_mera_id     = $this->input->post('units_mera_id');
-            $product->description       = $this->input->post('description');
-            # If products was saved to db successfully
-            
-            if($product->save()){
-                # Get all nutrition categories from post
-                foreach($nutrition_categories->get() as $nc) {
-                    # If its not in post array then skip iteration
-                    if(!$this->input->post('nutrition_category_'.$nc->id)) continue;
-                    $nutrition_categories_products = new Nutrition_categories_Products();
-                    $nutrition_categories_products->value = $this->input->post('nutrition_category_'.$nc->id);
-                    $nutrition_categories_products->save(array($product, $nc));
-                }
-                
-                # Get all the nutrition facts that have to be removed
-                $hidden_nutrition_facts_remove = $this->input->post('hidden_nutrition_removed');
-                # Deleted all the removed nutrition facts
-                if($hidden_nutrition_facts_remove){
-                    foreach($hidden_nutrition_facts_remove as $nfr) {
-                        $product_nutrition_facts = new Nutritions_Products();
-                        $product_nutrition_facts->where('id', $nfr)->get()->delete();
-                    }
-                }
-				# Get data from post about nutirition facts
-				$hidden_nutrition_facts = $this->input->post('hidden_nutrition');
-                # Save all new nutrition facts
-                if($hidden_nutrition_facts){
-    				foreach($hidden_nutrition_facts as $nf){
-    	            	$product_nutrition_facts = new Product_nutrition_fact();
-    					
-    					list($nutrition_id, $nutrition_value) = explode('_', $nf);
-    					
-    					$product_nutrition_facts->where(array('product_id' => $product->id, 'nutrition_id' => $nutrition_id))->get();
-    					$product_nutrition_facts->nutrition_id = $nutrition_id;
-    					$product_nutrition_facts->value = $nutrition_value;
-    					
-    					$product_nutrition_facts->save($product);
-    				}
-                }
-                $image_upload_status = '';
-                if(!$this->_upload_product_images($product->id)) $data['form_error'] = $this->upload->display_errors();
-                $this->data['form_success'] = 'Продукт добавлен';
-            }else{
-                $this->data['form_error'] = $product->error->string;
-            }
-        }else{
-        	echo validation_errors();
-        }
-        
-        $nutrition_categories_arr = array();
-		foreach($nutrition_categories->get() as $nc) {
-			$nutrition = new Nutrition();
-			$nutrition->where(array('nutrition_category_id' => $nc->id))->get();
-			$nc->nutritions = $nutrition;
-			if($id){
-				$product_nutrition_facts = new Nutritions_Products();
-				$product_nutrition_facts->include_related('nutrition')->where(array('product_id' => $id, 'nutrition_category_id' => $nc->id))->get();
-				$nc->product_nutrition_facts = $product_nutrition_facts;
-			}
-			array_push($nutrition_categories_arr, $nc);
-		}
-
-        $this->data['product_category_model']	= $product_category->get_iterated();
-        $this->data['mera_model']		= $mera->get_iterated();
-        $this->data['nutrition_categories']     = $nutrition_categories_arr;
-        $this->data['product'] 			          = $product;
-		
-		
-        $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
-    }
-
-
-*/
+/* Location: ./system/application/controllers/admin/products.php*/ 
+    
