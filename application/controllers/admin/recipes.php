@@ -14,9 +14,12 @@ class Recipes extends Admin_Controller {
 	}
     
     function show(){
-        #$this->load->library('upload_image_lib',array('type'=>'recipe','size'=>array('tiny')));
-        #$this->upload_image_lib->delete_img('recipe','4_3');
-        #echo $this->upload_image_lib->get_deleted_log_img();
+        #$this->load->library('upload_image_lib');
+                
+        #$this->upload_image_lib->initialize(array('type'=>'recipe','size'=>array('tiny')));
+                
+        #echo $this->upload_image_lib->crop_img('re_1_1.jpg');
+        #echo $this->upload_image_lib->get_errors();
         #echo $this->upload_image_lib->get_errors();
         #return;
         #echo $this->upload_img_lib->upload_img('form_name','image_name');

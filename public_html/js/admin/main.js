@@ -66,7 +66,7 @@ main.prototype.recipe_add_init = function(){
 			'prep_time'		: { required : true, number : true },
 			'cook_time' 	: { required : true, number : true },
 			'servings' 		: { required : true, number : true },
-			'recipe_image'	: { required : true, number : true }
+			//'recipe_image'	: { required : true, number : true }
 		}
 	});
 	
@@ -180,8 +180,15 @@ main.prototype.process_ajax_response = function(response, form_name){
     	});
         
     }
-    
-    
+    main.prototype.product_prices_edit_init = function(){            	
+    	$('#get_product').click(function(){
+    		$('#edit_product_prices_form').submit();
+    		return false;
+    	});    	        
+    	$('.suggest_product').autocomplete(main.admin_url + "ajax/suggest_products", {
+    		      width : $(this).attr('width')
+        });     
+    }
     main.prototype.product_categories_edit_init = function(){
         
     }

@@ -36,6 +36,7 @@ a { color:#0076c8; outline:none;}
 	.f_sub_header 	{ font-size:14px; font-weight:bold; margin:20px 0px 5px 0px; padding:5px 0px; border-bottom: 1px dotted #f2f2f2; color:#89795b; }
 	.f_form 		{ color:#666; }
 	.f_content 		{ padding:10px; }
+    .f_block { margin-bottom:10px; }
 		.f_message		{ padding:6px 15px; margin-bottom:10px; }
 			.f_message p	{margin:3px 0px; }
 	    .f_joined		{ float:left; margin-right:10px; }
@@ -52,6 +53,8 @@ a { color:#0076c8; outline:none;}
 	        .f_select.wide	{width:300px;}
 	    .f_textarea		{ display:block; border:1px solid #cbcbcb; padding:6px 4px; border-color:#cbcbcb #e8e8e8 #e8e8e8 #cbcbcb; margin-bottom:0px; }
 	    	.f_textarea.small { width: 490px; height:70px; font-size:12px;}
+        .f_label_cb { float:left; display:block; margin-left: 5px; }
+        .f_checkbox { float:left; display:block; } 
 	    
 /* Errors */
     .f_error_top		{ background:#fff5f5; border:1px solid #ffdddd; color:#950000; }

@@ -3,6 +3,14 @@ function cleared_div(){
     return "<div class='clear'></div>";
 }
 
+function open_f_block(){
+    return "<div class='f_block'>";
+}
+
+function close_f_block(){
+    return "</div>";
+}
+
 function separator_div($height = 5){
 	return '<div style="padding:'.$height.'px 0px"></div>';
 }

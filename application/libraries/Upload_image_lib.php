@@ -9,8 +9,9 @@ class Upload_image_lib {
     private $CI;
     #v construktor peredaetsa array( Tip risunka, Razmer )
     function __construct($cfg = false){
+        $this->log['deleted'] = '';
         $this->CI = & get_instance();
-        $this->initialize($cfg);
+        
     }
     function initialize($cfg = false){
         $this->config['caller_method'] = 'initialize()';
@@ -20,7 +21,6 @@ class Upload_image_lib {
         if (!$cfg)                  return $this->_return_log_error('configuration variable is not set');
         if (!isset($cfg['size']))   return $this->_return_log_error('variable size is not set');
         if (!isset($cfg['type']))   return $this->_return_log_error('variable type is not set');
-        
         #sozdaet array s razmerami 
         if (is_array($cfg['size']))
             $this->config['sizes'] = $cfg['size'];
@@ -69,7 +69,7 @@ class Upload_image_lib {
         foreach($this->config['sizes'] as $size){
             $result = false;
             if (!$this->_set_size($size)) return $this->_return_log_error('is not defined true size');
-            $config['upload_path'] = $this->config['upload_path']; 
+            $config['upload_path']      = $this->config['upload_path']; 
             $config['thumb_marker']     = $this->config['thumb_marker'];
             $config['width']            = $this->config['width'];
             $config['height']           = $this->config['height'];           
@@ -77,6 +77,28 @@ class Upload_image_lib {
             if (!$this->CI->image_lib->resize()) $this->_return_log_error('?CI->image_lib->resize()?');
         }
         return $this->_error_exist();
+    }
+    
+    function crop_img($image_name = false){
+        $this->config['caller_method'] = '_resize_img()';
+        #for ERRORS init        
+        if (!$image_name)           return   $this->_return_log_error('image name not set');
+        if ($this->_error_exist())  return   $this->_return_log_error('init error');
+        
+        $this->config['source_image']   = $this->config['upload_path'].$image_name; #!
+        
+        $this->CI->load->library('image_lib');
+        $this->CI->image_lib->initialize($this->config);
+        
+        if ($this->CI->image_lib->orig_width > $this->CI->image_lib->orig_height)
+            $this->CI->image_lib->width = $this->CI->image_lib->height;
+        else 
+            $this->CI->image_lib->height = $this->CI->image_lib->width;
+                                        
+        if (!$this->CI->image_lib->crop())
+        {
+            echo $this->CI->image_lib->display_errors();
+        }
     }
     
     function upload_resize_img($form_name,$image_name){
@@ -178,7 +200,7 @@ class Upload_image_lib {
         return $prefix.$name.'.jpg';
     }
     function _return_log_error($str = ''){
-        $this->log_error .= ' Function->'.$this->config['caller_method'].' error:'.$str.'; ';
+        $this->log_error .= ' Function: '.$this->config['caller_method'].' error:'.$str.'; ';
         return false;
     }
     function _error_exist(){

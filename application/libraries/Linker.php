@@ -83,7 +83,18 @@ class Linker {
 		$url = generate_url($segments);
 		return $url;
 	}
-    
+    #PRODUCT_PRICES admin/product_prices/subs/product_data
+    function a_product_prices_edit_by_id_link($id = false) {
+        if(!$id) $segments = array('admin','product_prices','edit');
+		$segments = array('admin','product_prices','edit',$id);
+		$url = generate_url($segments);
+		return $url;
+	}
+    function a_product_prices_edit_data_by_id_link() {
+		$segments = array('admin','product_prices','subs','product_data');
+		$url = generate_url($segments);
+		return $url;
+	}
     #NUTRITION admin/nutritions
     function a_nutrition_show_link() {
 		//return link to homepage if data for author was false or null

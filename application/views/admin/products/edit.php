@@ -131,7 +131,7 @@
 	<?php
         endforeach;
 		
-        echo form_label('Мера измерения', $sel_mera['id'], array('class' => 'f_label'));
+        echo form_label('Мера измерения по умолчанию', $sel_mera['id'], array('class' => 'f_label'));
         echo form_dropdown($sel_mera['name'], $sel_mera['options'], $sel_mera['selected'], 'id = "'.$sel_mera['id'].'" class = "'.$sel_mera['class'].'"');
         
         echo form_label('Цена', $inp_price['id'], array('class' => 'f_label'));
@@ -141,6 +141,14 @@
         echo form_input($inp_units_for_price);
         echo form_dropdown($sel_units_mera['name'], $sel_units_mera['options'], $sel_units_mera['selected'], 'id = "'.$sel_units_mera['id'].'" class = "'.$sel_units_mera['class'].'"');
         echo cleared_div();
+        foreach($meras as $mera){   
+            echo open_f_block();
+            echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
+            echo form_label($mera->name, 'selected_meras_'.$mera->id, array('class' => 'f_label_cb'));
+            echo cleared_div();
+            echo close_f_block();                  
+        }
+        
         
         
         ?>

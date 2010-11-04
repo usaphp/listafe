@@ -45,10 +45,9 @@
     }
     
     //generates an array from passed obect to use in select box 
-    function array_for_dropbox($obj, $caption = '', $value = 'id', $text = 'name'){
-        $o = $obj->get_iterated();
+    function array_for_dropbox($objs, $caption = '', $value = 'id', $text = 'name'){
         $data = array('' => $caption);
-        foreach($o as $obj){
+        foreach($objs as $obj){
             $data[$obj->$value] = $obj->$text;
         }
         return $data;
@@ -81,7 +80,11 @@
             array_push($result_array, $val[$search_key]);
         return $result_array;
     }
- 
+    function sv_array_search_ext($search_val,$input_arr){
+        foreach($input_arr as $obj){
+            if($obj==$search_val) return 
+        }
+    }
     function array_wrap($var){
         return array($var);
     }

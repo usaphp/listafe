@@ -75,6 +75,7 @@ class Products extends Admin_Controller {
         $nutritions             = new Nutrition();
         $nutr_product           = new Nutritions_Product();
         $nutr_categor_products  = new Nutrition_categories_product();
+        
         #
         $meras->get_iterated();
         $product_categories->get_iterated();
@@ -84,6 +85,9 @@ class Products extends Admin_Controller {
         #
         $nutr_product->where_related($product)->include_related($nutritions)->include_join_fields()->get();
         #
+        $product->mera->get_by_product();
+        echo sv_array_search_ext('Штуки',$product->mera->all);
+        #print_flex($product->mera->all);
         $this->data['product']                      = $product;
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;
@@ -114,7 +118,7 @@ class Products extends Admin_Controller {
                 $nc->save($product);
                 $nc->set_join_field($product,'value', $this->input->post('nutrition_category_'.$nc->id));
             }                                               
-            # Save all new nutrition facts            
+            #NUTRITION          
             $hidden_nutrition_add = ($this->input->post('hidden_nutrition'))?$this->input->post('hidden_nutrition'):array();
             $hidden_nutrition_remove = ($this->input->post('hidden_nutrition_removed'))?$this->input->post('hidden_nutrition_removed'):array();                                                                                                                 
             #
@@ -132,7 +136,14 @@ class Products extends Admin_Controller {
             if($hidden_nutrition_remove){
                 $nutrition->where_in('id',$hidden_nutrition_remove)->get();
                 $product->delete($nutrition->all);
-            }                                                                                      
+            }
+            #MERAS-PRODUCT
+            $selected_meras = ($this->input->post('selected_meras'))?$this->input->post('selected_meras'):array();
+            $meras = new Mera();            
+            $meras->where_not_in('id',$selected_meras)->get();
+            $product->delete($meras->all);
+            $meras->where_in('id',$selected_meras)->get();        
+            $product->save($meras->all);                                                                                      
         }else{
             return false;
         }
