@@ -80,10 +80,11 @@
             array_push($result_array, $val[$search_key]);
         return $result_array;
     }
-    function sv_array_search_ext($search_val,$input_arr){
-        foreach($input_arr as $obj){
-            if($obj==$search_val) return 
+    function datamapper_object_exist(DataMapper $needle,DataMapper $haystack){        
+        foreach($haystack as $val){
+            if($needle->id==$val->id) return true;                        
         }
+        return false;
     }
     function array_wrap($var){
         return array($var);

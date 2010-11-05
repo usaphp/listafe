@@ -1,5 +1,5 @@
 <?php
-class Ratio_measure extends DataMapper {
+class Ratio_mera extends DataMapper {
     
     var $has_one = array('product');
     

@@ -83,15 +83,22 @@ class Linker {
 		$url = generate_url($segments);
 		return $url;
 	}
-    #PRODUCT_PRICES admin/product_prices/subs/product_data
-    function a_product_prices_edit_by_id_link($id = false) {
-        if(!$id) $segments = array('admin','product_prices','edit');
-		$segments = array('admin','product_prices','edit',$id);
+    #RATIO_MEARS admin/ratio_meras/subs/product_data
+    function a_ratio_meras_edit_by_id_link($id = false) {
+        if(!$id) 
+            $segments = array('admin','ratio_meras','edit');
+        else 
+            $segments = array('admin','ratio_meras','edit',$id);
 		$url = generate_url($segments);
 		return $url;
 	}
-    function a_product_prices_edit_data_by_id_link() {
-		$segments = array('admin','product_prices','subs','product_data');
+    function a_ratio_meras_show_link() {        
+        $segments = array('admin','ratio_meras','show');        
+		$url = generate_url($segments);
+		return $url;
+	}
+    function a_ratio_meras_edit_data_by_id_link() {
+		$segments = array('admin','ratio_meras','subs','product_data');
 		$url = generate_url($segments);
 		return $url;
 	}

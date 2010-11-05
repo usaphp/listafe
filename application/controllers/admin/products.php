@@ -85,9 +85,8 @@ class Products extends Admin_Controller {
         #
         $nutr_product->where_related($product)->include_related($nutritions)->include_join_fields()->get();
         #
-        $product->mera->get_by_product();
-        echo sv_array_search_ext('Штуки',$product->mera->all);
-        #print_flex($product->mera->all);
+        $product->mera->get_iterated();
+        
         $this->data['product']                      = $product;
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;

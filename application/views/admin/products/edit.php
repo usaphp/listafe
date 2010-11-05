@@ -143,7 +143,7 @@
         echo cleared_div();
         foreach($meras as $mera){   
             echo open_f_block();
-            echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
+            echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'checked' => datamapper_object_exist($mera,$product->mera), 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
             echo form_label($mera->name, 'selected_meras_'.$mera->id, array('class' => 'f_label_cb'));
             echo cleared_div();
             echo close_f_block();                  

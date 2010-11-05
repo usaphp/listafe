@@ -32,4 +32,10 @@
             <li><?php echo anchor($this->linker->a_nutrition_show_link(), 'Список Сост. Веществ'); ?></li>
 		</ul>
 	</li>
+    <li><?php echo anchor($this->linker->a_ratio_meras_edit_by_id_link(), 'Соотношение Величин'); ?>
+        <ul class="sub_menu">
+            <li><?php echo anchor($this->linker->a_ratio_meras_show_link(), 'Соотношение Величин'); ?></li>
+            
+		</ul>
+    </li>
 </ul>

@@ -180,14 +180,39 @@ main.prototype.process_ajax_response = function(response, form_name){
     	});
         
     }
-    main.prototype.product_prices_edit_init = function(){            	
-    	$('#get_product').click(function(){
-    		$('#edit_product_prices_form').submit();
-    		return false;
-    	});    	        
+    main.prototype.ratio_meras_edit_init = function(){            	
+    	$('#load_product').click(function(){
+    	   $.ajax({
+    	       url : '/admin/ajax/get_ratios',
+               data : { product_name : $('#inp_product').val() },
+               type : 'POST',
+               success : function(response){
+                    $('#recipe_products').html(response);
+               }    
+    	   });
+   		   return false;
+    	});
+        
+        
+    	$('#save_product').live('click', function(){
+    	   $('#edit_ratio_meras_form').submit();
+           return false;
+    	});
+             	        
     	$('.suggest_product').autocomplete(main.admin_url + "ajax/suggest_products", {
     		      width : $(this).attr('width')
-        });     
+            });
+            $('#add_ratio').live('click', function(){    		
+    		$.ajax({
+    			url : main.admin_url + 'ajax/add_ratio_mera',			
+    			type : 'post',
+    			success : function(response){
+    				$('#ratio_options_holder').append(response);
+    			}
+    		});
+    		return false;
+        	});
+        
     }
     main.prototype.product_categories_edit_init = function(){
         

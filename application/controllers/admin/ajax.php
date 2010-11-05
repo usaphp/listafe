@@ -37,6 +37,31 @@ class Ajax extends Admin_Controller {
 		$data['step_id'] = $this->input->post('step_id');
 		$this->load->view('admin/recipes/subs/step', $data);
 	}
+    
+    /* Get ratios for product */
+    function get_ratios(){        
+        $product    = new Product();
+        $meras      = new Mera();        
+        $ratios      = new Ratio_mera();
+                
+        $product_name = $this->input->post('product_name');
+        $product->get_by_name($product_name);
+        $meras->get_iterated();
+        $ratios->where_related($product);
+                        
+        $this->data['product'] = $product;
+        $this->data['meras'] = $meras;
+        $this->data['ratios'] = $ratios;                
+        
+        $this->load->view('admin/ratio_meras/subs/product_data', $this->data);
+        $this->output->enable_profiler(TRUE);
+    }
+   	function add_ratio_mera(){
+        $meras = new Mera();
+        
+		$this->data['meras'] = $meras->get_iterated();        
+		$this->load->view('admin/ratio_meras/subs/field_ratio_meras', $this->data);
+	}
 }
 
 /* End of file admin.php */
