@@ -10,11 +10,13 @@ $sel_main_mera = array(
     echo cleared_div();?>
     <div id="ratio_options_holder">
     <?php
-    foreach($ratios as $key => $ratio){
-        $this->data['value_scalar']     = $key;
-        $this->data['value_relativ']    = $key;
+    foreach($ratios as $ratio){        
+        $this->data['scalar_value']     = $ratio->scalar_value;
+        $this->data['relative_value']    = $ratio->relative_value;
         $this->load->view('admin/ratio_meras/subs/field_ratio_meras',$this->data);        
     }
+    $this->data['scalar_value']     = '';
+    $this->data['relative_value']   = '';
     $this->load->view('admin/ratio_meras/subs/field_ratio_meras',$this->data);
     ?>
     </div>

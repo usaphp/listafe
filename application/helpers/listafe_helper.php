@@ -74,17 +74,23 @@
         list($id,$val) = explode('_',$var);
         return array('id'=>$id,'value'=>$val);
     }
+    #
     function return_subarray_by_key($search_key,array $input_array){
         $result_array = array();
         foreach($input_array as $val)
             array_push($result_array, $val[$search_key]);
         return $result_array;
     }
+    #
     function datamapper_object_exist(DataMapper $needle,DataMapper $haystack){        
         foreach($haystack as $val){
             if($needle->id==$val->id) return true;                        
         }
         return false;
+    }
+    #vozvrashaet nabor otnosheni' velichit
+    function dm_get_ratios_array($scalar,$val_scalar,$relative,$val_relative){
+        return array('scalar'=>$scalar,'val_scalar'=>$val_scalar,'relative'=>$relative,'val_relative'=>$val_relative);
     }
     function array_wrap($var){
         return array($var);
