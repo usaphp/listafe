@@ -12,11 +12,10 @@
         
         echo form_label('Продукт ', $inp_product['id'], array('class' => 'f_label'));
     	echo form_input($inp_product);
-        #<a href = '#' id = 'add_product_recipe' class = 'f_button grey'>+ Еще Продукт</a>
         echo anchor('#', 'Load Product', array('class'=> 'f_button grey wide', 'id' => 'load_product'));
         echo cleared_div();
         ?>                    
-        <div>            
+        <div id="product_meras">            
         	<?php
             if($product->id)
                 $this->load->view('admin/ratio_meras/subs/product_data');            

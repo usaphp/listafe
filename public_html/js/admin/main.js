@@ -187,7 +187,7 @@ main.prototype.process_ajax_response = function(response, form_name){
                data : { product_name : $('#inp_product').val() },
                type : 'POST',
                success : function(response){
-                    $('#recipe_products').html(response);
+                    $('#product_meras').html(response);
                }    
     	   });
    		   return false;
@@ -202,7 +202,7 @@ main.prototype.process_ajax_response = function(response, form_name){
     	$('.suggest_product').autocomplete(main.admin_url + "ajax/suggest_products", {
     		      width : $(this).attr('width')
             });
-            $('#add_ratio').live('click', function(){    		
+            $('#add_ratio').click(function(){    		
     		$.ajax({
     			url : main.admin_url + 'ajax/add_ratio_mera',			
     			type : 'post',
@@ -212,6 +212,20 @@ main.prototype.process_ajax_response = function(response, form_name){
     		});
     		return false;
         	});
+        $('.f_remove').live('click', function(){
+    		var elem_id = $(this).attr('id').replace('remove_ratio_', '');
+            var hidden_remove = $('<input type="hidden">').val(elem_id).attr('name', 'hidden_ratio_removed[]');
+            
+            if(!$('input[type=hidden][value='+elem_id+'][name=hidden_ratio_removed[]]').length){
+                $('#remove_ratio_' + elem_id).text('restore').attr('class','f_remove f_button green');
+                $('#edit_ratio_meras_form').append(hidden_remove);
+            }else{
+                $('#remove_ratio_' + elem_id).text('delete');
+                $('#remove_ratio_' + elem_id).text('delete').attr('class','f_remove f_button grey');
+                $('input[type=hidden][value='+elem_id+'][name=hidden_ratio_removed[]]').remove();
+            }
+    		return false;
+    	});
         
     }
     main.prototype.product_categories_edit_init = function(){

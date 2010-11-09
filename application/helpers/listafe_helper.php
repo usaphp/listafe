@@ -70,9 +70,21 @@
 		$string = preg_replace('/.*\-$/', '', $string);*/
 		return $string;
 	}
-    function explode_ext($var){
-        list($id,$val) = explode('_',$var);
-        return array('id'=>$id,'value'=>$val);
+    function explode_ext($var,$keys=false){
+        if(!$keys){
+            list($id,$val) = explode('_',$var);
+            return array('id'=>$id,'value'=>$val);
+        }
+        $stacks = explode('_',$var);
+        $results = array();
+        if (count($stacks)<count($keys)) return false;
+        foreach ($keys as $num => $key)
+            $results[$key] = $stek[$num];
+        return $results;
+    }
+    function explode_scalar_relative($var){
+        list($scalar,$relative) = explode('_',$var);
+        return array('scalar'=>$scalar,'relative'=>$relative);
     }
     #
     function return_subarray_by_key($search_key,array $input_array){
@@ -90,7 +102,9 @@
     }
     #vozvrashaet nabor otnosheni' velichit
     function dm_get_ratios_array($scalar,$val_scalar,$relative,$val_relative){
-        return array('scalar'=>$scalar,'val_scalar'=>$val_scalar,'relative'=>$relative,'val_relative'=>$val_relative);
+        echo $scalar.' '.$relative;
+       if ($scalar && $relative) return array('scalar'=>$scalar,'val_scalar'=>$val_scalar,'relative'=>$relative,'val_relative'=>$val_relative); 
+        
     }
     function array_wrap($var){
         return array($var);

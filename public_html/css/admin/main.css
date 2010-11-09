@@ -1,5 +1,6 @@
 a { color:#0076c8; outline:none;}
 .hidden { display:none;}
+.separator{padding:5px;margin-top: 10px;}
 /* Login */
 	#login_logo	{ height:210px; background:#fff url('/images/logo_admin.png') center center no-repeat;}
 	#login_form { padding-top:50px;}

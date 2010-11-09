@@ -16,6 +16,16 @@ class Product extends Datamapper {
         parent::__construct($id);
     }
     
+    function get_ratios($ratio = false){
+        $dm_ratio   = new Ratio_mera();        
+        $dm_ratio->where_related($this);
+        if (!$ratio) return $dm_ratio->get();  
+        $dm_ratio->where('scalar',$ratio['scalar'])
+                 ->where('relative',$ratio['relative'])
+                 ->get();
+        return $dm_ratio;
+    }
+    
 }
 
 /* End of file name.php */

@@ -11,17 +11,25 @@ $sel_main_mera = array(
     <div id="ratio_options_holder">
     <?php
     foreach($ratios as $ratio){        
-        $this->data['scalar_value']     = $ratio->scalar_value;
-        $this->data['relative_value']    = $ratio->relative_value;
+        $this->data['scalar_selected']      = $ratio->scalar;
+        $this->data['scalar_value']         = $ratio->scalar_value;
+        $this->data['relative_selected']    = $ratio->relative;
+        $this->data['relative_value']       = $ratio->relative_value;
+        #
+        $this->data['scalar_relative']      = $ratio->scalar.'_'.$ratio->relative; 
         $this->load->view('admin/ratio_meras/subs/field_ratio_meras',$this->data);        
     }
-    $this->data['scalar_value']     = '';
-    $this->data['relative_value']   = '';
+    #dopolnitel'noe pustoe pole vvoda
+    $this->data['scalar_selected']      = '';
+    $this->data['scalar_value']         = '';
+    $this->data['relative_selected']    = '';
+    $this->data['relative_value']       = '';
+    $this->data['scalar_relative']      = '_';
     $this->load->view('admin/ratio_meras/subs/field_ratio_meras',$this->data);
     ?>
     </div>
     <?php
-    echo anchor('#', 'Add ratio', array('class'=> 'f_button green', 'id' => 'add_ratio'));    	
-	echo anchor('#', 'Save Product', array('class'=> 'f_button grey wide', 'id' => 'save_product'));        
+    echo anchor('#', 'Add ratio', array('class'=> 'f_button green separator', 'id' => 'add_ratio'));    	
+	echo anchor('#', 'Save Product', array('class'=> 'f_button grey wide separator', 'id' => 'save_product'));        
           
 ?>
