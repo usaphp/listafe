@@ -144,7 +144,6 @@ class Linker {
 		return $url;
 	}
     function a_nutrition_categories_add_link() {
-		//return link to homepage if data for author was false or null
 		$segments = array('admin','nutrition_categories','edit');
 		$url = generate_url($segments);
 		return $url;
@@ -163,10 +162,15 @@ class Linker {
     }
     function a_translate_recipes_edit_by_id_link($id = false){
         if(!$id) a_translate_recipes_show_link();
-        $segments = array('admin','tranclate_recipes','edit',$id);
+        $segments = array('admin','translate_recipes','edit',$id);
         $url = generate_url($segments);
         return $url;
-    }    
+    }
+    function a_translate_recipes_add_link(){    
+        $segments = array('admin','translate_recipes','add');
+        $url = generate_url($segments);
+        return $url;
+    }
 	/* Returns link to home page */
 	function home_page_link() {
 		return base_url();

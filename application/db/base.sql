@@ -10,27 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 50141
 File Encoding         : 65001
 
-Date: 2010-11-03 14:44:33
+Date: 2010-11-10 18:28:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
--- ----------------------------
--- Table structure for `ci_sessions`
--- ----------------------------
-DROP TABLE IF EXISTS `ci_sessions`;
-CREATE TABLE `ci_sessions` (
-`session_id`  varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '0' ,
-`ip_address`  varchar(16) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '0' ,
-`user_agent`  varchar(150) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`last_activity`  int(10) UNSIGNED NOT NULL DEFAULT 0 ,
-`user_data`  text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-PRIMARY KEY (`session_id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8 COLLATE=utf8_bin
-
-;
-
 -- ----------------------------
 -- Table structure for `meras`
 -- ----------------------------
@@ -38,11 +21,28 @@ DROP TABLE IF EXISTS `meras`;
 CREATE TABLE `meras` (
 `id`  tinyint(1) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `name`  varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`type`  tinyint(1) UNSIGNED NOT NULL ,
 PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 AUTO_INCREMENT=7
+
+;
+
+-- ----------------------------
+-- Table structure for `meras_products`
+-- ----------------------------
+DROP TABLE IF EXISTS `meras_products`;
+CREATE TABLE `meras_products` (
+`id`  smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`product_id`  smallint(5) UNSIGNED NOT NULL ,
+`mera_id`  tinyint(2) UNSIGNED NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=8
 
 ;
 
@@ -90,7 +90,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=10
+AUTO_INCREMENT=11
 
 ;
 
@@ -107,7 +107,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=51
+AUTO_INCREMENT=52
 
 ;
 
@@ -122,7 +122,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=17
+AUTO_INCREMENT=18
 
 ;
 
@@ -144,7 +144,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=29
+AUTO_INCREMENT=30
 
 ;
 
@@ -162,7 +162,26 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=12
+AUTO_INCREMENT=14
+
+;
+
+-- ----------------------------
+-- Table structure for `ratio_meras`
+-- ----------------------------
+DROP TABLE IF EXISTS `ratio_meras`;
+CREATE TABLE `ratio_meras` (
+`id`  tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`product_id`  smallint(5) UNSIGNED NOT NULL ,
+`scalar`  tinyint(1) UNSIGNED NOT NULL ,
+`relative`  tinyint(1) UNSIGNED NOT NULL ,
+`scalar_value`  smallint(5) UNSIGNED NOT NULL ,
+`relative_value`  smallint(5) UNSIGNED NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=6
 
 ;
 
@@ -180,7 +199,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=13
+AUTO_INCREMENT=14
 
 ;
 
@@ -196,7 +215,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=3
+AUTO_INCREMENT=4
 
 ;
 
@@ -214,7 +233,43 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=24
+AUTO_INCREMENT=27
+
+;
+
+-- ----------------------------
+-- Table structure for `translate_recipes`
+-- ----------------------------
+DROP TABLE IF EXISTS `translate_recipes`;
+CREATE TABLE `translate_recipes` (
+`id`  smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`name`  varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`url`  varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`original`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`translate`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`status`  tinyint(1) UNSIGNED NOT NULL ,
+`created`  datetime NOT NULL ,
+`updated`  datetime NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=13
+
+;
+
+-- ----------------------------
+-- Table structure for `translate_statuses`
+-- ----------------------------
+DROP TABLE IF EXISTS `translate_statuses`;
+CREATE TABLE `translate_statuses` (
+`id`  tinyint(1) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`name`  varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=5
 
 ;
 
@@ -222,6 +277,11 @@ AUTO_INCREMENT=24
 -- Auto increment value for `meras`
 -- ----------------------------
 ALTER TABLE `meras` AUTO_INCREMENT=7;
+
+-- ----------------------------
+-- Auto increment value for `meras_products`
+-- ----------------------------
+ALTER TABLE `meras_products` AUTO_INCREMENT=8;
 
 -- ----------------------------
 -- Auto increment value for `nutrition_categories`
@@ -236,12 +296,12 @@ ALTER TABLE `nutrition_categories_products` AUTO_INCREMENT=150;
 -- ----------------------------
 -- Auto increment value for `nutritions`
 -- ----------------------------
-ALTER TABLE `nutritions` AUTO_INCREMENT=10;
+ALTER TABLE `nutritions` AUTO_INCREMENT=11;
 
 -- ----------------------------
 -- Auto increment value for `nutritions_products`
 -- ----------------------------
-ALTER TABLE `nutritions_products` AUTO_INCREMENT=51;
+ALTER TABLE `nutritions_products` AUTO_INCREMENT=52;
 
 -- ----------------------------
 -- Indexes structure for table `product_categories`
@@ -251,7 +311,7 @@ CREATE UNIQUE INDEX `name` USING BTREE ON `product_categories`(`name`) ;
 -- ----------------------------
 -- Auto increment value for `product_categories`
 -- ----------------------------
-ALTER TABLE `product_categories` AUTO_INCREMENT=17;
+ALTER TABLE `product_categories` AUTO_INCREMENT=18;
 
 -- ----------------------------
 -- Indexes structure for table `products`
@@ -262,24 +322,39 @@ CREATE INDEX `category_id` USING BTREE ON `products`(`product_category_id`) ;
 -- ----------------------------
 -- Auto increment value for `products`
 -- ----------------------------
-ALTER TABLE `products` AUTO_INCREMENT=29;
+ALTER TABLE `products` AUTO_INCREMENT=30;
 
 -- ----------------------------
 -- Auto increment value for `products_recipes`
 -- ----------------------------
-ALTER TABLE `products_recipes` AUTO_INCREMENT=12;
+ALTER TABLE `products_recipes` AUTO_INCREMENT=14;
+
+-- ----------------------------
+-- Auto increment value for `ratio_meras`
+-- ----------------------------
+ALTER TABLE `ratio_meras` AUTO_INCREMENT=6;
 
 -- ----------------------------
 -- Auto increment value for `recipes`
 -- ----------------------------
-ALTER TABLE `recipes` AUTO_INCREMENT=13;
+ALTER TABLE `recipes` AUTO_INCREMENT=14;
 
 -- ----------------------------
 -- Auto increment value for `recipes_images`
 -- ----------------------------
-ALTER TABLE `recipes_images` AUTO_INCREMENT=3;
+ALTER TABLE `recipes_images` AUTO_INCREMENT=4;
 
 -- ----------------------------
 -- Auto increment value for `recipes_steps`
 -- ----------------------------
-ALTER TABLE `recipes_steps` AUTO_INCREMENT=24;
+ALTER TABLE `recipes_steps` AUTO_INCREMENT=27;
+
+-- ----------------------------
+-- Auto increment value for `translate_recipes`
+-- ----------------------------
+ALTER TABLE `translate_recipes` AUTO_INCREMENT=13;
+
+-- ----------------------------
+-- Auto increment value for `translate_statuses`
+-- ----------------------------
+ALTER TABLE `translate_statuses` AUTO_INCREMENT=5;

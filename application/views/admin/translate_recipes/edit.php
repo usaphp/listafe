@@ -1,4 +1,16 @@
 <?php
+    $inp_name = array(
+        'name'  => 'inp_name',
+        'value' => $recipe->name,
+        'id'    => 'inp_name',
+        'class' => 'f_input required'
+    );
+    $inp_url = array(
+        'name'  => 'inp_url',
+        'value' => $recipe->url,
+        'id'    => 'inp_url',
+        'class' => 'f_input required'
+    );
 	$text_original = array(
         'name'  => 'text_original',
         'value' => $recipe->original,
@@ -24,6 +36,13 @@
     <?php echo form_open_multipart('/admin/translate_recipes/edit/'.$recipe->id, array('id' => 'translate_recipe_edit_form', 'class' => 'f_form f_validate'));?>
     <div class="f_content">
         <?php echo form_success_error($form_error, $form_success); ?>
+            <?php
+                echo form_label('Название рецепта', $inp_name['id'], array('class' => 'f_label'));
+                echo form_input($inp_name);
+                
+                echo form_label('Ссылка', $inp_url['id'], array('class' => 'f_label'));
+                echo form_input($inp_url);            
+            ?>            
             <div class="f_two_column_l">
                 <?php
                 echo form_label('Оригинальный текст', $text_original['name'], array('class' => 'f_label '));
@@ -52,8 +71,8 @@
             </div>
             <?php echo cleared_div();?>
             <div class="separator"></div>
-            <div class="f_buttons">
-                <?php echo form_submit('add_translate_recipe','Сохранить');?>
+            <div class="f_buttons">                
+                <?php echo form_submit('btn_save_recipe','Сохранить');?>
             </div>    
         <?php echo form_close(); ?>
     </div>
