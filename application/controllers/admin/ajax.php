@@ -13,6 +13,19 @@ class Ajax extends Admin_Controller {
     
 	}
 	
+	/* login user */
+	function login(){
+		$username = $this->input->post('username');
+		$password = $this->input->post('password');
+		$admin_user = new Admin_user();
+		if($admin_user->login($username, $password)){
+			$response = json_encode(array('status' => TRUE, 'message' => 'Логин совершен.'));
+		}else{
+			$response = json_encode(array('status' => FALSE, 'message' => 'Вы ввели неверные имя пользователя и пароль.'));			
+		}
+		return $response;
+	}
+	
 	/* Suggest product for recipe */
 	function suggest_products(){
 		$product_name = $this->input->post('q', TRUE);

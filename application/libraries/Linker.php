@@ -17,6 +17,13 @@ class Linker {
 	 * */
  	
 	#'a_' znachit /admin/ v linke
+	# Login page for admin
+	function a_login_link(){
+		$segments = array('admin', 'security', 'login');
+		$url = generate_url($segments);
+		return $url;
+	}
+	
     #RECIPE 
 	function a_recipe_add_link() {
 		//return link to homepage if data for author was false or null

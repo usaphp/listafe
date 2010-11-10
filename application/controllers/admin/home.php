@@ -5,7 +5,7 @@ class Home extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct();
-        $this->_forse_login(TRUE);	
+		$this->security_lib->force_login();
 	}
 	
 	function index()
