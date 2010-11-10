@@ -4,16 +4,49 @@ Navicat MySQL Data Transfer
 Source Server         : localhost
 Source Server Version : 50141
 Source Host           : localhost:3306
-Source Database       : listafe
+Source Database       : povarenok
 
 Target Server Type    : MYSQL
 Target Server Version : 50141
 File Encoding         : 65001
 
-Date: 2010-11-10 18:28:56
+Date: 2010-11-11 01:22:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `admin_user_types`
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_user_types`;
+CREATE TABLE `admin_user_types` (
+`id`  smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`name`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`roles`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1
+
+;
+
+-- ----------------------------
+-- Table structure for `admin_users`
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_users`;
+CREATE TABLE `admin_users` (
+`id`  smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`username`  varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`password`  varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`admin_user_type_id`  tinyint(2) NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1
+
+;
+
 -- ----------------------------
 -- Table structure for `meras`
 -- ----------------------------
@@ -26,7 +59,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=7
+AUTO_INCREMENT=1
 
 ;
 
@@ -42,7 +75,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=8
+AUTO_INCREMENT=1
 
 ;
 
@@ -57,7 +90,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=9
+AUTO_INCREMENT=1
 
 ;
 
@@ -74,7 +107,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=150
+AUTO_INCREMENT=1
 
 ;
 
@@ -90,7 +123,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=11
+AUTO_INCREMENT=1
 
 ;
 
@@ -107,7 +140,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=52
+AUTO_INCREMENT=1
 
 ;
 
@@ -122,7 +155,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=18
+AUTO_INCREMENT=1
 
 ;
 
@@ -144,7 +177,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=30
+AUTO_INCREMENT=1
 
 ;
 
@@ -162,7 +195,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=14
+AUTO_INCREMENT=1
 
 ;
 
@@ -181,7 +214,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=6
+AUTO_INCREMENT=1
 
 ;
 
@@ -199,7 +232,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=14
+AUTO_INCREMENT=1
 
 ;
 
@@ -215,7 +248,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=4
+AUTO_INCREMENT=1
 
 ;
 
@@ -233,7 +266,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=27
+AUTO_INCREMENT=1
 
 ;
 
@@ -243,10 +276,16 @@ AUTO_INCREMENT=27
 DROP TABLE IF EXISTS `translate_recipes`;
 CREATE TABLE `translate_recipes` (
 `id`  smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT ,
-`name`  varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`url`  varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`original`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`translate`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`name`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`name_translate`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`url`  varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`custom`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`custom_translate`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`ingredients`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`ingredients_translate`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`preparation`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`preparation_translate`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`comments`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `status`  tinyint(1) UNSIGNED NOT NULL ,
 `created`  datetime NOT NULL ,
 `updated`  datetime NOT NULL ,
@@ -254,7 +293,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=13
+AUTO_INCREMENT=1
 
 ;
 
@@ -269,49 +308,10 @@ PRIMARY KEY (`id`)
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=5
+AUTO_INCREMENT=1
 
 ;
 
--- ----------------------------
--- Auto increment value for `meras`
--- ----------------------------
-ALTER TABLE `meras` AUTO_INCREMENT=7;
-
--- ----------------------------
--- Auto increment value for `meras_products`
--- ----------------------------
-ALTER TABLE `meras_products` AUTO_INCREMENT=8;
-
--- ----------------------------
--- Auto increment value for `nutrition_categories`
--- ----------------------------
-ALTER TABLE `nutrition_categories` AUTO_INCREMENT=9;
-
--- ----------------------------
--- Auto increment value for `nutrition_categories_products`
--- ----------------------------
-ALTER TABLE `nutrition_categories_products` AUTO_INCREMENT=150;
-
--- ----------------------------
--- Auto increment value for `nutritions`
--- ----------------------------
-ALTER TABLE `nutritions` AUTO_INCREMENT=11;
-
--- ----------------------------
--- Auto increment value for `nutritions_products`
--- ----------------------------
-ALTER TABLE `nutritions_products` AUTO_INCREMENT=52;
-
--- ----------------------------
--- Indexes structure for table `product_categories`
--- ----------------------------
-CREATE UNIQUE INDEX `name` USING BTREE ON `product_categories`(`name`) ;
-
--- ----------------------------
--- Auto increment value for `product_categories`
--- ----------------------------
-ALTER TABLE `product_categories` AUTO_INCREMENT=18;
 
 -- ----------------------------
 -- Indexes structure for table `products`
@@ -319,42 +319,3 @@ ALTER TABLE `product_categories` AUTO_INCREMENT=18;
 CREATE UNIQUE INDEX `name` USING BTREE ON `products`(`name`) ;
 CREATE INDEX `category_id` USING BTREE ON `products`(`product_category_id`) ;
 
--- ----------------------------
--- Auto increment value for `products`
--- ----------------------------
-ALTER TABLE `products` AUTO_INCREMENT=30;
-
--- ----------------------------
--- Auto increment value for `products_recipes`
--- ----------------------------
-ALTER TABLE `products_recipes` AUTO_INCREMENT=14;
-
--- ----------------------------
--- Auto increment value for `ratio_meras`
--- ----------------------------
-ALTER TABLE `ratio_meras` AUTO_INCREMENT=6;
-
--- ----------------------------
--- Auto increment value for `recipes`
--- ----------------------------
-ALTER TABLE `recipes` AUTO_INCREMENT=14;
-
--- ----------------------------
--- Auto increment value for `recipes_images`
--- ----------------------------
-ALTER TABLE `recipes_images` AUTO_INCREMENT=4;
-
--- ----------------------------
--- Auto increment value for `recipes_steps`
--- ----------------------------
-ALTER TABLE `recipes_steps` AUTO_INCREMENT=27;
-
--- ----------------------------
--- Auto increment value for `translate_recipes`
--- ----------------------------
-ALTER TABLE `translate_recipes` AUTO_INCREMENT=13;
-
--- ----------------------------
--- Auto increment value for `translate_statuses`
--- ----------------------------
-ALTER TABLE `translate_statuses` AUTO_INCREMENT=5;

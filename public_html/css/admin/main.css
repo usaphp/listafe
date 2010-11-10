@@ -50,6 +50,7 @@ a { color:#0076c8; outline:none;}
         .f_remove       { color:#2f2f2f; margin-left:10px; text-decoration: none;}
 	        .f_input.tiny	{ width:60px; }
 	        .f_input.wide	{ width:260px; }
+	        .f_input.widest { width:800px; }
 	        .f_input:focus	{ border-color:#5f5f5f #bfbfbf #bfbfbf #5f5f5f; }
             .f_subinput_node { text-decoration: none; }
             .f_subinput_node_holder { display:none; padding:10px 0px; }
@@ -59,6 +60,8 @@ a { color:#0076c8; outline:none;}
 	    	.f_textarea.small { width: 490px; height:70px; font-size:12px;}
         .f_label_cb { float:left; display:block; margin-left: 5px; }
         .f_checkbox { float:left; display:block; } 
+        .f_radio { float:left; display:block; }
+        .f_label_radio { float:left; display:block; margin-left: 5px; }
 	    
 /* Form Errors */
     .f_error_top		{ background:#fff5f5; border:1px solid #ffdddd; color:#950000; }
@@ -143,6 +146,11 @@ a { color:#0076c8; outline:none;}
 	/* Level three */
 	ul.dropdown ul ul		{ left: 100%; top: 0; }
 	ul.dropdown li:hover > ul	{ visibility: visible; }
-    
+	
+/* Recipe translate */
+.recipe_translate_status_1 { width:20px; height:20px; background:url('/images/icons/icon_red_face.png') center center no-repeat; }
+.recipe_translate_status_2 { width:20px; height:20px; background:url('/images/icons/icon_green_face.png') center center no-repeat; }
+.recipe_translate_status_3 { width:20px; height:20px; background:url('/images/icons/icon_green_checkmark.png') center center no-repeat; }
+.recipe_translate_status_4 { width:20px; height:20px; background:url('/images/icons/icon_pause.png') center center no-repeat; }
 /* Product edit */
 	.prod_nutritions_wrapper { padding-top:20px; }

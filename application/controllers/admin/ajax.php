@@ -74,6 +74,3 @@ class Ajax extends Admin_Controller {
         $this->load->view('admin/ratio_meras/subs/field_ratio_meras', $this->data);
 	}
 }
-?>
-/* End of file admin.php */
-/* Location: ./system/application/controllers/admin/admin.php */

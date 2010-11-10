@@ -25,25 +25,21 @@ class Translate_recipes extends Admin_Controller {
         #vihodit esli net takogo id
         #
         if($this->form_validation->run('translate_recipe')){
-            $inp_name               = $this->input->post('inp_name');
-            $text_original          = $this->input->post('text_original');
-            $text_translate         = $this->input->post('text_translate');
-            $input_url              = $this->input->post('inp_url');
-            # v array rdo_statuses to'ko odno zna4enie pereklu4atela statusa
-            list($status_selected)  = $this->input->post('rdo_statuses');
-                        
-            if($inp_name){
-                #
-                $recipe->name       = $inp_name;
-                $recipe->original   = $text_original;
-                $recipe->translate  = $text_translate;
-                $recipe->url        = $input_url;
-                if ($status_selected) $recipe->status = $status_selected;                
-                if($recipe->save()){                    
-                    $this->data['form_success'] = '... coхранен';
-                }
-                else
-                    $this->data['form_error'] = 'error';
+            $recipe->name               = $this->input->post('inp_name');
+            $recipe->name_translate     = $this->input->post('inp_name_translate');
+            $recipe->custom         	= $this->input->post('text_custom');
+            $recipe->custom_translate	= $this->input->post('text_custom_translate');
+			$recipe->ingredients         	= $this->input->post('text_ingredients');
+            $recipe->ingredients_translate	= $this->input->post('text_ingredients_translate');
+			$recipe->preparation         	= $this->input->post('text_preparation');
+            $recipe->preparation_translate	= $this->input->post('text_preparation_translate');
+            $recipe->url              		= $this->input->post('inp_url');
+			$recipe->status					= $this->input->post('rdo_statuses');        
+            if($recipe->save()){                    
+                $this->data['form_success'] = 'Рецепт Сохранен';
+            }
+            else{
+                $this->data['form_error'] = 'error';
             }
         }else{
             $this->data['form_error'] = validation_errors();
