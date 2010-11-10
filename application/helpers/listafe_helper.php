@@ -24,7 +24,12 @@
         return $name;
     }
     
-    
+	/* sets flashdata message by location(head, top) , type (error, succes, notification), message (string) */
+    function inform_flash_message($location, $type, $message){
+    	$key = $location.'_'.$type.'_message';
+    	$this->session->set_flashdata($key, $message);
+    }
+	
     function top_success_error($top_error, $top_success){
         if($top_error){
             echo "<div class='top_error'>".$top_error."</div>";
