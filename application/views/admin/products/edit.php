@@ -76,8 +76,10 @@
 		$nutrition_fact_count = 1;
         foreach($all_nutrition_categories as $nutrition_category):
             $value = '';
+            #
             foreach($current_nutrition_categories as $curr_nutr_cat) 
                                 if($curr_nutr_cat->nutrition_category_id == $nutrition_category->id) $value = $curr_nutr_cat->value;                               
+            #
             $inp_nutrition_category = array(
 	            'name'  => 'nutrition_category_'.$nutrition_category->id,        
 	            'id'    => 'nutrition_category_'.$nutrition_category->id,
@@ -128,39 +130,35 @@
 						?>
 					</div>
 			</div>
-	<?php
-        endforeach;
-		
-        echo form_label('Мера измерения по умолчанию', $sel_mera['id'], array('class' => 'f_label'));
-        echo form_dropdown($sel_mera['name'], $sel_mera['options'], $sel_mera['selected'], 'id = "'.$sel_mera['id'].'" class = "'.$sel_mera['class'].'"');
-        
-        echo form_label('Цена', $inp_price['id'], array('class' => 'f_label'));
-        echo form_input($inp_price);
-        
-        echo form_label('Кол-во продукта за эту цену', $inp_units_for_price['id'], array('class' => 'f_label'));
-        echo form_input($inp_units_for_price);
-        echo form_dropdown($sel_units_mera['name'], $sel_units_mera['options'], $sel_units_mera['selected'], 'id = "'.$sel_units_mera['id'].'" class = "'.$sel_units_mera['class'].'"');
-        echo cleared_div();
-        foreach($meras as $mera){   
-            echo open_f_block();
-            echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'checked' => datamapper_object_exist($mera,$product->mera), 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
-            echo form_label($mera->name, 'selected_meras_'.$mera->id, array('class' => 'f_label_cb'));
+            <?php
+            endforeach;
+    		
+            echo form_label('Мера измерения по умолчанию', $sel_mera['id'], array('class' => 'f_label'));
+            echo form_dropdown($sel_mera['name'], $sel_mera['options'], $sel_mera['selected'], 'id = "'.$sel_mera['id'].'" class = "'.$sel_mera['class'].'"');
+            
+            echo form_label('Цена', $inp_price['id'], array('class' => 'f_label'));
+            echo form_input($inp_price);
+            
+            echo form_label('Кол-во продукта за эту цену', $inp_units_for_price['id'], array('class' => 'f_label'));
+            echo form_input($inp_units_for_price);
+            echo form_dropdown($sel_units_mera['name'], $sel_units_mera['options'], $sel_units_mera['selected'], 'id = "'.$sel_units_mera['id'].'" class = "'.$sel_units_mera['class'].'"');
             echo cleared_div();
-            echo close_f_block();                  
-        }
-        
-        
-        
-        ?>
+            foreach($meras as $mera){   
+                echo open_f_block();
+                echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'checked' => datamapper_object_exist($mera,$product->mera), 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
+                echo form_label($mera->name, 'selected_meras_'.$mera->id, array('class' => 'f_label_cb'));
+                echo cleared_div();
+                echo close_f_block();                  
+            }?>
         </div>
         <div id="pe_additional_tab" class="tab_content hidden">
-        <?php 
-        echo form_label('Картинка', $fu_image['id'], array('class' => 'f_label'));
-        echo form_upload($fu_image);
-        
-        echo form_label('Описание продукта', $txt_description['id'], array('class' => 'f_label'));
-        echo form_textarea($txt_description);
-        ?>
+            <?php 
+            echo form_label('Картинка', $fu_image['id'], array('class' => 'f_label'));
+            echo form_upload($fu_image);
+            
+            echo form_label('Описание продукта', $txt_description['id'], array('class' => 'f_label'));
+            echo form_textarea($txt_description);
+            ?>
         </div>
     </div>
     <div class="f_buttons">

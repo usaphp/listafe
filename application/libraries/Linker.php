@@ -136,12 +136,23 @@ class Linker {
 		return $url;
 	}
     function a_utrition_categories_edit_by_id_link($id = false) {
-        if(!$id) $this->a_utrition_categories_show_link();
+        if(!$id) $this->a_nutrition_categories_show_link();
 		$segments = array('admin','utrition_categories','edit',$id);
 		$url = generate_url($segments);
 		return $url;
 	}
-        
+    #TRANSLATE_RECIPES
+    function a_translate_recipes_show_link(){
+        $segments = array('admin','translate_recipes','show');
+        $url = generate_url($segments);
+        return $url;
+    }
+    function a_translate_recipes_edit_by_id_link($id = false){
+        if(!$id) a_translate_recipes_show_link();
+        $segments = array('admin','tranclate_recipes','edit',$id);
+        $url = generate_url($segments);
+        return $url;
+    }    
 	/* Returns link to home page */
 	function home_page_link() {
 		return base_url();

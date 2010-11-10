@@ -1,33 +1,32 @@
 <?php
-$rec_name = array(
-'name'  => 'recipe_name',
-'id'    => 'recipe_name',
-'class' => 'f_input wide');
-
-$prep_time = array(
-'name'	=> 'prep_time',
-'id'	=> 'prep_time',
-'class' => 'f_input');
-
-$cook_time = array(
-'name'	=> 'cook_time',
-'id'	=> 'cook_time',
-'class' => 'f_input');
-
-$servings  = array(
-'name'	=> 'servings',
-'id'	=> 'servings',
-'class' => 'f_input');
-
-$image  = array(
-'name'	=> 'recipe_image',
-'id'	=> 'recipe_image',
-'class' => 'f_file_upload')
-
+    $rec_name = array(
+        'name'  => 'recipe_name',
+        'id'    => 'recipe_name',
+        'class' => 'f_input wide');
+    
+    $prep_time = array(
+        'name'	=> 'prep_time',
+        'id'	=> 'prep_time',
+        'class' => 'f_input');
+    
+    $cook_time = array(
+        'name'	=> 'cook_time',
+        'id'	=> 'cook_time',
+        'class' => 'f_input');
+    
+    $servings  = array(
+        'name'	=> 'servings',
+        'id'	=> 'servings',
+        'class' => 'f_input');
+    
+    $image  = array(
+        'name'	=> 'recipe_image',
+        'id'	=> 'recipe_image',
+        'class' => 'f_file_upload')
 ?>
 
 
-<div class="span-24 content" id="product_edit_w">  
+<div class="span-24 content">  
     <div class="f_header">Добавление рецепта</div>  
 	<?php echo form_open_multipart('/admin/recipes/add/', array('id' => 'add_recipe_form', 'class' => 'f_form span-24'));?>
     <div class="f_content span-24">
@@ -83,3 +82,4 @@ $image  = array(
 		<a href = '#' id = 'add_recipe' class = 'f_button green wide'>Сохранить Рецепт</a>
 	</div>
 	<?php echo form_close(); ?>
+</div>
