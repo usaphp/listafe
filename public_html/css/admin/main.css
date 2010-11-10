@@ -23,6 +23,9 @@ a { color:#0076c8; outline:none;}
 /* Content */
 	.content { padding:20px 0px;}
 
+/* Layout */
+    .f_two_column_l { float:left; width:450px;}
+    .f_two_column_r { float:right; width:450px;}
 /* Footer */
 	#footer_info { font-size:10px; border-top:1px dotted #e1e1e1; padding:5px 0px; color:#666;}
 

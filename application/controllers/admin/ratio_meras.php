@@ -41,6 +41,7 @@ class Ratio_meras extends Admin_Controller {
                 $ratios         = array_map('dm_get_ratios_array',$mera_scalars,$val_scalars,$mera_relatives,$val_relatives);                                                       
                 #generiruet spisok udalenia (preobrazua 3_2 v array('scalar'=>3,'relative=>2'))
                 $remove_ratios  = array_map('explode_scalar_relative',$remove_ratios);                
+                #
                 foreach($ratios as $ratio){
                     if(empty($ratio)) continue; 
                     #soedinaet meri i producti 
@@ -55,10 +56,12 @@ class Ratio_meras extends Admin_Controller {
                     
                     $dm_ratio->save($product);
                 }
+                #
                 foreach($remove_ratios as $ratio){
                     $dm_ratio = $product->get_ratios($ratio);
                     $dm_ratio->delete();
                 }
+                #
                 if($this->form_validation->run('product_prices')){            
                     if(true){
                         $this->data['form_success'] = '... добавил';
