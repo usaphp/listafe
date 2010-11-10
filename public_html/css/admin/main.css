@@ -73,7 +73,7 @@ a { color:#0076c8; outline:none;}
         .f_checkbox_under_w label	{ font-size:11px; padding-left:3px; }
 
 /* General errors */
-	.error_message { background:#fff5f5; border:1px solid #ffdddd; color:#950000; margin:10px 0px; padding:8px 4px;}
+	.error_message { background:#fff5f5; border:1px solid #ffdddd; color:#950000; margin:10px 0px; padding:8px;}
 	
 /* Admin add recipe */
 	#add_step {  }

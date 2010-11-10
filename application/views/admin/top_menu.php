@@ -1,5 +1,5 @@
 <ul id="top_menu" class="span-24 dropdown">
-    <li><?php echo anchor($this->linker->home_page_link(), 'Домой'); ?></li>
+    <li><?php echo anchor($this->linker->a_home_link(), 'Домой'); ?></li>
     <li><?php echo anchor($this->linker->a_products_show_link(), 'Продукты'); ?>
         <ul class="sub_menu">
             <li><?php echo anchor($this->linker->a_products_add_link(), 'Добавить Продукт'); ?></li>

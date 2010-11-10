@@ -5,9 +5,12 @@ class Admin_Controller extends Controller {
 	public $top_error;
     public $top_success;
     
-    function __construct(){
+    function __construct($force_login = TRUE){
         parent::__construct();
         
+		# forse admin user to login
+		if($force_login) $this->security_lib->force_login();
+		
         $this->top_error    = $this->session->flashdata('top_error');
         $this->top_success  = $this->session->flashdata('top_success');
         

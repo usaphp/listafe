@@ -4,7 +4,7 @@ class Ajax extends Admin_Controller {
 
 	function __construct()
 	{
-		parent::__construct();
+		parent::__construct(FALSE);
         $this->output->enable_profiler(FALSE);
 	}
 	
@@ -17,11 +17,10 @@ class Ajax extends Admin_Controller {
 	function login(){
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
-		$admin_user = new Admin_user();
-		if($admin_user->login($username, $password)){
+		if($this->security_lib->login($username, $password)){
 			echo json_encode(array('status' => TRUE, 'message' => $this->linker->a_home_link()));
 		}else{
-			echo json_encode(array('status' => FALSE, 'message' => 'Вы ввели неверные имя пользователя и пароль.'));			
+			echo json_encode(array('status' => FALSE, 'message' => 'Неверное имя пользователя и пароль.'));			
 		}
 		return;
 	}

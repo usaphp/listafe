@@ -24,6 +24,13 @@ class Linker {
 		return $url;
 	}
 	
+	# logout admin user 
+	function a_logout_link(){
+		$segments = array('admin', 'security', 'logout');
+		$url = generate_url($segments);
+		return $url;
+	}
+	
 	/* returns admin homepage link */
 	function a_home_link(){
 		$segments = array('admin');
