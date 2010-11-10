@@ -40,9 +40,10 @@
             <div class="separator"></div>
             <div>
                 <?php        
-                
+                #sozdaet radio_button
                 foreach($dm_statuses as $status){                    
                     $rdo_status['value']    = $status->id;
+                    #esli dannii status sovpodaet so sozdavaemim statusom to del. pometka
                     $rdo_status['checked']  = ($recipe->status == $status->id)?'checked':'';                    
                     $rdo_status['id']       = 'rdo_status_'.$status->id;
                     echo form_radio($rdo_status);

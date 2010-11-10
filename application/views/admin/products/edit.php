@@ -1,59 +1,55 @@
-     <?php
-     
+<?php
     $inp_product_name = array(
-    'name'  => 'product_name',
-    'id'    => 'product_name',
-    'class' => 'f_input required',
-    'value' => $product->name);
-    
+        'name'  => 'product_name',
+        'id'    => 'product_name',
+        'class' => 'f_input required',
+        'value' => $product->name
+    );    
     $sel_product_category = array(
-    'options' => array_for_dropbox($product_categories),
-    'name'  => 'product_category_id',
-    'id'    => 'product_category_id',
-    'class' => 'f_select wide required',
-    'selected' => $product->product_category_id);
-	
+        'options' => array_for_dropbox($product_categories),
+        'name'  => 'product_category_id',
+        'id'    => 'product_category_id',
+        'class' => 'f_select wide required',
+        'selected' => $product->product_category_id
+    );
     $txt_description = array(
-    'name'  => 'description',
-    'id'    => 'description',
-    'class' => 'f_textarea',
-    'value' => $product->description);
-   
+        'name'  => 'description',
+        'id'    => 'description',
+        'class' => 'f_textarea',
+        'value' => $product->description
+    );
     $sel_mera = array(
-    'options' => array_for_dropbox($meras),
-    'name'  => 'mera_id',
-    'id'    => 'mera_id',
-    'class' => 'f_select wide',
-    'selected' => $product->mera_id);
-    
+        'options' => array_for_dropbox($meras),
+        'name'  => 'mera_id',
+        'id'    => 'mera_id',
+        'class' => 'f_select wide',
+        'selected' => $product->mera_id
+    );
     $inp_price = array(
-    'name'  => 'price',
-    'id'    => 'price',
-    'class' => 'f_input required',
-    'value' => $product->price
+        'name'  => 'price',
+        'id'    => 'price',
+        'class' => 'f_input required',
+        'value' => $product->price
     );
-    
     $inp_units_for_price = array(
-    'name'  => 'units_for_price',
-    'id'    => 'units_for_price',
-    'class' => 'f_input f_joined number required',
-    'value' => $product->units_for_price
+        'name'  => 'units_for_price',
+        'id'    => 'units_for_price',
+        'class' => 'f_input f_joined number required',
+        'value' => $product->units_for_price
     );
-    
     $sel_units_mera = array(
-    'options' => array_for_dropbox($meras),
-    'name'  => 'units_mera_id',
-    'id'    => 'units_mera_id',
-    'class' => 'f_select wide f_joined',
-    'selected' => $product->units_mera_id
-    );
-    
+        'options' => array_for_dropbox($meras),
+        'name'  => 'units_mera_id',
+        'id'    => 'units_mera_id',
+        'class' => 'f_select wide f_joined',
+        'selected' => $product->units_mera_id
+    );    
     $fu_image = array(
-    'name'  => 'image',
-    'id'    => 'image',
-    'class' => 'f_file_upload');
-    
-    ?>
+        'name'  => 'image',
+        'id'    => 'image',
+        'class' => 'f_file_upload'
+        );
+?>
 <div class="span-24 content" id="product_edit_w">  
     <div class="f_header">Добавление продукта</div>  
     <ul class="span-24 tabs">
@@ -74,11 +70,11 @@
             
 		# Cikl po kategoriam veshestv
 		$nutrition_fact_count = 1;
-        foreach($all_nutrition_categories as $nutrition_category):
-            $value = '';
+        foreach($all_nutrition_categories as $nutrition_category):            
             #
+            $value = '';
             foreach($current_nutrition_categories as $curr_nutr_cat) 
-                                if($curr_nutr_cat->nutrition_category_id == $nutrition_category->id) $value = $curr_nutr_cat->value;                               
+                if($curr_nutr_cat->nutrition_category_id == $nutrition_category->id) $value = $curr_nutr_cat->value;                               
             #
             $inp_nutrition_category = array(
 	            'name'  => 'nutrition_category_'.$nutrition_category->id,        

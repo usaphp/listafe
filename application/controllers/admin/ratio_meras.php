@@ -14,7 +14,7 @@ class Ratio_meras extends Admin_Controller {
         $this->template->load('/admin/templates/main_template', '/admin/ratio_meras<br />/show', $this->data);
     }
 
-	function delete($id = false) {
+	function delete($id = false){
 		
 	}
     
@@ -31,38 +31,38 @@ class Ratio_meras extends Admin_Controller {
         $val_scalars    = $this->input->post('val_scalars')?$this->input->post('val_scalars'):array();
         $val_relatives  = $this->input->post('val_relatives')?$this->input->post('val_relatives'):array();
         $remove_ratios  = $this->input->post('hidden_ratio_removed')?$this->input->post('hidden_ratio_removed'):array();
-        $ratios         = array();        
+        #spisok dobavlenii ili izmenenii
+        $ratios         = array();
         #
         if($product_name){
-            $product->get_by_name($product_name);            
-            if($product->exists()){                                                                
+            $product->get_by_name($product_name);
+            if($product->exists()){
+                if($this->form_validation->run('product_meras')){
                 #generiruen array vida ('scalar'=> zna4enie, relative=> zna4enie) 
                 #kotorii bedet parameterom zaprosa v baze Ratio_Meras
                 $ratios         = array_map('dm_get_ratios_array',$mera_scalars,$val_scalars,$mera_relatives,$val_relatives);                                                       
                 #generiruet spisok udalenia (preobrazua 3_2 v array('scalar'=>3,'relative=>2'))
                 $remove_ratios  = array_map('explode_scalar_relative',$remove_ratios);                
-                #
+                #                
                 foreach($ratios as $ratio){
                     if(empty($ratio)) continue; 
                     #soedinaet meri i producti 
                     $dm_ratio = $product->get_ratios($ratio);
                     #esli net svazi to sozdaen novuu
-                    if(!$dm_ratio->id) $dm_ratio = new Ratio_mera();                                                                
+                    if(!$dm_ratio->id) $dm_ratio = new Ratio_mera();
                     #
                     $dm_ratio->scalar        = $ratio['scalar'];
                     $dm_ratio->scalar_value  = $ratio['val_scalar'];
                     $dm_ratio->relative      = $ratio['relative'];
-                    $dm_ratio->relative_value= $ratio['val_relative'];
-                    
+                    $dm_ratio->relative_value= $ratio['val_relative'];                    
                     $dm_ratio->save($product);
                 }
-                #
+                #Udalaet vibranie sootnoshenia mer
                 foreach($remove_ratios as $ratio){
                     $dm_ratio = $product->get_ratios($ratio);
                     $dm_ratio->delete();
                 }
                 #
-                if($this->form_validation->run('product_prices')){            
                     if(true){
                         $this->data['form_success'] = '... добавил';
                     }else{
@@ -82,39 +82,5 @@ class Ratio_meras extends Admin_Controller {
         $this->data['ratios']           = $product->get_ratios();
         #
         $this->template->load('/admin/templates/main_template', 'admin/ratio_meras/edit', $this->data);
-    }
-    
-	function edit2(){
-        $this->load->library('form_validation');
-		array_push($this->data['js_functions'], array('name' => 'ratio_meras_edit_init', 'data' => FALSE));
-        #
-        $ratio          = new Ratio_mera();
-        $product        = new Product();
-        $meras          = new Mera();
-        #
-        $ratio->where_related($product)->get_iterated();
-        $product_name = $this->input->post('product');        				                
-        $product->where_related('mera')->get_by_name($product_name);
-        
-        $meras->get();
-        #                
-        //if form validates
-        if($this->form_validation->run('product_prices')){            
-//            if($nutrition->save()){
-//                $this->data['form_success'] = '... добавлено';
-//            }else{
-//                $this->data['form_error'] = 'erreor'; #$nutrition->error->string;
-//            }
-//        }else{
-//            $this->data['form_error'] = validation_errors();
-        }
-        $scalar_meras->
-        $scalar_meras->
-        
-        $this->data['product']          = $product;
-        $this->data['ratio']            = $ratio;
-        $this->data['meras']            = $meras;
-        
-        $this->template->load('/admin/templates/main_template', 'admin/ratio_meras/edit', $this->data);
-    }
+    }    
 }

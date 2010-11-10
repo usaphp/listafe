@@ -1,4 +1,3 @@
-
 <div class="span-24 content">  
     <div class="f_header">Добавление ценовых категорий</div>  
 	<?php echo form_open('/admin/ratio_meras/edit/', array('id' => 'edit_ratio_meras_form', 'class' => 'f_form span-24', 'autocomplete' => 'off'));?>

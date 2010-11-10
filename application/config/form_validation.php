@@ -8,6 +8,8 @@ $config = array(
             'product_prices' =>
                 array('field' => 'product_name', 'label' => 'Название Продукта', 'rules' => 'trim|required|xss_clean'),            
             'translate_recipe' =>
-                array('field' => 'text_translate', 'label' => 'Перевод', 'rules' => 'trim|required|xss_clean')
+                array('field' => 'text_translate', 'label' => 'Перевод', 'rules' => 'trim|required|xss_clean'),
+            'product_meras' =>
+                array('rules' => 'trim|required|xss_clean')
 );
 ?>
