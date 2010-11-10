@@ -16,8 +16,8 @@ $sel_main_mera = array(
         $this->data['relative_selected']    = $ratio->relative;
         $this->data['relative_value']       = $ratio->relative_value;
         #
-        $this->data['scalar_relative']      = $ratio->scalar.'_'.$ratio->relative; 
-        $this->load->view('admin/ratio_meras/subs/field_ratio_meras',$this->data);        
+        $this->data['scalar_relative']      = $ratio->scalar.'_'.$ratio->relative;
+        $this->load->view('admin/ratio_meras/subs/field_ratio_meras',$this->data);
     }
     #dopolnitel'noe pustoe pole vvoda
     $this->data['scalar_selected']      = '';
@@ -29,7 +29,8 @@ $sel_main_mera = array(
     ?>
     </div>
     <?php
-    echo anchor('#', 'Add ratio', array('class'=> 'f_button green separator', 'id' => 'add_ratio'));    	
-	echo anchor('#', 'Save Product', array('class'=> 'f_button grey wide separator', 'id' => 'save_product'));        
-          
+    echo separator_div();
+    echo anchor('#', 'Add ratio', array('class'=> 'f_button green', 'id' => 'add_ratio')); 
+	echo anchor('#', 'Save Product', array('class'=> 'f_button grey wide', 'id' => 'save_product'));
+    
 ?>

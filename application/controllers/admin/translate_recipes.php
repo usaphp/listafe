@@ -23,11 +23,12 @@ class Translate_recipes extends Admin_Controller {
         $statuses       = new Translate_status();
         $recipe         = new Translate_recipe();                        
         $recipe->get_by_id($id);        
-        #
+        #vihodit esli net takogo id
         if(!$recipe->id) return $this->show();
-        #       
+        #
         if($this->form_validation->run('translate_recipe')){
             $text_translate         = $this->input->post('text_translate');
+            # v array rdo_statuses to'ko odno zna4enie pereklu4atela statusa
             list($status_selected)  = $this->input->post('rdo_statuses');            
             if ($text_translate){
                 #

@@ -21,20 +21,13 @@ class Products extends Admin_Controller {
         $nutrition_categories->get_iterated();
         $nutr_categor_iter = $nutrition_categories->getIterator();        
         $nutr_categor_iter->current()->nutrition->where_related()->get();
-        //$nutrition_categories = new Nutrition_category();
-        //$m_products = $this->mapper->load_data('Product', 'Nutrition_category', 'Product_nutrition_category_fact');
         
         $products = new Product();        
         
         $products->include_related('product_category', array('name'))
                 ->get();
         
-        #$products->nutrition_category->include_join_fields();
-        
         $this->data['products'] = $products;
-        
-        //$this->data['m_products'] = $m_products;
-        //$this->data['nutrition_categories'] = $nutrition_categories->get();
         
         $this->template->load('/admin/templates/main_template', '/admin/products/show', $this->data);
     }

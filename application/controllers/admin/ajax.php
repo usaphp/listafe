@@ -71,8 +71,9 @@ class Ajax extends Admin_Controller {
     
    	function add_ratio_mera(){
         $meras = new Mera();        
-		$this->data['meras']            = $meras->get_iterated();        
-		$this->load->view('admin/ratio_meras/subs/field_ratio_meras', $this->data);
+		$this->data['scalar_meras']     = $meras->get_clone(true)->where('type',1)->get_iterated();                
+        $this->data['relative_meras']   = $meras->get_clone(true)->where('type',2)->get_iterated();
+        $this->load->view('admin/ratio_meras/subs/field_ratio_meras', $this->data);
 	}
 }
 

@@ -106,10 +106,9 @@
         return false;
     }
     #vozvrashaet nabor otnosheni' velichit
-    function dm_get_ratios_array($scalar,$val_scalar,$relative,$val_relative){
-        echo $scalar.' '.$relative;
-       if ($scalar && $relative) return array('scalar'=>$scalar,'val_scalar'=>$val_scalar,'relative'=>$relative,'val_relative'=>$val_relative); 
-        
+    function dm_get_ratios_array($scalar,$val_scalar,$relative,$val_relative){        
+        if ($scalar && $relative) 
+            return array('scalar'=>$scalar,'val_scalar'=>$val_scalar,'relative'=>$relative,'val_relative'=>$val_relative);         
     }
     function array_wrap($var){
         return array($var);
