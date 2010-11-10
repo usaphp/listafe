@@ -19,11 +19,11 @@ class Ajax extends Admin_Controller {
 		$password = $this->input->post('password');
 		$admin_user = new Admin_user();
 		if($admin_user->login($username, $password)){
-			$response = json_encode(array('status' => TRUE, 'message' => 'Логин совершен.'));
+			echo json_encode(array('status' => TRUE, 'message' => $this->linker->a_home_link()));
 		}else{
-			$response = json_encode(array('status' => FALSE, 'message' => 'Вы ввели неверные имя пользователя и пароль.'));			
+			echo json_encode(array('status' => FALSE, 'message' => 'Вы ввели неверные имя пользователя и пароль.'));			
 		}
-		return $response;
+		return;
 	}
 	
 	/* Suggest product for recipe */

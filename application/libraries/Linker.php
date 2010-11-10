@@ -24,6 +24,13 @@ class Linker {
 		return $url;
 	}
 	
+	/* returns admin homepage link */
+	function a_home_link(){
+		$segments = array('admin');
+		$url = generate_url($segments);
+		return $url;
+	}
+	
     #RECIPE 
 	function a_recipe_add_link() {
 		//return link to homepage if data for author was false or null

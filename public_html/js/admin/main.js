@@ -6,6 +6,31 @@ main.prototype.general_init = function(){
     $('form.f_validate').validate();
 }
 
+main.prototype.login_init = function(){
+	$('#login_form').validate({
+		rules : { username : 'required', password : 'required' },
+		messages : { username : 'Введите имя пользователя', password : 'Введите пароль' },
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				dataType : 'json',
+                type : 'post',
+				url: "/admin/ajax/login",
+				success: function(response) {
+					if(response.status){
+						window.location = response.message;
+					}else{
+					   $('#message_block').html("<div class= 'error_message'>"+response.message+"</div>");
+					}
+				}
+			});
+		}
+	});
+	
+	$('#login_button').click(function(){
+		$('#message_block').html('');
+	});
+}
+
 main.prototype.dropdown_init = function(){
     $("ul.dropdown li").hover(function(){
         $(this).addClass("hover");

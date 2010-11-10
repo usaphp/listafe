@@ -35,6 +35,7 @@ $confirmation_code = array(
 <?php echo form_open($this->linker->a_login_link(), array('id' => 'login_form'))?>
     <div id="login_logo"></div>
     <div class="f_header">Login</div>
+    <div id='message_block'></div>
     <div class="f_content">
         <?php echo form_label('Username', $username['id'], array('class' => 'f_label'));?>
 		<?php echo form_input($username)?>
@@ -44,7 +45,7 @@ $confirmation_code = array(
         <?php echo form_error($password['name']); ?>
     </div>
     <div class="f_buttons">
-        <?php echo form_submit('login','Login');?>
+        <?php echo form_submit(array('name' => 'login_button', 'id' => 'login_button', 'value' => 'login'));?>
     </div>
   <?php echo form_close()?>
 </div>

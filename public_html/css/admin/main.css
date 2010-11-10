@@ -60,7 +60,7 @@ a { color:#0076c8; outline:none;}
         .f_label_cb { float:left; display:block; margin-left: 5px; }
         .f_checkbox { float:left; display:block; } 
 	    
-/* Errors */
+/* Form Errors */
     .f_error_top		{ background:#fff5f5; border:1px solid #ffdddd; color:#950000; }
     .f_success_top		{ background:#f9ffed; border:1px solid #e9ffba; color:#5f9500; }
     .f_general_error 	{ background:#fff5f5; color:#950000; padding:6px 4px; border:1px solid #ffdddd; }
@@ -72,6 +72,9 @@ a { color:#0076c8; outline:none;}
         .f_checkbox_under_w input	{}
         .f_checkbox_under_w label	{ font-size:11px; padding-left:3px; }
 
+/* General errors */
+	.error_message { background:#fff5f5; border:1px solid #ffdddd; color:#950000; margin:10px 0px; padding:8px 4px;}
+	
 /* Admin add recipe */
 	#add_step {  }
 	.step_block { padding: 5px; margin: 5px 0px; border-top: 1px solid #ededed; background: #f9f9f9; }
