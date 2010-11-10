@@ -1,5 +1,4 @@
 <?php
-
 class Translate_recipes extends Admin_Controller {
     
 	function __construct(){
@@ -17,26 +16,30 @@ class Translate_recipes extends Admin_Controller {
     }
     #
     function edit($id = false){        
-        if(!$id) return $this->show();
+        
         $this->load->library('form_validation');
         #
         $statuses       = new Translate_status();
         $recipe         = new Translate_recipe();                        
         $recipe->get_by_id($id);        
         #vihodit esli net takogo id
-        if(!$recipe->id) return $this->show();
         #
         if($this->form_validation->run('translate_recipe')){
+            $inp_name               = $this->input->post('inp_name');
+            $text_original          = $this->input->post('text_original');
             $text_translate         = $this->input->post('text_translate');
+            $input_url              = $this->input->post('inp_url');
             # v array rdo_statuses to'ko odno zna4enie pereklu4atela statusa
-            list($status_selected)  = $this->input->post('rdo_statuses');            
-            if ($text_translate){
+            list($status_selected)  = $this->input->post('rdo_statuses');
+                        
+            if($inp_name){
                 #
+                $recipe->name       = $inp_name;
+                $recipe->original   = $text_original;
                 $recipe->translate  = $text_translate;
-                if ($status_selected) $recipe->status = $status_selected;
-                
-                if($recipe->save()){
-                    
+                $recipe->url        = $input_url;
+                if ($status_selected) $recipe->status = $status_selected;                
+                if($recipe->save()){                    
                     $this->data['form_success'] = '... coхранен';
                 }
                 else
@@ -49,16 +52,20 @@ class Translate_recipes extends Admin_Controller {
         $this->data['dm_statuses']      = $statuses->get_iterated();        
         $this->template->load('/admin/templates/main_template', '/admin/translate_recipes/edit', $this->data);
     }
-    #
-    function add(){
-		
-	}
+
     #
     function delete($id=false){
     #    
     }
-    function _save(){
-        #code
+    function add(){          
+        $this->load->library('form_validation');
+        #
+        $statuses       = new Translate_status();
+        $recipe         = new Translate_recipe();                        
+        #        
+        $this->data['recipe']           = $recipe;
+        $this->data['dm_statuses']      = $statuses->get_iterated();        
+        $this->template->load('/admin/templates/main_template', '/admin/translate_recipes/edit', $this->data);
     }    
 }
 /* End of file admin.php */

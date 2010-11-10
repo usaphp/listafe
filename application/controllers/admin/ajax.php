@@ -8,8 +8,7 @@ class Ajax extends Admin_Controller {
         $this->output->enable_profiler(FALSE);
 	}
 	
-	function index()
-	{
+	function index(){
     
 	}
 	
@@ -75,6 +74,6 @@ class Ajax extends Admin_Controller {
         $this->load->view('admin/ratio_meras/subs/field_ratio_meras', $this->data);
 	}
 }
-
+?>
 /* End of file admin.php */
 /* Location: ./system/application/controllers/admin/admin.php */
