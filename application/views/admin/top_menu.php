@@ -36,6 +36,7 @@
     <li><?php echo anchor($this->linker->a_ratio_meras_edit_by_id_link(), 'Соотношение Величин'); ?></li>        
     <li><?php echo anchor($this->linker->a_translate_recipes_show_link(), 'Переводы'); ?>
         <ul class="sub_menu">
+            <li><?php echo anchor($this->linker->a_translate_recipes_show_link(), 'Список Переводов'); ?>
             <li><?php echo anchor($this->linker->a_translate_recipes_add_link(), 'Добавить перевод'); ?>
         </ul>
     </li>         
