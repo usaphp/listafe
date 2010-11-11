@@ -24,7 +24,7 @@ class Security_lib {
 	public function login($username, $password){
 	   
 		$admin_user = new Admin_user();
-		if(!$admin_user->login($username, $password)){
+		if($admin_user->login($username, $password)){
 			$userdata = array('user_id' => $admin_user->id, 'logged_in' => TRUE);
 			$this->CI->session->set_userdata($userdata);
 			$this->update_login_status();
