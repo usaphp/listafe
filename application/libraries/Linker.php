@@ -174,7 +174,7 @@ class Linker {
         return $url;
     }
     function a_translate_recipes_add_link(){    
-        $segments = array('admin','translate_recipes','add');
+        $segments = array('admin','translate_recipes','edit');
         $url = generate_url($segments);
         return $url;
     }
