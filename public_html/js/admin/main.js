@@ -328,4 +328,31 @@ main.prototype.process_ajax_response = function(response, form_name){
     		      width : $(this).attr('width')
             });
     	}
+    	
+    // recipes translation adding/editing page	
+    main.prototype.translate_recipes_init = function(){
+    	$('#translate_recipe_edit_form').validate({
+    		rules : { 
+    				'inp_url' : { 
+    					required : true , 
+    					remote : { 
+    						url: "/admin/ajax/translate_recipe_url_valid_insert", 
+    						type: 'post', 
+    						data : { recipe_translate_id : function(){ return $('#recipe_translate_id').val(); } } }
+    			
+    		 			},
+    		 		'text_name' : { 
+    		 			required : true,
+    		 			remote : { 
+    		 				url: "/admin/ajax/translate_recipe_name_valid_insert", 
+    		 				type: 'post', 
+    		 				data : { recipe_translate_id : function(){ return $('#recipe_translate_id').val(); } } }
+    		 		 }	 
+    		 	},
+    		messages : {
+    				'inp_url' : { remote : 'Этот рецепт уже есть в базе данных.' },
+    				'text_name' : { remote : 'Это название рецепта уже есть в базе данных.' }
+    		}
+    	});
+    }
 }

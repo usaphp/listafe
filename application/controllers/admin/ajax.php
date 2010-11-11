@@ -74,5 +74,27 @@ class Ajax extends Admin_Controller {
         $this->data['relative_meras']   = $meras->get_clone(true)->where('type',2)->get_iterated();
         $this->load->view('admin/ratio_meras/subs/field_ratio_meras', $this->data);
 	}
+	
+	/* Checks the translate recipe url for existance in database */
+	function translate_recipe_url_valid_insert(){
+        $recipe = new Translate_recipe();
+		// esli recept translate redaktiruetsya - to budet peredano ego id a znachit ego nado iskluchit iz proverki
+		$current_recipe_translate = $this->input->post('recipe_translate_id');
+		if($current_recipe_translate) $recipe->where('id != '.$current_recipe_translate);
+		$recipe->get_by_url(trim($this->input->post('inp_url')));
+		echo json_encode(!$recipe->exists());
+	}
+	
+	/* Checks the translate recipe name for existance in database */
+	function translate_recipe_name_valid_insert(){
+        $recipe = new Translate_recipe();
+		// esli recept translate redaktiruetsya - to budet peredano ego id a znachit ego nado iskluchit iz proverki
+		$current_recipe_translate = $this->input->post('recipe_translate_id');
+		if($current_recipe_translate) $recipe->where('id != '.$current_recipe_translate);
+		$recipe->get_by_name(trim($this->input->post('text_name')));
+		echo json_encode(!$recipe->exists());
+	}
+	
+	
 }
 ?>

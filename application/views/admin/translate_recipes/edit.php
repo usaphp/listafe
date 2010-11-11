@@ -5,21 +5,25 @@
         'name'  => 'inp_url',
         'value' => $recipe->url,
         'id'    => 'inp_url',
-        'class' => 'f_input required widest'
+        'class' => 'f_input widest'
     );
 	
-    $inp_name = array(
-        'name'  => 'inp_name',
+    $text_name = array(
+        'name'  => 'text_name',
         'value' => $recipe->name,
-        'id'    => 'inp_name',
-        'class' => 'f_input required'
+        'id'    => 'text_name',
+        'class' => 'f_textarea',
+        'cols'  => '50',
+        'rows'	=> '3'
     );
 	
-    $inp_name_translate = array(
-        'name'  => 'inp_name_translate',
+    $text_name_translate = array(
+        'name'  => 'text_name_translate',
         'value' => $recipe->name_translate,
-        'id'    => 'inp_name_translate',
-        'class' => 'f_input'
+        'id'    => 'text_name_translate',
+        'class' => 'f_textarea',
+        'cols'  => '50',
+        'rows'	=> '3'
     );
 	
     $text_custom = array(
@@ -72,8 +76,9 @@
     );
 	
     $comment = array(
-        'name'  => 'comment',   
-        'value' => $recipe->comment,   
+        'name'  => 'comments',
+        'id'	=> 'comments',
+        'value' => $recipe->comments,   
         'class' => 'f_textarea',
         'cols'	=> '110',
         'rows'	=> '5'
@@ -81,7 +86,7 @@
 ?>
 <div class="span-24 content">  
     <div class="f_header">Редактор перевода</div>
-    <?php echo form_open_multipart('/admin/translate_recipes/edit/'.$recipe->id, array('id' => 'translate_recipe_edit_form', 'class' => 'f_form f_validate'));?>
+    <?php echo form_open_multipart('/admin/translate_recipes/edit/'.$recipe->id, array('id' => 'translate_recipe_edit_form', 'class' => 'f_form'));?>
     <div class="f_content">
         <?php echo form_success_error($form_error, $form_success); ?>
             <?php
@@ -92,8 +97,8 @@
             <div class="f_two_column_l">
                 <?php
                 
-                echo form_label('Название рецепта', $inp_name['id'], array('class' => 'f_label'));
-                echo form_input($inp_name);
+                echo form_label('Название рецепта', $text_name['id'], array('class' => 'f_label'));
+                echo form_textarea($text_name);
                 
                 echo form_label('Описание Рецепта', $text_custom['name'], array('class' => 'f_label '));
                 echo form_textarea($text_custom);
@@ -106,14 +111,14 @@
             <div class="f_two_column_r">
                 <?php
 				
-                echo form_label('Название рецепта', $inp_name_translate['id'], array('class' => 'f_label'));
-                echo form_input($inp_name_translate);
+                echo form_label('Перевод: Название рецепта', $text_name_translate['id'], array('class' => 'f_label'));
+                echo form_textarea($text_name_translate);
 				
-                echo form_label('Описание Рецепта', $text_custom_translate['name'], array('class' => 'f_label '));
+                echo form_label('Перевод: Описание Рецепта', $text_custom_translate['name'], array('class' => 'f_label '));
                 echo form_textarea($text_custom_translate);
-                echo form_label('Ингредиенты', $text_ingredients_translate['name'], array('class' => 'f_label '));
+                echo form_label('Перевод: Ингредиенты', $text_ingredients_translate['name'], array('class' => 'f_label '));
                 echo form_textarea($text_ingredients_translate);
-                echo form_label('Приготовление', $text_preparation_translate['name'], array('class' => 'f_label '));
+                echo form_label('Перевод: Приготовление', $text_preparation_translate['name'], array('class' => 'f_label '));
                 echo form_textarea($text_preparation_translate);
                 ?>
             </div>
@@ -131,7 +136,8 @@
                 foreach($dm_statuses as $status){                    
                     $rdo_status['value']    = $status->id;
                     #esli dannii status sovpodaet so sozdavaemim statusom to del. pometka
-                    $rdo_status['checked']  = ($recipe->status == $status->id)?'checked':'';                    
+                    if($recipe->status) $rdo_status['checked'] = ($recipe->status == $status->id)?'checked':'';
+					else $rdo_status['checked']  = ($status->id == 1)?'checked':'';  
                     $rdo_status['id']       = 'rdo_status_'.$status->id;
                     echo form_radio($rdo_status);
                     echo form_label($status->name, 'rdo_status_'.$status->id, array('class' => 'f_label_radio'));
@@ -140,7 +146,8 @@
             </div>
             <?php echo cleared_div();?>
             <div class="separator"></div>
-            <div class="f_buttons">                
+            <div class="f_buttons">
+            	<input type='hidden' id='recipe_translate_id' value='<?php echo $recipe->id;?>'/>                
                 <?php echo form_submit('btn_save_recipe','Сохранить');?>
             </div>    
         <?php echo form_close(); ?>
