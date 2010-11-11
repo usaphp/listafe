@@ -13,9 +13,10 @@ class Ajax extends Admin_Controller {
 	}
 	
 	/* login user */
-	function login(){
+	function login(){       	   
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
+        
 		if($this->security_lib->login($username, $password)){
 			echo json_encode(array('status' => TRUE, 'message' => $this->linker->a_home_link()));
 		}else{
@@ -74,3 +75,4 @@ class Ajax extends Admin_Controller {
         $this->load->view('admin/ratio_meras/subs/field_ratio_meras', $this->data);
 	}
 }
+?>

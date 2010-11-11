@@ -14,40 +14,11 @@ class Recipes extends Admin_Controller {
 	}
     
     function show(){
-        #$this->load->library('upload_image_lib');
-                
-        #$this->upload_image_lib->initialize(array('type'=>'recipe','size'=>array('tiny')));
-                
-        #echo $this->upload_image_lib->crop_img('re_1_1.jpg');
-        #echo $this->upload_image_lib->get_errors();
-        #echo $this->upload_image_lib->get_errors();
-        #return;
-        #echo $this->upload_img_lib->upload_img('form_name','image_name');
-        
-        #return;
+        #
         $recipes = new Recipe();
         $images = new Recipes_image();
         $recipes->get_full_info();
-        
-        //$recipes->select('recipes.*, recipes_images.id as recipes_image_id')->where_related('recipes_image', 'image_type', 1)->get();
-        /*
-        $recipes_arr = array();
-        foreach($recipes as $recipe){
-            $recipe->recipes_image->get();
-            array_push($recipes_arr, $recipe);
-        }
-        */
-        #$recipes->get();
-        #$recipes->where_related('recipes_image','image_type',1);
-        //$images->include_related('recipes')->get();
-        #foreach($recipes as $recipe):
-           #print_flex ($recipes);
-            #echo $recipe->id;
-        #endforeach;
-        #$recigies->include_related('mera', array('name'))->get();
-        #$recigies->include_related('category', array('name'))->get();
-        
-        #$data['images'] = $images->get();
+        #
         $data['recipes'] = $recipes->data;
         $this->template->load('/admin/templates/main_template', 'admin/recipes/show', $data);
     }
@@ -92,10 +63,10 @@ class Recipes extends Admin_Controller {
 		{
   	/* Success on validation */
             # Zagruzka Recepta
-            $recipe->name = $this->input->post('recipe_name');
-            $recipe->prepare_time = $this->input->post('prep_time');
-            $recipe->cook_time = $this->input->post('cook_time');
-            $recipe->servings = $this->input->post('servings');
+            $recipe->name           = $this->input->post('recipe_name');
+            $recipe->prepare_time   = $this->input->post('prep_time');
+            $recipe->cook_time      = $this->input->post('cook_time');
+            $recipe->servings       = $this->input->post('servings');
             
             #find filling fields of product and create array $product_name
             
@@ -174,22 +145,6 @@ class Recipes extends Admin_Controller {
                         $recipes_step->step = $i; 
                         $recipes_step->text = $step_descript;
                         
-                        
-                        /*--------starii variant
-                        # v paramtrah func ukazivaetsa id recepta i ID step kotorii budet sozdan
-                        # takze peredaetsa $i dla oboznach4enia nuznogo pola formi image
-                        # $recipes_step->get_count()-utilitnay func sozdanaia v modeli Recipes_Step() dla uproshenia i lu4shego vospriatia coda
-                        $name_image = ($recipes_step->id)?'sp_'.$recipe->id.'_'.$recipes_step->id.'.jpg':'sp_'.$recipe->id.'_'.($recipes_step->get_count()+1).'.jpg';
-                        
-                         #= $step_id; #generiruet ima iz prefixa ID recepta i tekushey stroki v base
-                        $upload_path = $this->config->item('step_images_path');                     #kuda
-                        #echo $upload_path.$name_image;
-                        
-                        # esli image sozdal udachno to vozvrashaen ima image inache vozvrachaet false
-                        #if($this->_upload_images($form_name,$name_image,$upload_path)){ 
-                        #    $recipes_step->image = $name_image;
-                        #}*/
-                        
                         #dobavlenie image 4erez upload_image_lib
                         $form_name  = 'step_photo_'.$i;                                              #nazvanie form_upload
                         #generit name image : esli sushestviet to beret iz bazi esli net to zadaet 
@@ -224,7 +179,7 @@ class Recipes extends Admin_Controller {
 			/* Error on validation */
 			$this->data['form_error'] = validation_errors();
 		}
-        #print_flex($steps);
+        #
 		$this->data['recipe'] = $recipe;
         $this->data['steps'] = $steps;
         $this->data['image'] = $recipe_image;

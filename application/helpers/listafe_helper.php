@@ -103,7 +103,13 @@
         foreach($haystack as $val){
             if($needle->id==$val->id) return true;                        
         }
-        return false;
+        return false;    
+    }
+    #
+    function dm_get_object_by_id($needle,DataMapper $haystack){        
+        foreach($haystack as $val){
+            if($needle==$val->id) return $val;                        
+        }        
     }
     #vozvrashaet nabor otnosheni' velichit
     function dm_get_ratios_array($scalar,$val_scalar,$relative,$val_relative){        

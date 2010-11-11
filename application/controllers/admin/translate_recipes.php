@@ -25,10 +25,10 @@ class Translate_recipes extends Admin_Controller {
         #vihodit esli net takogo id
         #
         if($this->form_validation->run('translate_recipe')){
-            $recipe->name               = $this->input->post('inp_name');
-            $recipe->name_translate     = $this->input->post('inp_name_translate');
-            $recipe->custom         	= $this->input->post('text_custom');
-            $recipe->custom_translate	= $this->input->post('text_custom_translate');
+            $recipe->name                   = $this->input->post('inp_name');
+            $recipe->name_translate         = $this->input->post('inp_name_translate');
+            $recipe->custom         	    = $this->input->post('text_custom');
+            $recipe->custom_translate       = $this->input->post('text_custom_translate');
 			$recipe->ingredients         	= $this->input->post('text_ingredients');
             $recipe->ingredients_translate	= $this->input->post('text_ingredients_translate');
 			$recipe->preparation         	= $this->input->post('text_preparation');

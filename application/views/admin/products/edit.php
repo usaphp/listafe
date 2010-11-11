@@ -91,10 +91,10 @@
 				<div>
 					<?php
 						$sel_nutritions = array(
-						    'options' => array_for_dropbox($nutrition_category->nutrition),
-						    'name'  => 'sel_nutrition_'.$nutrition_category->id,
-						    'id'    => 'sel_nutrition_'.$nutrition_category->id,
-						    'class' => 'f_select wide f_joined',
+						    'options'  => array_for_dropbox($nutrition_category->nutrition),
+						    'name'     => 'sel_nutrition_'.$nutrition_category->id,
+						    'id'       => 'sel_nutrition_'.$nutrition_category->id,
+						    'class'    => 'f_select wide f_joined',
 						    'selected' => '');
 						$inp_nutritions_value = array(
 				            'name'  => 'inp_nutrition_'.$nutrition_category->id,        

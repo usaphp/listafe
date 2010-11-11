@@ -15,18 +15,14 @@ class Products extends Admin_Controller {
     
     function show()
     {
-        $nutrition_categories   = new Nutrition_category();
-        $nutrition              = new Nutrition();
+        $products   = new Product();
+        $meras      = new Mera();                
         
-        $nutrition_categories->get_iterated();
-        $nutr_categor_iter = $nutrition_categories->getIterator();        
-        $nutr_categor_iter->current()->nutrition->where_related()->get();
+                
+        $products->include_related('product_category', array('name'))->get_iterated();
+        $meras->get_iterated();
         
-        $products = new Product();        
-        
-        $products->include_related('product_category', array('name'))
-                ->get();
-        
+        $this->data['meras']    = $meras;
         $this->data['products'] = $products;
         
         $this->template->load('/admin/templates/main_template', '/admin/products/show', $this->data);
@@ -68,18 +64,26 @@ class Products extends Admin_Controller {
         $product                = new Product($id);
         $product_categories     = new Product_category();
         $nutrition_categories   = new Nutrition_category();
-        $nutritions             = new Nutrition();
+        
         $nutr_product           = new Nutritions_Product();
         $nutr_categor_products  = new Nutrition_categories_product();
         
         #
         $meras->get_iterated();
         $product_categories->get_iterated();
-        $nutrition_categories->get_iterated();        
+        $nutrition_categories->get();        
+        foreach($nutrition_categories as $nutrition_category){
+            $nutrition_category->nutrition->get_iterated();        
+        }
         #
-        $nutr_categor_products->where_related($product)->include_related('nutrition_category')->get();
+        $nutr_categor_products
+                            ->where_related($product)
+                            ->include_related('nutrition_category')
+                            ->get();
         #
-        $nutr_product->where_related($product)->include_related($nutritions)->include_join_fields()->get();
+        $nutr_product->where_related($product)
+                    ->include_related('nutrition')
+                    ->include_join_fields()->get();        
         #
         $product->mera->get_iterated();
         

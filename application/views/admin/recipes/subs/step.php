@@ -19,6 +19,6 @@ echo form_label('Шаг '.$step_id, $step_description['id'], array('class' => 'f
 echo form_textarea($step_description);
 echo form_label('Картинка', $step_image['id'], array('class' => 'f_label'));
 echo form_upload($step_image);
-if ($image!='') echo '<img src="/images/steps/'.substr($image,0,strpos($image,'.')).'_tiny.jpg'.'"/>';
+if ($image!='') echo '<img src="/images/steps/sp_'.$image.'_tiny.jpg'.'"/>';
 ?>
 </div>

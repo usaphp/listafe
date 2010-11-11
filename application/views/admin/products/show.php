@@ -20,13 +20,8 @@
                 <tr>
                     <td><?php echo $product->id; ?></td>
                     <td><?php echo $product->name; ?></td>
-                    <td><?php echo $product->product_category_name; ?></td>
-                    <?php /*
-                    foreach($product->nutrition_categories as $pnc){
-                        echo '<td>'.$pnc->value.'</td>';
-                    }*/
-                    ?>
-                    <td><?php echo $product->mera_name; ?></td>
+                    <td><?php echo $product->product_category_name; ?></td>                    
+                    <td><?php echo dm_get_object_by_id($product->mera_id,$meras)->name; ?></td>
                     <td><img src="<?php echo image_url($product->image, 'product', 'tiny'); ?>"/></td>
                     <td class="c_aligned">
                         <?php echo anchor('admin/products/edit/'.$product->id, 'Редактировать', array('class' => 't_action'));?> 
