@@ -13,13 +13,34 @@ class Recipes extends Admin_Controller {
         $this->show();
 	}
     
-    function show(){
+    function preview($id = false){
+        $recipe     = new Recipe();
+        $language   = new Language();
         #
-        $recipes = new Recipe();
-        $images = new Recipes_image();
-        $recipes->get_full_info();
+        $language->get_by_name('Russian');
+        $recipe->include_join_fields()->get_by_related_language($language);
+                                
+                
+        
+        #print_flex($recipe);
+        
+    }
+    function show(){        
         #
-        $data['recipes'] = $recipes->data;
+        $recipes    = new Recipe();
+        $language   = new Language();
+        $images     = new Recipes_image();
+        #$recipes->get_full_info();
+        
+        $language->get_by_name('Russian');
+        
+        $recipes->include_join_fields()
+                ->get_by_related_language($language);
+        
+        $recipes->get_image();
+        #print_flex($recipes);
+        #
+        $data['recipes'] = $recipes;
         $this->template->load('/admin/templates/main_template', 'admin/recipes/show', $data);
     }
     
@@ -33,23 +54,26 @@ class Recipes extends Admin_Controller {
 		# Js function from main.js which loads by default  
         array_push($this->data['js_functions'], array('name' => 'recipes_edit_init', 'data' => FALSE));
 		/* Get data for select boxes */
-        $recipe = new Recipe();
+        $language   = new Language();
+        $recipe = new Recipe();        
         $product = new Product();
         $recipe_image = new Recipes_Image();
         $steps = new Recipes_Step();
         $meras = new Mera(); 
         
-        $recipe->get_by_id($id);
+        $language->get_by_name('Russian');
+        
+        $recipe->include_join_fields()
+                ->get_by_related_language($language);
+        
+        $recipe->get_image();
         #zagruzka neobhodimih produktod 4erez ActivRecord
         $recipe->get_products(); 
         
-        #ne realizovana podderjka situacii so mnojestvom kartion na odin recipe
-        $recipe_image->where_related($recipe);
-        $recipe_image->where('image_type','1')->get();
-        
         $meras->get();
-        #soedinit' sushestvuushie shagi
-        $steps->where_related($recipe)->get();
+        #soedinit' sushestvuushie shagi po language
+        $recipe->recipes_step->include_join_fields()
+                            ->get_by_related_language($language);
 		
 		/* Settting up validation rules */
         $rules = array(

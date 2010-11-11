@@ -54,9 +54,12 @@ define('IMAGE_LARGE_HEIGHT', 240);
 define('IMAGE_RECIPE_PREFIX','re_');
 define('IMAGE_PRODUCT_PREFIX','pi_');
 define('IMAGE_STEP_PREFIX','sp_');
-
-#--------------------------------------------------------------------------
-
+/*
+|--------------------------------------------------------------------------
+|f
+|--------------------------------------------------------------------------
+*/
+define('RECIPE_IMAGE_MAIN_TYPE', 1);
 define('DEFAULT_PRODUCTS_IN_RECIPE', 5);
 /* End of file constants.php */
 /* Location: ./system/application/config/constants.php */

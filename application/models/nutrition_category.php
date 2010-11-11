@@ -1,7 +1,7 @@
 <?php
 class Nutrition_category extends DataMapper {
     
-    var $has_many = array('nutrition', 'nutrition_categories_product');
+    var $has_many = array('language','nutrition', 'nutrition_categories_product');
     var $has_one = array('product');
     var $table = 'nutrition_categories'; 
     

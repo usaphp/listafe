@@ -18,8 +18,9 @@ class Products extends Admin_Controller {
         $products   = new Product();
         $meras      = new Mera();                
         
-                
-        $products->include_related('product_category', array('name'))->get_iterated();
+        #vzat' product i dobavit' kategoriu producta                        
+        $products->include_related('product_category', array('name'))
+                ->get_iterated();
         $meras->get_iterated();
         
         $this->data['meras']    = $meras;
@@ -48,7 +49,7 @@ class Products extends Admin_Controller {
             if($this->_save($id)){                
                 #esli biblioteka my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i resize
                 $this->upload_image_lib->initialize(array('type'=>'product', 'size' => 'tiny'));
-                #vozvrashaet polnoe ima kartinki primer: re_id_id.jpg; v bazu sohranaetsa tol'ko $recipe_image_id
+                #vozvrashaet polnoe ima kartinki primer: pi_id.jpg; v bazu sohranaetsa tol'ko $recipe_image_id
                 $image_name = $this->upload_image_lib->upload_resize_img('image',$product->id);                
                 if($image_name){
                     $product->image = $image_name;
@@ -71,16 +72,16 @@ class Products extends Admin_Controller {
         #
         $meras->get_iterated();
         $product_categories->get_iterated();
-        $nutrition_categories->get();        
+        $nutrition_categories->get();
+        #k kajdomu nutrition_category dobavlaetsa svoi nutrition         
         foreach($nutrition_categories as $nutrition_category){
             $nutrition_category->nutrition->get_iterated();        
         }
-        #
-        $nutr_categor_products
-                            ->where_related($product)
+        #viberaet ID i zna4enia nutrition_category po ID productov i dobavlaet nazvanie dannoi nutr_categ 
+        $nutr_categor_products ->where_related($product)
                             ->include_related('nutrition_category')
                             ->get();
-        #
+        ##viberaet ID i zna4enia nutrition po ID productov i dobavlaet nazvanie dannoi nutrrition 
         $nutr_product->where_related($product)
                     ->include_related('nutrition')
                     ->include_join_fields()->get();        
@@ -124,14 +125,14 @@ class Products extends Admin_Controller {
             $hidden_nutrition_add = array_map('explode_ext',$hidden_nutrition_add);
             #
             $hidden_nutrition_remove = array_diff($hidden_nutrition_remove,return_subarray_by_key('id',$hidden_nutrition_add));
-            #
+            #SAVE Nutrition
             $nutrition = new Nutrition();                            
             foreach($hidden_nutrition_add as $hn_add){
                 $nutrition->get_by_id($hn_add['id']);
                 $product->save($nutrition);
                 $product->set_join_field($nutrition,'value',$hn_add['value']);                            
             }
-            #
+            #DELETE Nutrition
             if($hidden_nutrition_remove){
                 $nutrition->where_in('id',$hidden_nutrition_remove)->get();
                 $product->delete($nutrition->all);

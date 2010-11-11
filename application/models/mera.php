@@ -1,7 +1,7 @@
 <?php
 class Mera extends DataMapper {
     
-    var $has_many = array('product');
+    var $has_many = array('language','product');
     
     var $validation = array(
         'name' => array(

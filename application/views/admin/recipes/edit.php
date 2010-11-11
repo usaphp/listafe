@@ -3,7 +3,7 @@
         'name'  => 'recipe_name',
         'id'    => 'recipe_name',
         'class' => 'f_input wide',
-        'value' => $recipe->name
+        'value' => $recipe->join_name
     );
     
     $prep_time = array(
@@ -89,9 +89,9 @@
     		<div id="recipe_steps">
     		<?php 
                 #vse shagi iz bazi
-                foreach($steps as $key => $step){
+                foreach($recipe->recipes_step as $key => $step){
                     $data['step_id'] = $key+1;
-                    $data['text'] = $step->text;
+                    $data['text'] = $step->join_text;
                     $data['image'] = $step->image;
                     $this->load->view('/admin/recipes/subs/step.php', $data);
                 }

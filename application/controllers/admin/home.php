@@ -9,7 +9,9 @@ class Home extends Admin_Controller {
 	
 	function index()
 	{
+	   
         $this->template->load('/admin/templates/main_template', '/admin/dashboard', $this->data);
+
 	}
     
 }

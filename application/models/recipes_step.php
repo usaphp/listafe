@@ -1,7 +1,7 @@
 <?php
 class Recipes_Step extends DataMapper {
     
-    var $has_one = array('recipe');
+    var $has_one = array('language', 'recipe',);
     
     function __construct($id = NULL)
     {
