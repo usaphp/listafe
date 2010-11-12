@@ -27,7 +27,7 @@ class Recipe extends DataMapper {
     }
     function get_image(){
         foreach($this as $recipe)
-            $recipe->recipes_image->get_by_image_type(1);            
+            $recipe->recipes_image->get_by_image_type(RECIPE_IMAGE_MAIN_TYPE);            
     }
     
 }

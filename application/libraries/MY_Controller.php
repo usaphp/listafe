@@ -3,8 +3,7 @@
 class Admin_Controller extends Controller {
 		
 	public $top_error;
-    public $top_success;
-    
+    public $top_success;    
     function __construct($force_login = TRUE){
         parent::__construct();
         
@@ -15,9 +14,10 @@ class Admin_Controller extends Controller {
         $this->top_success  = $this->session->flashdata('top_success');
         
 		
-		$this->data = array();
+		$this->data                 = array();
         $this->data['form_success'] = FALSE;
-        $this->data['form_error'] =  FALSE;
+        $this->data['form_error']   = FALSE;        
+        $this->data['language']     = array('current' => 'Russian','default' => 'Russian');
 		
 		$this->data['js_functions'] = array();
 		array_push($this->data['js_functions'], array('name' => 'general_init', 'data' => FALSE));
@@ -25,6 +25,15 @@ class Admin_Controller extends Controller {
 		array_push($this->data['js_functions'], array('name' => 'dropdown_init', 'data' => FALSE));
 		
 		$this->output->enable_profiler(TRUE);
+    }
+    function get_current_language(){
+        return $this->data['language']['current'];
+    }
+    function get_default_language(){
+        return $this->data['language']['default'];
+    }
+    function set_current_language($language){
+        $this->data['language']['current'] = $language; 
     }
 }
 

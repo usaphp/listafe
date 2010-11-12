@@ -14,13 +14,11 @@ class Products extends Admin_Controller {
 	}
     
     function show()
-    {
-        $products   = new Product();
-        $meras      = new Mera();                
+    {        
+        $products   = new Product();        
+        #vzat' product i dobavit' kategoriu producta        
+        $products->get_full_info();
         
-        #vzat' product i dobavit' kategoriu producta                        
-        $products->include_related('product_category', array('name'))
-                ->get_iterated();
         $meras->get_iterated();
         
         $this->data['meras']    = $meras;
@@ -62,13 +60,14 @@ class Products extends Admin_Controller {
         	echo validation_errors();                  
         #
         $meras                  = new Mera();
-        $product                = new Product($id);
+        $product                = new Product();
         $product_categories     = new Product_category();
         $nutrition_categories   = new Nutrition_category();
         
         $nutr_product           = new Nutritions_Product();
         $nutr_categor_products  = new Nutrition_categories_product();
         
+        $product->get_full_info();
         #
         $meras->get_iterated();
         $product_categories->get_iterated();
@@ -86,7 +85,6 @@ class Products extends Admin_Controller {
                     ->include_related('nutrition')
                     ->include_join_fields()->get();        
         #
-        $product->mera->get_iterated();
         
         $this->data['product']                      = $product;
         $this->data['product_categories']	        = $product_categories;

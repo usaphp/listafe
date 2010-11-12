@@ -16,7 +16,7 @@ class Nutrition_categories extends Admin_Controller {
     function show()
     {
         $nutrition_categories = new Nutrition_category();
-        $nutrition_categories->get();
+        $nutrition_categories->get_full_info();
         $this->data['nutrition_categories'] = $nutrition_categories;
         $this->template->load('/admin/templates/main_template', '/admin/nutrition_categories/show', $this->data);
     }
@@ -35,18 +35,11 @@ class Nutrition_categories extends Admin_Controller {
         # Js function from main.js which loads by default  
         array_push($this->data['js_functions'], array('name' => 'nutrition_categories_edit_init', 'data' => FALSE));
         
-        $nutrition_categories = new Nutrition_category($id);
-        
-        $rules = array(
-            array('field' => 'nutrition_categories_name', 'label' => 'Название Категории', 'rules' => 'trim|required|xss_clean|_nutrition_category_name_exists')
-        );
-        $this->form_validation->set_rules($rules);
-        
+        $nutrition_categories = new Nutrition_category();
+        $nutrition_categories->get_full_info($id);                
         //if form validates
-        if($this->form_validation->run()){
-            $nutrition_categories->name = $this->input->post('nutrition_categories_name');
-            
-            if($nutrition_categories->save()){
+        if($this->form_validation->run('nutrition_category')){                                                
+            if($nutrition_categories->save_by_language('name',$this->input->post('nutrition_categories_name'))){
                 $this->data['form_success'] = 'Категория добавлена';
             }else{
                 $this->data['form_error'] = 'error';

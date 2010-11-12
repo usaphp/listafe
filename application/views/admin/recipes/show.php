@@ -15,7 +15,7 @@
             <?php foreach($recipes as $recipe){?>
                 <tr>
                     <td><?php echo $recipe->id; ?></td>
-                    <td><?php echo $recipe->name; ?></td>
+                    <td><?php echo $recipe->join_name; ?></td>
                     <td><?php echo $recipe->prepare_time; ?></td>
                     <td><?php echo $recipe->cook_time; ?></td>
                     <td><?php echo $recipe->servings; ?></td>

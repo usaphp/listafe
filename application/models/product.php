@@ -16,10 +16,18 @@ class Product extends Datamapper {
         parent::__construct($id);
     }
     
+    function get_full_info($current_language = 'Russian'){
+        $language   = new Language();
+        $language->get_by_name($current_language);
+        $this->include_join_fields()->get_by_related_language($language);
+        $this->product_category->include_join_fields()->get_by_related_language($language);
+        $this->mera->include_join_fields()->get_by_related_language($language);
+        #print_flex($this);
+    }
     function get_ratios($ratio = false){
-        $dm_ratio   = new Ratio_mera();        
+        $dm_ratio   = new Ratio_mera();
         $dm_ratio->where_related($this);
-        if (!$ratio) return $dm_ratio->get();  
+        if (!$ratio) return $dm_ratio->get();
         $dm_ratio->where('scalar',$ratio['scalar'])
                  ->where('relative',$ratio['relative'])
                  ->get();

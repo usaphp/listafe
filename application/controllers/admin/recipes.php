@@ -38,7 +38,7 @@ class Recipes extends Admin_Controller {
                 ->get_by_related_language($language);
         
         $recipes->get_image();
-        #print_flex($recipes);
+
         #
         $data['recipes'] = $recipes;
         $this->template->load('/admin/templates/main_template', 'admin/recipes/show', $data);
@@ -322,9 +322,7 @@ class Recipes extends Admin_Controller {
         $recipe->delete();
         $this->show();
     }
-    function _save_recipe(){
-        //code
-    }
+    
     /* Checks to see if recipe name already exists */    
     function _recipe_name_exists($recipe_name){
         $recipe = new Recipe();

@@ -3,23 +3,23 @@
         'name'  => 'product_name',
         'id'    => 'product_name',
         'class' => 'f_input required',
-        'value' => $product->name
+        'value' => $product->join_name
     );    
     $sel_product_category = array(
-        'options' => array_for_dropbox($product_categories),
+        'options' => array_for_dropbox($product->product_category,'Категория продукта','id','join_name'),
         'name'  => 'product_category_id',
         'id'    => 'product_category_id',
         'class' => 'f_select wide required',
-        'selected' => $product->product_category_id
+        'selected' => $product->product_category_id #dm_get_object_by_id($product->product_category_id,$product->product_category)->join_name
     );
     $txt_description = array(
         'name'  => 'description',
         'id'    => 'description',
         'class' => 'f_textarea',
-        'value' => $product->description
+        'value' => $product->join_description
     );
     $sel_mera = array(
-        'options' => array_for_dropbox($meras),
+        'options' => array_for_dropbox($product->mera,'Мера измерения','id','join_name'),
         'name'  => 'mera_id',
         'id'    => 'mera_id',
         'class' => 'f_select wide',
@@ -38,7 +38,7 @@
         'value' => $product->units_for_price
     );
     $sel_units_mera = array(
-        'options' => array_for_dropbox($meras),
+        'options' => array_for_dropbox($product->mera,'Мера измерения','id','join_name'),
         'name'  => 'units_mera_id',
         'id'    => 'units_mera_id',
         'class' => 'f_select wide f_joined',

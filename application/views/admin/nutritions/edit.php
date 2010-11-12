@@ -2,15 +2,15 @@
     $nutrition_name = array(
 		'name'  => 'nutrition_name',
 		'id'    => 'nutrition_name',
-		'class' => 'f_input required',
-		'value' => $nutrition->name);
+		'class' => 'f_input',
+		'value' => $nutrition->join_name);
 
 	$sel_category = array(
-		'options' => array_for_dropbox($nutrition_categories),
+		'options' => array_for_dropbox($nutrition_categories,'Категории','id','join_name'),
 		'name'  => 'nutritions_categories_id',
 		'id'    => 'nutritions_categories_id',
-		'class' => 'f_select wide required',
-		'selected' => $nutrition->category_id);
+		'class' => 'f_select wide',
+		'selected' => $nutrition->nutrition_category_id);
     ?>
 <div class="span-24 content" id="product_edit_w">
     <div class="f_header">Добавить Ингридиент</div>

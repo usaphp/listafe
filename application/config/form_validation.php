@@ -10,6 +10,10 @@ $config = array(
             'translate_recipe' =>
                 array('field' => 'text_translate', 'label' => 'Перевод', 'rules' => 'trim|required|xss_clean'),
             'product_meras' =>
-                array('rules' => 'trim|required|xss_clean')
-);
+                array('rules' => 'trim|required|xss_clean'),
+            'nutrition' =>
+                array('field' => 'nutrition_name', 'label' => 'Название Вещества', 'rules' => 'trim|required|xss_clean'),
+            'nutrition_category' =>
+                array('field' => 'nutrition_categories_name', 'label' => 'Название Категории', 'rules' => 'trim|required')        
+);  
 ?>

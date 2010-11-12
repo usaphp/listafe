@@ -56,10 +56,16 @@ define('IMAGE_PRODUCT_PREFIX','pi_');
 define('IMAGE_STEP_PREFIX','sp_');
 /*
 |--------------------------------------------------------------------------
-|f
+|Type of image for recipe
 |--------------------------------------------------------------------------
 */
 define('RECIPE_IMAGE_MAIN_TYPE', 1);
+define('RECIPE_IMAGE_MINOR_TYPE', 2);
+/*
+|--------------------------------------------------------------------------
+|
+|--------------------------------------------------------------------------
+*/
 define('DEFAULT_PRODUCTS_IN_RECIPE', 5);
 /* End of file constants.php */
 /* Location: ./system/application/config/constants.php */

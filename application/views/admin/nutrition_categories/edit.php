@@ -3,7 +3,7 @@
     'name'  => 'nutrition_categories_name',
     'id'    => 'nutrition_categories_name',
     'class' => 'f_input required',
-    'value' => $nutrition_categories->name);
+    'value' => $nutrition_categories->join_name);
     
     ?>
 <div class="span-24 content" id="product_edit_w">  

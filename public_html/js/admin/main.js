@@ -148,8 +148,8 @@ main.prototype.process_ajax_response = function(response, form_name){
     main.prototype.nutritions_edit_init = function(){
         $('#nutrition_edit_form').validate({
             rules : {
-                'nutrition_name'				: "required",
-                'nutritions_categories_id'		: "required"
+                //'nutrition_name'				: "required",
+                //'nutritions_categories_id'		: "required"
                 }
         });
     }
