@@ -5,7 +5,7 @@
         'name'  => 'inp_url',
         'value' => $recipe->url,
         'id'    => 'inp_url',
-        'class' => 'f_input widest'
+        'class' => 'f_input widest f_joined'
     );
 	
     $text_name = array(
@@ -92,37 +92,88 @@
             <?php
                 
                 echo form_label('Ссылка', $inp_url['id'], array('class' => 'f_label'));
-                echo form_input($inp_url);            
+                echo form_input($inp_url);
+				echo anchor($inp_url['value'], 'Открыть', array('class' => 'f_joined f_last', 'id' => 'visit_translate_url', 'target' => '_blank'));
             ?>            
             <div class="f_two_column_l">
                 <?php
-                
                 echo form_label('Название рецепта', $text_name['id'], array('class' => 'f_label'));
                 echo form_textarea($text_name);
-                
+				?>
+            </div>
+            <div class="f_two_column_r">
+            	<?php
+                echo form_label('Перевод: Название рецепта', $text_name_translate['id'], array('class' => 'f_label'));
+                echo form_textarea($text_name_translate);
+				?>
+			</div>
+			<?php 
+				echo cleared_div();
+				echo separator_div();
+				echo anchor('#', 'Перевести', array('class' => 'translate_button nice_button nb_white'));
+				echo cleared_div();
+			?>
+			<div class='translation_holder'></div>
+			
+            <div class="f_two_column_l">
+                <?php
                 echo form_label('Описание Рецепта', $text_custom['name'], array('class' => 'f_label '));
                 echo form_textarea($text_custom);
+                ?>
+            </div>
+            <div class="f_two_column_r">
+            	<?php
+                echo form_label('Перевод: Описание Рецепта', $text_custom_translate['name'], array('class' => 'f_label '));
+                echo form_textarea($text_custom_translate);
+				?>
+			</div>
+			<?php 
+				echo cleared_div();
+				echo separator_div();
+				echo anchor('#', 'Перевести', array('class' => 'translate_button nice_button nb_white'));
+				echo cleared_div();
+			?>
+			<div class='translation_holder'></div>
+			
+            <div class="f_two_column_l">
+                <?php
                 echo form_label('Ингредиенты', $text_ingredients['name'], array('class' => 'f_label '));
                 echo form_textarea($text_ingredients);
-                echo form_label('Приготовление', $text_preparation['name'], array('class' => 'f_label '));
-                echo form_textarea($text_preparation);
-                ?>                
+				?>
             </div>
             <div class="f_two_column_r">
                 <?php
-				
-                echo form_label('Перевод: Название рецепта', $text_name_translate['id'], array('class' => 'f_label'));
-                echo form_textarea($text_name_translate);
-				
-                echo form_label('Перевод: Описание Рецепта', $text_custom_translate['name'], array('class' => 'f_label '));
-                echo form_textarea($text_custom_translate);
                 echo form_label('Перевод: Ингредиенты', $text_ingredients_translate['name'], array('class' => 'f_label '));
                 echo form_textarea($text_ingredients_translate);
+				?>
+			</div>
+			<?php 
+				echo cleared_div();
+				echo separator_div();
+				echo anchor('#', 'Перевести', array('class' => 'translate_button nice_button nb_white'));
+				echo cleared_div();
+			?>
+			<div class='translation_holder'></div>
+			
+            <div class="f_two_column_l">
+                <?php
+                echo form_label('Приготовление', $text_preparation['name'], array('class' => 'f_label '));
+                echo form_textarea($text_preparation);
+				?>
+            </div>
+            <div class="f_two_column_r">
+                <?php
                 echo form_label('Перевод: Приготовление', $text_preparation_translate['name'], array('class' => 'f_label '));
                 echo form_textarea($text_preparation_translate);
                 ?>
             </div>
-            <?php echo cleared_div();?>
+			<?php 
+				echo cleared_div();
+				echo separator_div();
+				echo anchor('#', 'Перевести', array('class' => 'translate_button nice_button nb_white'));
+				echo cleared_div();
+			?>
+			<div class='translation_holder'></div>
             <?php
                 echo form_label('Комментарии', $comment['name'], array('class' => 'f_label '));
                 echo form_textarea($comment);            
@@ -147,7 +198,7 @@
             <?php echo cleared_div();?>
             <div class="separator"></div>
             <div class="f_buttons">
-            	<input type='hidden' id='recipe_translate_id' value='<?php echo $recipe->id;?>'/>                
+            	<input type='hidden' id='recipe_translate_id' value='<?php echo $recipe->id;?>'/>
                 <?php echo form_submit('btn_save_recipe','Сохранить');?>
             </div>    
         <?php echo form_close(); ?>

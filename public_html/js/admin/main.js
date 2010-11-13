@@ -4,6 +4,8 @@ main.admin_url = 'http://local.povarenok/admin/';
 
 main.prototype.general_init = function(){
     $('form.f_validate').validate();
+    // activate autoresize plugin for textareas 
+    $('textarea.f_textarea').autoResize().trigger('change');;
 }
 
 main.prototype.login_init = function(){
@@ -331,6 +333,11 @@ main.prototype.process_ajax_response = function(response, form_name){
     	
     // recipes translation adding/editing page	
     main.prototype.translate_recipes_init = function(){
+    	// vzyat href dlya ssilki na original i naznahit dlya "a" tega
+    	// a takze esli menyaetsya inp_url to toze menyat href dlya ssilki
+    	$('#visit_translate_url').attr('href', $('#inp_url').val());
+    	$('#inp_url').change(function(){ $('#visit_translate_url').attr('href', $('#inp_url').val()); })
+    	
     	$('#translate_recipe_edit_form').validate({
     		rules : { 
     				'inp_url' : { 
@@ -347,12 +354,63 @@ main.prototype.process_ajax_response = function(response, form_name){
     		 				url: "/admin/ajax/translate_recipe_name_valid_insert", 
     		 				type: 'post', 
     		 				data : { recipe_translate_id : function(){ return $('#recipe_translate_id').val(); } } }
-    		 		 }	 
+    		 		 }
     		 	},
     		messages : {
     				'inp_url' : { remote : 'Этот рецепт уже есть в базе данных.' },
     				'text_name' : { remote : 'Это название рецепта уже есть в базе данных.' }
     		}
     	});
+    	
+    	// Init translation buttons
+    	$('a.translate_button').click(function(){
+    		var loader = main.prototype.small_loader_toggle();
+    		$(this).after(loader);
+    		var text_to_translate	= $(this).prevAll('.f_two_column_l').children('.f_textarea').val();
+    		var translate_holder	= $(this).nextAll('.translation_holder:first');
+    		main.prototype.translate_text('en', 'ru', text_to_translate, translate_holder);
+    		return false;
+    	});
+    	
+    	
+    }
+    
+    // init the popup on hover for resulted sentenses
+    main.prototype.translated_text_init = function(){
+    	$('.translate_result_sentence').tooltip({
+		    bodyHandler: function() {
+		        return $(this).next('.translate_original_sentence').text();
+		    }
+		});
+    }
+    
+    // function to translate text and insert it into a holder
+    main.prototype.translate_text = function(from, to, text, holder){
+    	$.ajax({
+    		url : '/admin/ajax/translate_text',
+    		type : 'post',
+    		data : {
+    			from : from,
+    			to : to,
+    			text : text
+    		},
+    		success : function(response){
+    			main.prototype.small_loader_toggle();
+    			holder.html(response);
+    			holder.show();
+    			main.prototype.translated_text_init();
+    			return;
+    		}
+    	});
+    }
+    
+    // load loading circle
+    main.prototype.small_loader_toggle = function(){
+    	if($('div.small_loader').length == 0){
+    		return $('<div>').attr('class', 'small_loader');
+    	}else{
+    		$('div.small_loader').remove();
+    		return;
+    	}
     }
 }

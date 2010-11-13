@@ -11,12 +11,10 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://local.povarenok/";
+$config['base_url']	= "http://local.listafe/";
 $config['admin_url'] = $config['base_url']."admin/";
 
 $config['product_images_path'] = $_SERVER['DOCUMENT_ROOT'].'/photos/product_images/';
-$config['recipe_images_path'] = $_SERVER['DOCUMENT_ROOT'].'/images/recipes/';
-$config['step_images_path'] = $_SERVER['DOCUMENT_ROOT'].'/images/steps/';
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -236,7 +234,7 @@ $config['encryption_key'] = "";
 |
 */
 $config['sess_cookie_name']		= 'ci_session';
-$config['sess_expiration']		= 7200;
+$config['sess_expiration']		= 0;
 $config['sess_encrypt_cookie']	= FALSE;
 $config['sess_use_database']	= FALSE;
 $config['sess_table_name']		= 'ci_sessions';
@@ -328,6 +326,6 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-
+$config['show_profiler'] = TRUE;
 /* End of file config.php */
 /* Location: ./system/application/config/config.php */

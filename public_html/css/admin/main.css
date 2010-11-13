@@ -1,6 +1,8 @@
 a { color:#0076c8; outline:none;}
 .hidden { display:none;}
 .separator{padding:5px;margin-top: 10px;}
+/* Loaders */
+.small_loader { width:20px; height:20px; background:url('/images/loading/circle_small.gif') center center no-repeat; clear:both; }
 /* Login */
 	#login_logo	{ height:210px; background:#fff url('/images/logo_admin.png') center center no-repeat;}
 	#login_form { padding-top:50px;}
@@ -43,7 +45,7 @@ a { color:#0076c8; outline:none;}
     .f_block { margin-bottom:10px; }
 		.f_message		{ padding:6px 15px; margin-bottom:10px; }
 			.f_message p	{margin:3px 0px; }
-	    .f_joined		{ float:left; margin-right:10px; }
+	    .f_joined		{ float:left; margin-right:10px; display:block; }
 	    .f_last			{ clear:right; }
 	    .f_label		{ display:block; padding-bottom:2px; margin-top:10px; }
 	    .f_input		{ display:block; border:1px solid #cbcbcb; padding:7px 4px;  width:200px; border-color:#bfbfbf #e8e8e8 #e8e8e8 #bfbfbf;}
@@ -152,5 +154,55 @@ a { color:#0076c8; outline:none;}
 .recipe_translate_status_2 { width:20px; height:20px; background:url('/images/icons/icon_green_face.png') center center no-repeat; }
 .recipe_translate_status_3 { width:20px; height:20px; background:url('/images/icons/icon_green_checkmark.png') center center no-repeat; }
 .recipe_translate_status_4 { width:20px; height:20px; background:url('/images/icons/icon_pause.png') center center no-repeat; }
+
+.translation_holder { padding:10px; background:#fffcea; border:1px solid #ffe7b4; display:none; margin-top:10px; }
+
+.translate_original_sentence { display:none; }
+.translate_result_sentence { }
+.translate_result_sentence:hover { background:#deedff; }
 /* Product edit */
 	.prod_nutritions_wrapper { padding-top:20px; }
+	
+/* Tooltip */
+#tooltip { position: absolute; z-index: 3000; background: #313131; color:#fff; padding: 5px 8px; border-radius:5px; -moz-border-radius:5px; }
+#tooltip h3, #tooltip div { margin: 0; }
+
+/* nice buttons */
+.nice_button {
+	display: block;
+	float: left;
+	/* BORDER RADIUS */
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	/* DROP SHADOW */
+	-moz-box-shadow: 0px 1px 2px #c0c0c0;	
+	-webkit-box-shadow: 0px 1px 2px #c0c0c0;
+	box-shadow: 0px 1px 2px #c0c0c0;
+	padding: 5px 10px 5px 10px;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration:none;
+ }
+ 
+ .nice_button.nb_white {
+	border:1px solid #9e9e9e;
+	border-top:1px solid #CDCDCD;
+	/* GRADIENTS */
+	background: #fff;
+	background: -moz-linear-gradient(bottom, #FFF, #ebebeb);
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #FFF), to(#ebebeb));
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#ebebeb', EndColorStr='#FFFFFF'); /* IE6,IE7 only */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ebebeb', EndColorStr='#FFFFFF')"; /* IE8 only */
+	
+	/* COLOR & SHADOW */
+	color:#666;
+	text-shadow: 0 1px 1px #FFF;
+ }
+ .nice_button.nb_white:hover	{
+	/* BACKGROUND & SHADOW */
+	background: #eee;
+	-moz-box-shadow: 0px 1px 2px #fff;	
+	-webkit-box-shadow: 0px 1px 2px #fff;
+	box-shadow: 0px 1px 2px #fff;
+}

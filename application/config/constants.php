@@ -58,5 +58,13 @@ define('IMAGE_STEP_PREFIX','sp_');
 #--------------------------------------------------------------------------
 
 define('DEFAULT_PRODUCTS_IN_RECIPE', 5);
+
+/*
+/--------------------------------------------------------------------------
+/Google API key
+/--------------------------------------------------------------------------
+*/
+define('GOOGLE_API_KEY', 'AIzaSyBz5fwbAymJjYXDwDsqk1pYYqVJXx4BGkk');
+
 /* End of file constants.php */
 /* Location: ./system/application/config/constants.php */

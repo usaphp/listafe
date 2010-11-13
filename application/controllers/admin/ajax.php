@@ -95,6 +95,11 @@ class Ajax extends Admin_Controller {
 		echo json_encode(!$recipe->exists());
 	}
 	
-	
+	function translate_text(){
+		$from = $this->input->post('from');
+		$to = $this->input->post('to');
+		$text = $this->input->post('text');
+		echo g_translate($text, $from, $to);
+	}
 }
 ?>

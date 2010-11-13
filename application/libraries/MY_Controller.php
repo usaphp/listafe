@@ -24,7 +24,7 @@ class Admin_Controller extends Controller {
 		array_push($this->data['js_functions'], array('name' => 'tabs_init', 'data' => FALSE));
 		array_push($this->data['js_functions'], array('name' => 'dropdown_init', 'data' => FALSE));
 		
-		$this->output->enable_profiler(TRUE);
+		$this->output->enable_profiler($this->config->item('show_profiler'));
     }
 }
 

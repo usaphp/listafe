@@ -9,6 +9,8 @@
         <script type="text/javascript" src="/js/jquery.autocomplete.js"></script>
         <script type="text/javascript" src="/js/jquery.form.js"></script>
         <script type="text/javascript" src="/js/jquery.fancybox-1.3.1.js"></script>
+        <script type="text/javascript" src="/js/jquery.tooltip.js"></script>
+        <script type="text/javascript" src="/js/autoresize.jquery.min.js"></script>
         <script type="text/javascript" src="/js/admin/main.js"></script>
 		<script type='text/javascript'>
 			$(function(){

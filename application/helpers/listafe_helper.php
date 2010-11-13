@@ -124,3 +124,78 @@
             print_r($arr);
         echo '</pre>';
     }
+	
+	function g_translate($text, $from = 'en', $to = 'ru'){
+		// count words in text
+		if(str_word_count(trim($text)) > 1){
+			return g_translate_many($text, $from, $to);
+		}else{
+			return translate_single_word($text, $from, $to);
+		}
+	}
+	
+	// perevodit predlozenia
+	function g_translate_many($text, $from = 'en', $to = 'ru'){
+		$url = "http://ajax.googleapis.com/ajax/services/language/translate";
+		$datatopost = array(
+			'v' => '1.0',
+			'q' => $text,
+			'langpair' => $from.'|'.$to,
+			'key' => GOOGLE_API_KEY,
+			'userip' => ''
+		);
+		// sendRequest
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_REFERER, base_url());
+		curl_setopt($ch, CURLOPT_POST, TRUE);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $datatopost);
+		$body = curl_exec($ch);
+		curl_close($ch);
+		// now, process the JSON string
+		$json = json_decode($body);
+		$response_status = $json->responseStatus;
+		$response_details = $json->responseDetails;
+		$translated_text = $json->responseData->translatedText;
+		$arr_r = explode('.', $translated_text);
+		$arr_s = explode('.', $text);
+		$final_string = '';
+		for($i = 0; $i < count($arr_r); $i++){
+			$final_string .= '<span class="translate_result_sentence">'.$arr_r[$i].'.</span><span class="translate_original_sentence">'.$arr_s[$i].'.</span>';
+		}
+		return $final_string;
+	}
+	
+	// perevodit odno slovo
+	function translate_single_word($text, $from = 'en', $to ='ru'){
+		$text = urlencode($text);
+		$url = 'http://translate.google.com/translate_a/t?client=a&text='.$text.'&sl='.$from.'&tl='.$to;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		
+		$body = curl_exec($ch);
+		// iz google text prihodit v KOI8-R  poetomy konvertim ego v UTF-8
+		$body = iconv('KOI8-R','UTF-8', $body); 
+		curl_close($ch);
+		$json = json_decode($body);
+		return create_translated_word_string($json);
+	}
+	
+	function create_translated_word_string($data){
+		$string = '<strong>'.$data->sentences[0]->trans.'</strong><br/>';
+		foreach($data->dict as $obj){
+			$string .= '<i>'.$obj->pos.': </i>';
+			$string .= implode(', ', $obj->terms).'<br/>';
+		}
+		return $string;
+	}
+	
+	function nice_button($label, $color, $classes = FALSE, $more_attributes = array()){
+		if($classes) $classes = ' '.$classes;
+		$class = array('class' => 'btn_'.$color.$classes);
+		$final_class = array_merge($class, $more_attributes);
+		$html = anchor('#', '<span>'.$label.'</span>', $final_class);
+		return $html;
+	}
