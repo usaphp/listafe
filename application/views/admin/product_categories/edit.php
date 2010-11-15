@@ -3,7 +3,7 @@
     'name'  => 'category_name',
     'id'    => 'category_name',
     'class' => 'f_input required',
-    'value' => $product_category->name);
+    'value' => $product_category->join_name);
     
     ?>
 <div class="span-24 content" id="product_edit_w">  

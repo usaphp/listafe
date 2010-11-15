@@ -39,8 +39,10 @@ class Ajax extends Admin_Controller {
 	/* Adds a product to recipe */
 	function add_recipe_product(){
         $meras = new Mera();
-		$this->data['meras'] = $meras->get_iterated();
+        $meras->get_full_info();
+		$this->data['meras'] = $meras; 
 		$this->data['recipe_product_id'] = $this->input->post('recipe_product_id');
+        
 		$this->load->view('admin/recipes/subs/product', $this->data);
 	}
 	

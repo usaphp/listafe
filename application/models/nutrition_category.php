@@ -1,10 +1,8 @@
 <?php
 class Nutrition_category extends DataMapper {
-    
-    var $has_many = array('language','nutrition', 'nutrition_categories_product');
+    var $table = 'nutrition_categories';
     var $has_one = array('product');
-    var $table = 'nutrition_categories'; 
-    
+    var $has_many = array('language','nutrition', 'nutrition_categories_product');    
 //    var $validation = array(
 //        'name' => array(
 //            'label' => 'Название категрии',
@@ -16,13 +14,10 @@ class Nutrition_category extends DataMapper {
     {
         parent::__construct($id);
     }
-    function save_by_language($key = false, $value = false,$current_language = 'Russian'){
-        if(!($key && $value)) return false;
+    function save_by_language($data,$current_language = 'Russian'){
         $language = new Language();
         $language->get_by_name($current_language);                
-        $this->set_join_field($language,$key,$value);
-        if($this->save())return true;
-        return false;        
+        if(isset($data['name']))    $this->set_join_field($language,'name',$data['name']);                       
     }
     function get_full_info($id = false,$current_language = 'Russian'){
         $language = new Language();

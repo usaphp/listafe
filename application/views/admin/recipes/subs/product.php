@@ -13,7 +13,7 @@
     	'value' => set_value('product_'.$recipe_product_id,$name)
     ); #name- zagruzka iz bazi
 	$mera	= array(
-    	'options' => array_for_dropbox($meras, 'Мера Измерения'),
+    	'options' => array_for_dropbox($meras, 'Мера Измерения','id','join_name'),
     	'id'	=> 'mera_'.$recipe_product_id,
     	'name'	=> 'mera_'.$recipe_product_id,
     	'selected' => set_value('mera_'.$recipe_product_id,$mera), 

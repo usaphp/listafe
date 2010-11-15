@@ -39,7 +39,7 @@ class Nutrition_categories extends Admin_Controller {
         $nutrition_categories->get_full_info($id);                
         //if form validates
         if($this->form_validation->run('nutrition_category')){                                                
-            if($nutrition_categories->save_by_language('name',$this->input->post('nutrition_categories_name'))){
+            if($nutrition_categories->save_by_language(array('name',$this->input->post('nutrition_categories_name')))){
                 $this->data['form_success'] = 'Категория добавлена';
             }else{
                 $this->data['form_error'] = 'error';

@@ -15,13 +15,11 @@ class Products extends Admin_Controller {
     
     function show()
     {        
-        $products   = new Product();        
-        #vzat' product i dobavit' kategoriu producta        
-        $products->get_full_info();
+        $products   = new Product();
+        $meras      = new Mera();
+        #vzat' product i dobavit' kategoriu producta
+        $products->get_full_info();        
         
-        $meras->get_iterated();
-        
-        $this->data['meras']    = $meras;
         $this->data['products'] = $products;
         
         $this->template->load('/admin/templates/main_template', '/admin/products/show', $this->data);
@@ -69,8 +67,10 @@ class Products extends Admin_Controller {
         
         $product->get_full_info();
         #
-        $meras->get_iterated();
-        $product_categories->get_iterated();
+        $meras->get_full_info();
+        #
+        $product_categories->get_full_info();
+        
         $nutrition_categories->get();
         #k kajdomu nutrition_category dobavlaetsa svoi nutrition         
         foreach($nutrition_categories as $nutrition_category){
@@ -96,15 +96,21 @@ class Products extends Admin_Controller {
     }
 
     function _save($id = false){
-        
-        $product                        = new Product($id);             
-        $product->name                  = $this->input->post('product_name');
+        $product = new Product($id);
+        #
+        $data = array(
+                    'name'          => $this->input->post('product_name'),
+                    'description'   => $this->input->post('description')
+        );
+        #        
+        $product->save_by_language($data);
+        #                        
         $product->product_category_id   = $this->input->post('product_category_id');
         $product->mera_id               = $this->input->post('mera_id');
         $product->price                 = $this->input->post('price');
         $product->units_for_price       = $this->input->post('units_for_price');
-        $product->units_mera_id         = $this->input->post('units_mera_id');
-        $product->description           = $this->input->post('description');
+        $product->mera_for_price        = $this->input->post('mera_for_price');        
+
         # If products was saved to db successfully
         if($product->skip_validation()->save()){
             
@@ -136,12 +142,15 @@ class Products extends Admin_Controller {
                 $product->delete($nutrition->all);
             }
             #MERAS-PRODUCT
-            $selected_meras = ($this->input->post('selected_meras'))?$this->input->post('selected_meras'):array();
+            $selected_mera = $this->input->post('selected_meras');
+            
             $meras = new Mera();            
-            $meras->where_not_in('id',$selected_meras)->get();
-            $product->delete($meras->all);
-            $meras->where_in('id',$selected_meras)->get();        
-            $product->save($meras->all);                                                                                      
+            if($selected_mera){
+                $meras->where_not_in('id',$selected_mera)->get();
+                $product->delete($meras->all);
+                $meras->where_in('id',$selected_mera)->get();        
+                $product->save($meras->all);                
+            }                                                                                      
         }else{
             return false;
         }

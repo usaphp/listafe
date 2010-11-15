@@ -27,18 +27,8 @@ class Recipes extends Admin_Controller {
     }
     function show(){        
         #
-        $recipes    = new Recipe();
-        $language   = new Language();
-        $images     = new Recipes_image();
-        #$recipes->get_full_info();
-        
-        $language->get_by_name('Russian');
-        
-        $recipes->include_join_fields()
-                ->get_by_related_language($language);
-        
-        $recipes->get_image();
-
+        $recipes    = new Recipe();                
+        $recipes->get_full_info();                       
         #
         $data['recipes'] = $recipes;
         $this->template->load('/admin/templates/main_template', 'admin/recipes/show', $data);
@@ -53,41 +43,26 @@ class Recipes extends Admin_Controller {
 		$this->load->library('form_validation');
 		# Js function from main.js which loads by default  
         array_push($this->data['js_functions'], array('name' => 'recipes_edit_init', 'data' => FALSE));
-		/* Get data for select boxes */
-        $language   = new Language();
+		/* Get data for select boxes */        
         $recipe = new Recipe();        
         $product = new Product();
-        $recipe_image = new Recipes_Image();
+        
         $steps = new Recipes_Step();
-        $meras = new Mera(); 
+        $meras = new Mera();
         
-        $language->get_by_name('Russian');
+        $recipe->get_full_info($id);
         
-        $recipe->include_join_fields()
-                ->get_by_related_language($language);
-        
-        $recipe->get_image();
-        #zagruzka neobhodimih produktod 4erez ActivRecord
-        $recipe->get_products(); 
-        
-        $meras->get();
-        #soedinit' sushestvuushie shagi po language
-        $recipe->recipes_step->include_join_fields()
-                            ->get_by_related_language($language);
-		
-		/* Settting up validation rules */
-        $rules = array(
-            array('field' => 'recipe_name', 'label' => 'Название Рецепта', 'rules' => 'trim|required|xss_clean|_recipe_name_exists'));
-        $this->form_validation->set_rules($rules);
+        $meras->get_full_info();
+        #soedinit' sushestvuushie shagi po language        	
         
 		/* If validation passed try to save a recipe */
         $total_products = $this->input->post('total_products');
-        #echo $total_products.'</br>'; #!
-		if ($this->form_validation->run())
+        
+		if ($this->form_validation->run('recipe_edit'))
 		{
   	/* Success on validation */
             # Zagruzka Recepta
-            $recipe->name           = $this->input->post('recipe_name');
+            $recipe->save_by_language(array('name',$this->input->post('recipe_name')));            
             $recipe->prepare_time   = $this->input->post('prep_time');
             $recipe->cook_time      = $this->input->post('cook_time');
             $recipe->servings       = $this->input->post('servings');
@@ -97,42 +72,46 @@ class Recipes extends Admin_Controller {
             if($recipe->save()){
                 #RECIPE IMAGE
                 #esli net svazannoi image to sozdaetsa novaia i zadaetsa id
-                if ($recipe_image->result_count()==0){ 
-                    $recipe_image_id = $recipe_image->result_count()+1;
+                if ($recipe->recipes_image->result_count()==0){
+                    $recipe_image_id = $recipe->recipes_image->result_count()+1;
                     $recipe_image = new Recipes_Image();
                     $recipe_image->image_type = 1; 
                 }else {
-                    $recipe_image_id = $recipe_image->id; #beret sushestvushii ID image is Recipes_Image
+                    $recipe_image_id = $recipe->recipes_image->id; #beret sushestvushii ID image is Recipes_Image
                 }
                 #esli biblioteka my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i resize
                 $this->upload_image_lib->initialize(array('type'=>'recipe', 'size' => 'tiny'));
                     #vozvrashaet polnoe ima kartinki primer: re_id_id.jpg; v bazu sohranaetsa tol'ko $recipe_image_id
                 if ($this->upload_image_lib->upload_resize_img('recipe_image',$recipe->id.'_'.$recipe_image_id))
-                        $recipe_image->save($recipe);
+                    $recipe_image->save($recipe);
                 else 
-                        $this->data['form_error'] = $this->upload_image_lib->get_errors().' '.$this->upload->display_errors(); #vivodit log oshibok                                           
-                
+                    $this->data['form_error'] = $this->upload->display_errors(); #vivodit log oshibok                
+                                                           
                 #PRODUKTI
                 #zagruzka udaleniih productov 
                 $product_removed = $this->input->post('hidden_product_removed');                
                 if (!$product_removed) $product_removed = array();                 
                 for($i=1;$i<=$total_products;$i++){
-                    $product_name = $this->input->post('product_'.$i);
-                    $product_qty = $this->input->post('qty_'.$i);
-                    $product_mera_id = $this->input->post('mera_'.$i);
+                    $product_name       = $this->input->post('product_'.$i);
+                    $product_qty        = $this->input->post('qty_'.$i);
+                    $product_mera_id    = $this->input->post('mera_'.$i);
+                    #
                     if ($product_name && $product_qty && $product_mera_id && !in_array($i,$product_removed)){
-                        # beret ID producta po imeni dla bazi Products_Recipe();
-                        $products_id_by_name = $product->where('name', $product_name)->get()->id; #
-                        $products_recipe = new Products_Recipe();
-                        $products_recipe->where_related($recipe);
-                        $products_recipe->where('product_id',$products_id_by_name)->get();
-                        #prove na sushestvovanie zapisi
-                        if ($products_recipe->result_count()==0)$products_recipe = new Products_Recipe(); #!vozmojno ect' bolee prodvinutiq variant
-                        # izmenennie ili dobavlenie znachenii
-                        $products_recipe->product_id = $products_id_by_name;
-                        $products_recipe->mera_id = $product_mera_id;
-                        $products_recipe->value = $product_qty;
-                        $products_recipe->save($recipe);
+                       // # beret ID producta po imeni dla bazi Products_Recipe();
+//                        $products_id_by_name = $product->where('name', $product_name)->get()->id; #
+//                        $products_recipe = new Products_Recipe();
+//                        $products_recipe->where_related($recipe);
+//                        $products_recipe->where('product_id',$products_id_by_name)->get();
+//                        #prove na sushestvovanie zapisi
+//                        if ($products_recipe->result_count()==0)$products_recipe = new Products_Recipe(); #!vozmojno ect' bolee prodvinutiq variant
+//                        # izmenennie ili dobavlenie znachenii
+//                        $products_recipe->product_id = $products_id_by_name;
+//                        $products_recipe->mera_id = $product_mera_id;
+//                        $products_recipe->value = $product_qty;
+//                        $products_recipe->save($recipe);                        
+                        $product->where_related('language','name',$product_name)->get();
+                         
+                        return ;
                     }    
                 }
                 # udalit' vibrannie producti
@@ -203,11 +182,10 @@ class Recipes extends Admin_Controller {
 			/* Error on validation */
 			$this->data['form_error'] = validation_errors();
 		}
-        #
+        #        
 		$this->data['recipe'] = $recipe;
-        $this->data['steps'] = $steps;
-        $this->data['image'] = $recipe_image;
-        $this->data['meras'] = $meras; 
+        $this->data['steps']  = $steps;        
+        $this->data['meras']  = $meras; 
         $this->template->load('/admin/templates/main_template', '/admin/recipes/edit', $this->data);
 	}
 

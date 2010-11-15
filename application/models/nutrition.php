@@ -14,6 +14,16 @@ class Nutrition extends DataMapper {
         parent::__construct($id);
         
     }
+    
+    function save_by_language($data, $current_language = 'Russian'){
+        $language = new Language();
+        $language->get_by_name($current_language);
+        if(isset($data['name']))                $this->set_join_field($language,'name',$data['name']);
+        if(isset($data['nutrition_category']))  $this->nutrition_category_id = $data['nutrition_category'];
+        if($this->save())return true;
+        return false;
+    }
+    
     function get_full_info($id = false, $current_language = 'Russian'){
         $language = new Language();
         $language->get_by_name($current_language);

@@ -266,7 +266,7 @@ main.prototype.process_ajax_response = function(response, form_name){
        	$('#add_step').click(function(){
     		var next_step = parseInt($('#total_steps').val()) + 1;
     		$.ajax({
-    			url : main.admin_url + 'ajax/add_step',
+    			url : '/admin/ajax/add_step',
     			data : { 'step_id' : next_step },
     			type : 'post',
     			success : function(response){
@@ -280,7 +280,7 @@ main.prototype.process_ajax_response = function(response, form_name){
     	$('#add_product_recipe').click(function(){
     		var next_product_id = parseInt($('#total_products').val()) + 1;
     		$.ajax({
-    			url : main.admin_url + 'ajax/add_recipe_product',
+    			url : '/admin/ajax/add_recipe_product',
     			data : { 'recipe_product_id' : next_product_id },
     			type : 'post',
     			success : function(response){

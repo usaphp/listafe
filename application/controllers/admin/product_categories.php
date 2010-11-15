@@ -16,7 +16,7 @@ class Product_categories extends Admin_Controller {
     function show()
     {
         $product_categories = new Product_category();
-        $product_categories->get();
+        $product_categories->get_full_info();
         $this->data['product_categories'] = $product_categories;
         $this->template->load('/admin/templates/main_template', '/admin/product_categories/show', $this->data);
     }
@@ -34,19 +34,15 @@ class Product_categories extends Admin_Controller {
         $this->load->library('form_validation');
         # Js function from main.js which loads by default  
 		array_push($this->data['js_functions'], array('name' => 'categories_edit_init', 'data' => FALSE));   
-		
+		        
+        $product_category = new Product_category();
         
-        $product_category = new Product_category($id);
-        
-        $rules = array(
-            array('field' => 'category_name', 'label' => 'Название Категории', 'rules' => 'trim|required|xss_clean|_category_name_exists')
-        );
-        $this->form_validation->set_rules($rules);
-        
+        $product_category->get_full_info($id);
         //if form validates
-        if($this->form_validation->run()){
-            $product_category->name = $this->input->post('category_name');
-            if($product_category->save()){
+        if($this->form_validation->run('product_category')){   
+            $category_name = $this->input->post('category_name');
+            if($category_name){
+                $product_category->save_by_language(array('name' => $category_name));
                 $this->data['form_success'] = 'Категория добавлена';
             }else{
                 $this->data['form_error'] = $product_category->error->string;

@@ -45,14 +45,11 @@ class Nutritions extends Admin_Controller {
 
         //if form validates
         if($this->form_validation->run('nutrition')){
-            $curr_lang = new Language();
-            #
-            $curr_lang->get_by_name($this->data['language']['current']);
-            #
-            $nutrition->set_join_field($curr_lang,'name',$this->input->post('nutrition_name'));
-            #
-            $nutrition->nutrition_category_id = $this->input->post('nutritions_categories_id');
-            if($nutrition->save()){
+            $data = array(
+                    'name' => $this->input->post('nutrition_name'),
+                    'nutrition_category' => $this->input->post('nutritions_categories_id')
+            );
+            if($nutrition->save_by_language($data)){
                 $this->data['form_success'] = 'Вещество  добавлено';
             }else{
                 $this->data['form_error'] = $nutrition->error->string;

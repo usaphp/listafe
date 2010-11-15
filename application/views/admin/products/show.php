@@ -20,8 +20,8 @@
                 <tr>
                     <td><?php echo $product->id; ?></td>
                     <td><?php echo $product->join_name; ?></td>
-                    <td><?php echo dm_get_object_by_id($product->product_category_id,$products->product_category)->join_name; ?></td>                    
-                    <td><?php echo dm_get_object_by_id($product->mera_id,$products->mera)->join_name; ?></td>
+                    <td><?php echo $product->product_category->join_name; ?></td>                    
+                    <td><?php echo $product->mera->join_name; ?></td>
                     <td><img src="<?php echo image_url($product->image, 'product', 'tiny'); ?>"/></td>
                     <td class="c_aligned">
                         <?php echo anchor('admin/products/edit/'.$product->id, 'Редактировать', array('class' => 't_action'));?> 

@@ -4,9 +4,9 @@
         'id'    => 'product_name',
         'class' => 'f_input required',
         'value' => $product->join_name
-    );    
+    );
     $sel_product_category = array(
-        'options' => array_for_dropbox($product->product_category,'Категория продукта','id','join_name'),
+        'options' => array_for_dropbox($product_categories,'Категория продукта','id','join_name'),
         'name'  => 'product_category_id',
         'id'    => 'product_category_id',
         'class' => 'f_select wide required',
@@ -19,7 +19,7 @@
         'value' => $product->join_description
     );
     $sel_mera = array(
-        'options' => array_for_dropbox($product->mera,'Мера измерения','id','join_name'),
+        'options' => array_for_dropbox($meras,'Мера измерения','id','join_name'),
         'name'  => 'mera_id',
         'id'    => 'mera_id',
         'class' => 'f_select wide',
@@ -38,11 +38,11 @@
         'value' => $product->units_for_price
     );
     $sel_units_mera = array(
-        'options' => array_for_dropbox($product->mera,'Мера измерения','id','join_name'),
-        'name'  => 'units_mera_id',
-        'id'    => 'units_mera_id',
+        'options' => array_for_dropbox($meras,'Мера измерения','id','join_name'),
+        'name'  => 'mera_for_price',
+        'id'    => 'mera_for_price',
         'class' => 'f_select wide f_joined',
-        'selected' => $product->units_mera_id
+        'selected' => $product->mera_for_price
     );    
     $fu_image = array(
         'name'  => 'image',

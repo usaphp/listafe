@@ -58,19 +58,17 @@
 		
 		<?php echo form_label('Фотография', $image_upload['id'], array('class' => 'f_label')); ?>
 		<?php echo form_upload($image_upload); ?>
-		<?php if ($image->id) echo '<img src="'.get_name_image($recipe->id,$image->id, 'tiny').'"/>'; ?>
+		<?php if ($recipe->recipes_image->id) echo '<img src="'.get_name_image($recipe->id, $recipe->recipes_image->id, 'tiny').'"/>'; ?>
 		<div class="f_sub_header">Ингредиенты</div>
     		<div id="recipe_products">
-        		<?php 
-                #print_flex($recipe->products);
+        		<?php                 
                 #$recipe->products opredelaensa v modele Resipe 4erez Activ Record i sohranaetsa kak array
-        		foreach($recipe->products as $key => $product){
-                    #$key = isset($key)?$key:0;
+        		foreach($recipe->product as $key => $product){                    
         			$data['recipe_product_id'] = $key+1;
-                    $data['name'] = $product->name;
-                    $data['mera']= $product->mera_id;
-                    $data['value'] = $product->value;
-                    $data['image'] = $product->image;
+                    $data['name']   = $product->join_name;
+                    $data['mera']   = $product->join_mera_id;
+                    $data['value']  = $product->join_value;
+                    $data['image']  = $product->image;
         			$this->load->view('/admin/recipes/subs/product.php', $data);
         		}
         		?>

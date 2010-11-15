@@ -47,11 +47,14 @@ class Upload_image_lib {
         $this->CI->load->library('upload');
         $this->CI->upload->initialize($this->config);
         //try to upload file
-        if ($this->CI->upload->do_upload($form_name)){            
+        
+        if ($this->CI->upload->do_upload($form_name)){
+               
             return $this->_get_name_img($image_name);            
         }else{            
-            return $this->_return_log_error('?CI->upload->do_upload?');   
+            return $this->_return_log_error(' CI->upload->do_upload?');   
         }
+        
     }
     
     function resize_img($image_name = false){

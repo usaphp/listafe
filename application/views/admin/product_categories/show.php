@@ -11,7 +11,7 @@
             <?php foreach($product_categories as $category){ ?>
                 <tr>
                     <td><?php echo $category->id; ?></td>
-                    <td><?php echo $category->name; ?></td>
+                    <td><?php echo $category->join_name; ?></td>
                     <td class="c_aligned">
                         <?php echo anchor('admin/product_categories/edit/'.$category->id, 'Редактировать', array('class' => 't_action'));?>
                         <?php echo anchor('admin/product_categories/delete/'.$category->id, 'Удалить', array('class' => 't_action'));?>
