@@ -6,11 +6,10 @@
     */
     $config['sess_use_database']	= FALSE;
     //-------------------------------------------------------------------------    
-    $config['admin_url'] = $config['base_url']."admin/";
 
-    $config['product_images_path'] = $_SERVER['DOCUMENT_ROOT'].'/photos/product_images/';
-    $config['recipe_images_path'] = $_SERVER['DOCUMENT_ROOT'].'/images/recipes/';
-    $config['step_images_path'] = $_SERVER['DOCUMENT_ROOT'].'/images/steps/';
+    $config['product_images_path']  = $_SERVER['DOCUMENT_ROOT'].'/photos/product_images/';
+    $config['recipe_images_path']   = $_SERVER['DOCUMENT_ROOT'].'/images/recipes/';
+    $config['step_images_path']     = $_SERVER['DOCUMENT_ROOT'].'/images/steps/';
     
     
 ?>

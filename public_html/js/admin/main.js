@@ -286,7 +286,7 @@ main.prototype.process_ajax_response = function(response, form_name){
     			success : function(response){
     				$('#recipe_products').append(response);
     				$('#total_products').val(next_product_id);
-                    $('.suggest_product').autocomplete(main.admin_url + "ajax/suggest_products", {
+                    $('.suggest_product').autocomplete("/admin/ajax/suggest_products", {
             		      width : $(this).attr('width')
                     });
     			}
@@ -324,7 +324,7 @@ main.prototype.process_ajax_response = function(response, form_name){
     		return false;
     	})
     	
-    	$('.suggest_product').autocomplete(main.admin_url + "ajax/suggest_products", {
+    	$('.suggest_product').autocomplete('/admin/ajax/suggest_products', {
     		      width : $(this).attr('width')
             });
     	}

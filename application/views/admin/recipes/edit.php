@@ -75,7 +75,7 @@
     		</div>
     		<?php
             #
-    		echo form_hidden('total_products', count($recipe->products));
+    		echo form_hidden('total_products', $recipe->product->result_count());
     		$data['step_id'] = 1;
     		echo separator_div(5);
     		?>
@@ -87,13 +87,13 @@
     		<div id="recipe_steps">
     		<?php 
                 #vse shagi iz bazi
-                foreach($recipe->recipes_step as $key => $step){
+                foreach($recipe->recipe_step as $key => $step){
                     $data['step_id'] = $key+1;
                     $data['text'] = $step->join_text;
                     $data['image'] = $step->image;
                     $this->load->view('/admin/recipes/subs/step.php', $data);
                 }
-    			echo form_hidden('total_steps', $steps->result_count());
+    			echo form_hidden('total_steps', $recipe->recipe_step->result_count());
     		?>
 		</div>
 	</div>

@@ -1,7 +1,7 @@
 <?php
 class Recipe extends DataMapper {
     var $has_one    = array();
-    var $has_many   = array('language', 'product', 'recipes_image', 'recipes_step', 'products_recipe');
+    var $has_many   = array('language', 'product', 'recipes_image', 'recipe_step', 'products_recipe');
     function __construct($id = NULL)
     {
         parent::__construct($id);
@@ -22,7 +22,7 @@ class Recipe extends DataMapper {
                     $val_product->mera->include_join_fields()->get_by_related_language($language);
             }            
             #RECIPES
-            $this->recipes_step->include_join_fields()->get_by_related($language);
+            $this->recipe_step->include_join_fields()->get_by_related($language);
         }else{
             $this->include_join_fields()->get_by_related($language);
             foreach($this as $recipe){
@@ -34,8 +34,12 @@ class Recipe extends DataMapper {
     }
     function save_by_language($data, $current_language = 'Russian'){
         $language = new Language();
-        $language->get_by_name($current_language);
-        if(isset($data['name'])) $this->set_join_field($language,'name',$data['name']);                        
+        $language->get_by_name($current_language);        
+        if(isset($data['name'])) {            
+            $this->save($language);    
+            $this->set_join_field($language,'name',$data['name']);            
+        }
+        
     }
     function get_products(){
         $query = $this->db->select('products_recipes.*,products.name,products.image')

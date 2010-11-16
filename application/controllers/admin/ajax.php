@@ -27,9 +27,11 @@ class Ajax extends Admin_Controller {
 	
 	/* Suggest product for recipe */
 	function suggest_products(){
-		$product_name = $this->input->post('q', TRUE);
-		$products = new Product();
-		$products->like('name', $product_name, 'after')->get();
+		$product_name = $this->input->post('q', TRUE);        
+        
+        $products = new Languages_Product();                
+        $products->like('name', $product_name, 'after')->get_iterated(); 
+		
 		foreach($products as $product){
 			echo $product->name."\n";
 		}
