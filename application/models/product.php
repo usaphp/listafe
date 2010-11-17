@@ -2,7 +2,7 @@
 class Product extends Datamapper {
     
     var $has_one = array('product_category');
-    var $has_many = array('language', 'mera', 'recipe', 'nutrition', 'ratio_mera', 'nutritions_product', 'nutrition_category', 'products_recipe','nutrition_categories_product'); 
+    var $has_many = array('language', 'mera', 'recipe', 'nutrition', 'ratio_mera', 'nutrition_category', 'products_recipe','nutrition_categories_product'); 
     
 //    var $validation = array(
 //        'name' => array(
@@ -26,9 +26,16 @@ class Product extends Datamapper {
         $language->get_by_name($current_language);
         #        
         $this->include_join_fields()->get_by_related_language($language);
-        foreach($this as $product){
-            $product->product_category->include_join_fields()->get_by_related_language($language);
-            $product->mera->include_join_fields()->get_by_related_language($language);
+        if($id){             
+            $this->nutrition_category->get_full_info();
+            $this->nutrition->include_related('nutrition_category')->get_by_related($language);
+            $this->product_category->include_join_fields()->get_by_related($language);
+            $this->mera->include_join_fields()->get_by_related($language);
+        }else{
+            foreach($this as $product){                 
+                $product->product_category->include_join_fields()->get_by_related($language);
+                $product->mera->include_join_fields()->get_by_related($language);
+            }
         }        
     }
     function get_ratios($ratio = false){

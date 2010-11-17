@@ -72,9 +72,7 @@
 		$nutrition_fact_count = 1;
         foreach($all_nutrition_categories as $nutrition_category):            
             #
-            $value = '';
-            foreach($current_nutrition_categories as $curr_nutr_cat) 
-                if($curr_nutr_cat->nutrition_category_id == $nutrition_category->id) $value = $curr_nutr_cat->value;                               
+            $value = dm_get_field_by_id($nutrition_category->id,$product->nutrition_category);
             #
             $inp_nutrition_category = array(
 	            'name'  => 'nutrition_category_'.$nutrition_category->id,        
@@ -82,7 +80,7 @@
 	            'class' => 'f_input f_joined',
 	            'value' => $value);
 				
-            echo form_label($nutrition_category->name, $inp_nutrition_category['id'], array('class' => 'f_label'));
+            echo form_label($nutrition_category->join_name, $inp_nutrition_category['id'], array('class' => 'f_label'));
             echo form_input($inp_nutrition_category);
             echo anchor('#', 'Details', array('class' => 'f_joined f_subinput_node', 'id' => 'f_subinput_node_'.$nutrition_category->id));
             echo cleared_div();
@@ -108,10 +106,9 @@
 					?>
 				</div>
 					<div class='prod_nutritions_wrapper' id='prod_nutritions_wrapper_<?php echo $nutrition_category->id; ?>'>
-						<?php
-                            $nutrition_fact_count = 0;
-							foreach($nutritions as $nutrition):                                                                                                                                                   
-                                if($nutrition->nutrition_nutrition_category_id == $nutrition_category->id){																
+						<?php                            
+							foreach($product->nutrition as $nutrition):                                                                                                                                                   
+                                if($nutrition->nutrition_category_id == $nutrition_category->id){																
                                     echo '<div class="" id="hidden_nutrition_wrapper_'.$nutrition_fact_count.'">';								
     								$inp_hidden = array(
     									'name' => 'hidden_nutrition_existed[]', 
@@ -141,7 +138,7 @@
             echo cleared_div();
             foreach($meras as $mera){   
                 echo open_f_block();
-                echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'checked' => datamapper_object_exist($mera,$product->mera), 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
+                echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'checked' => dm_object_exist($mera,$product->mera), 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
                 echo form_label($mera->name, 'selected_meras_'.$mera->id, array('class' => 'f_label_cb'));
                 echo cleared_div();
                 echo close_f_block();                  

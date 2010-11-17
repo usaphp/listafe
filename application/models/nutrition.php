@@ -2,7 +2,7 @@
 class Nutrition extends DataMapper {
 	
 	var $has_one = array('nutrition_category');
-	var $has_many = array('language','nutritions_product','product');
+	var $has_many = array('language','product');
                           
 //	var $validation = array(
 //		'nutritions_categories_id' => array(
@@ -17,11 +17,12 @@ class Nutrition extends DataMapper {
     
     function save_by_language($data, $current_language = 'Russian'){
         $language = new Language();
-        $language->get_by_name($current_language);
-        if(isset($data['name']))                $this->set_join_field($language,'name',$data['name']);
+        $language->get_by_name($current_language);        
+        #NE MENAT' POSLEDOVATEL'NOST' - NE Budet rabotat'
         if(isset($data['nutrition_category']))  $this->nutrition_category_id = $data['nutrition_category'];
-        if($this->save())return true;
-        return false;
+        $this->save($language);
+        if(isset($data['name']))                $this->set_join_field($language,'name',$data['name']);
+        
     }
     
     function get_full_info($id = false, $current_language = 'Russian'){

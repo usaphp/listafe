@@ -34,8 +34,7 @@ class Products extends Admin_Controller {
         redirect('admin/products/show');
     }
     
-    function edit($id = false)
-    {
+    function edit($id = false){
         $this->load->library('form_validation');
         # Js function from main.js which loads by default  
         array_push($this->data['js_functions'], array('name' => 'products_edit_init', 'data' => FALSE));
@@ -60,37 +59,23 @@ class Products extends Admin_Controller {
         $meras                  = new Mera();
         $product                = new Product();
         $product_categories     = new Product_category();
-        $nutrition_categories   = new Nutrition_category();
-        
-        $nutr_product           = new Nutritions_Product();
-        $nutr_categor_products  = new Nutrition_categories_product();
-        
-        $product->get_full_info();
+        $nutrition              = new Nutrition();
+        $nutrition_categories   = new Nutrition_category();        
+        #
+        $product->get_full_info();        
         #
         $meras->get_full_info();
         #
         $product_categories->get_full_info();
-        
-        $nutrition_categories->get();
-        #k kajdomu nutrition_category dobavlaetsa svoi nutrition         
-        foreach($nutrition_categories as $nutrition_category){
-            $nutrition_category->nutrition->get_iterated();        
-        }
-        #viberaet ID i zna4enia nutrition_category po ID productov i dobavlaet nazvanie dannoi nutr_categ 
-        $nutr_categor_products ->where_related($product)
-                            ->include_related('nutrition_category')
-                            ->get();
-        ##viberaet ID i zna4enia nutrition po ID productov i dobavlaet nazvanie dannoi nutrrition 
-        $nutr_product->where_related($product)
-                    ->include_related('nutrition')
-                    ->include_join_fields()->get();        
         #
-        
+        $nutrition->get_full_info();
+        #
+        $nutrition_categories->get_full_info();        
+        #        
         $this->data['product']                      = $product;
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;
-        $this->data['current_nutrition_categories'] = $nutr_categor_products;
-        $this->data['nutritions']                   = $nutr_product;
+        
         $this->data['meras']                        = $meras;
         $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
     }
@@ -123,8 +108,8 @@ class Products extends Admin_Controller {
                 $nc->set_join_field($product,'value', $this->input->post('nutrition_category_'.$nc->id));
             }                                               
             #NUTRITION          
-            $hidden_nutrition_add = ($this->input->post('hidden_nutrition'))?$this->input->post('hidden_nutrition'):array();
-            $hidden_nutrition_remove = ($this->input->post('hidden_nutrition_removed'))?$this->input->post('hidden_nutrition_removed'):array();                                                                                                                 
+            $hidden_nutrition_add       = ($this->input->post('hidden_nutrition'))?$this->input->post('hidden_nutrition'):array();
+            $hidden_nutrition_remove    = ($this->input->post('hidden_nutrition_removed'))?$this->input->post('hidden_nutrition_removed'):array();                                                                                                                 
             #
             $hidden_nutrition_add = array_map('explode_ext',$hidden_nutrition_add);
             #

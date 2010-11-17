@@ -99,7 +99,7 @@
         return $result_array;
     }
     #
-    function datamapper_object_exist(DataMapper $needle,DataMapper $haystack){        
+    function dm_object_exist(DataMapper $needle,DataMapper $haystack){        
         foreach($haystack as $val){
             if($needle->id==$val->id) return true;                        
         }
@@ -108,8 +108,14 @@
     #
     function dm_get_object_by_id($needle,DataMapper $haystack){        
         foreach($haystack as $val){
-            if($needle==$val->id) return $val;                        
-        }        
+            if($needle==$val->id) return $val;
+        }
+    }
+    function dm_get_field_by_id($needle,DataMapper $haystack , $field = 'value'){        
+        foreach($haystack as $val)
+            if($needle==$val->id) 
+                if($val->$field) return $val->field;
+        return false;                
     }
     #vozvrashaet nabor otnosheni' velichit
     function dm_get_ratios_array($scalar,$val_scalar,$relative,$val_relative){        

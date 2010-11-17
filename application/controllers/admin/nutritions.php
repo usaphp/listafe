@@ -40,7 +40,7 @@ class Nutritions extends Admin_Controller {
         $nutrition                = new Nutrition();
 		$nutrition_categories     = new Nutrition_category();
 		         
-        $nutrition->get_full_info($id);	
+        if($id) $nutrition->get_full_info($id);	
         $nutrition_categories->get_full_info();
 
         //if form validates
@@ -49,7 +49,8 @@ class Nutritions extends Admin_Controller {
                     'name' => $this->input->post('nutrition_name'),
                     'nutrition_category' => $this->input->post('nutritions_categories_id')
             );
-            if($nutrition->save_by_language($data)){
+            if($data['name']){
+                $nutrition->save_by_language($data);
                 $this->data['form_success'] = 'Вещество  добавлено';
             }else{
                 $this->data['form_error'] = $nutrition->error->string;
