@@ -17,12 +17,22 @@ class Product_category extends DataMapper {
     function save_by_language($data,$current_language = 'Russian'){
         $language = new Language();
         $language->get_by_name($current_language);                
-        if(isset($data['name'])){$this->set_join_field($language,'name',$data['name']);}                       
+        if(isset($data['name'])){
+            if (!$this->id){
+                $this->id = 1;
+                $count = $this->count();                
+                if($count>=1)
+                    $this->id = $this->id + $this->get(1,$count-1)->id;                                                    
+                $this->save_as_new($language);
+            }
+            $this->set_join_field($language,'name',$data['name']);
+        }
     }
+
     function get_full_info($id = false, $current_language = 'Russian'){
         $language   = new Language();
         $language->get_by_name($current_language);
-        if($id) 
+        if($id)
             $this->include_join_fields()->where_related($language)->get_by_id($id);
         else
             $this->include_join_fields()->get_by_related_language($language);

@@ -26,9 +26,11 @@ class Products extends Admin_Controller {
     }
     
     function delete($id = false){
-        if($id){
+        if($id){            
             $product = new Product($id);
-            if($product->exists()) $product->delete();
+            if($product->exists()){
+                $product->delete();
+            }
         }
         $this->session->set_flashdata('top_success', 'Продукт удален');
         redirect('admin/products/show');
@@ -60,9 +62,9 @@ class Products extends Admin_Controller {
         $product                = new Product();
         $product_categories     = new Product_category();
         $nutrition              = new Nutrition();
-        $nutrition_categories   = new Nutrition_category();        
+        $nutrition_categories   = new Nutrition_category();
         #
-        $product->get_full_info();        
+        $product->get_full_info($id);                
         #
         $meras->get_full_info();
         #

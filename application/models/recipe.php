@@ -1,7 +1,7 @@
 <?php
 class Recipe extends DataMapper {
     var $has_one    = array();
-    var $has_many   = array('language', 'product', 'recipes_image', 'recipe_step', 'products_recipe');
+    var $has_many   = array('language', 'product', 'recipe_image', 'recipe_step');
     function __construct($id = NULL)
     {
         parent::__construct($id);
@@ -14,20 +14,21 @@ class Recipe extends DataMapper {
         if($id){
             $this->include_join_fields()->where_related($language)->get_by_id($id);
             #IMAGE REC
-            $this->recipes_image->get_by_image_type(RECIPE_IMAGE_MAIN_TYPE);
+            $this->recipe_image->get_by_image_type(RECIPE_IMAGE_MAIN_TYPE);
             #PRODUCTS
             $this->product->include_join_fields()->where_related($language)->include_join_fields()->get();
             foreach($this->product as $val_product){
                     $val_product->product_category->include_join_fields()->get_by_related_language($language);
                     $val_product->mera->include_join_fields()->get_by_related_language($language);
-            }            
+            }
             #RECIPES
             $this->recipe_step->include_join_fields()->get_by_related($language);
         }else{
             $this->include_join_fields()->get_by_related($language);
             foreach($this as $recipe){
-                $recipe->recipes_image->get_by_image_type(RECIPE_IMAGE_MAIN_TYPE);
+                $recipe->recipe_image->get_by_image_type(RECIPE_IMAGE_MAIN_TYPE);
             }
+            $this->id = null;
         }
         #
         

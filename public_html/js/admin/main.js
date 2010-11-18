@@ -135,6 +135,7 @@ main.prototype.product_category_edit_init = function(){
             'product_category_name' : "required"
             }
     });
+    
 }
 
 main.prototype.process_ajax_response = function(response, form_name){
@@ -257,7 +258,16 @@ main.prototype.process_ajax_response = function(response, form_name){
         
     }
     main.prototype.nutrition_categories_edit_init = function(){
-        
+        $('.btn_language_add').click(function(){		
+    		$.ajax({
+    			url  : '/admin/ajax/add_language',                
+    			type : 'post',
+    			success : function(response){
+    				$('.f_content').append(response);				
+    			}
+    		});
+    		return false;
+    	});     
 	}
     main.prototype.nutritions_edit_init = function(){
         

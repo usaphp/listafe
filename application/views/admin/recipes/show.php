@@ -19,7 +19,7 @@
                     <td><?php echo $recipe->prepare_time; ?></td>
                     <td><?php echo $recipe->cook_time; ?></td>
                     <td><?php echo $recipe->servings; ?></td>
-                    <td><img src="<?php echo get_name_image($recipe->id, $recipe->recipes_image->id, 'tiny'); ?>"/></td>
+                    <td><img src="<?php echo get_name_image($recipe->id, $recipe->recipe_image->id, 'tiny'); ?>"/></td>
                     <td class="r_aligned">
                         <?php echo anchor($this->linker->a_recipe_edit_by_id_link($recipe->id), 'Редактировать', array('class' => 't_action'));?>
                         <?php echo anchor($this->linker->a_recipe_delete_by_id_link($recipe->id), 'Удалить', array('class' => 't_action'));?>

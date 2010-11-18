@@ -23,7 +23,7 @@ class Ratio_meras extends Admin_Controller {
         array_push($this->data['js_functions'], array('name' => 'ratio_meras_edit_init', 'data' => FALSE));
         
         $product    = new Product();                       
-        $meras      = new Mera();                    
+        $meras      = new Mera();
                         
         $product_name   = $this->input->post('inp_product');
         $mera_scalars   = $this->input->post('mera_scalars')?$this->input->post('mera_scalars'):array();
@@ -34,9 +34,9 @@ class Ratio_meras extends Admin_Controller {
         #spisok dobavlenii ili izmenenii
         $ratios         = array();
         #
-        if($product_name){
-            $product->get_by_name($product_name);
-            if($product->exists()){
+        if($product_name){                        
+            $product->get_by_name($product_name);            
+            if($product->id){
                 if($this->form_validation->run('product_meras')){
                 #generiruen array vida ('scalar'=> zna4enie, relative=> zna4enie) 
                 #kotorii bedet parameterom zaprosa v baze Ratio_Meras
@@ -71,14 +71,13 @@ class Ratio_meras extends Admin_Controller {
                 }else{
                     $this->data['form_error'] = validation_errors();
                 }
-        
-            }    
+            }
         }
         #         
         $this->data['product']          = $product;
-        $this->data['meras']            = $meras->get_iterated();        
-        $this->data['scalar_meras']     = $meras->get_clone(true)->where('type',1)->get();                
-        $this->data['relative_meras']   = $meras->get_clone(true)->where('type',2)->get();    
+        $this->data['meras']            = $meras->get_iterated();
+        $this->data['scalar_meras']     = $meras->get_clone(true)->where('type',1)->get();
+        $this->data['relative_meras']   = $meras->get_clone(true)->where('type',2)->get();
         $this->data['ratios']           = $product->get_ratios();
         #
         $this->template->load('/admin/templates/main_template', 'admin/ratio_meras/edit', $this->data);

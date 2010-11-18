@@ -37,7 +37,7 @@ class Product_categories extends Admin_Controller {
 		        
         $product_category = new Product_category();
         
-        $product_category->get_full_info($id);
+        if($id) $product_category->get_full_info($id);
         //if form validates
         if($this->form_validation->run('product_category')){   
             $category_name = $this->input->post('category_name');

@@ -19,8 +19,8 @@
         <?php
         form_success_error($form_error, $form_success);
         echo form_label('Название Ингридиента', $nutrition_name['id'], array('class' => 'f_label'));
-        echo form_input($nutrition_name);
-
+        $data['inp_name'] = $nutrition_name;
+        $this->load->view('admin/language_form',$data);        
 		echo form_label('Категория ингридиента', $sel_category['id'], array('class' => 'f_label'));
         echo form_dropdown($sel_category['name'], $sel_category['options'], $sel_category['selected'], 'id = "'.$sel_category['id'].'" class = "'.$sel_category['class'].'"');
         ?>

@@ -8,6 +8,17 @@ class Ajax extends Admin_Controller {
         $this->output->enable_profiler(FALSE);
 	}
 	
+    function add_language(){                
+        #
+        $languages = new Language();        
+        #
+        $languages->get_iterated();
+        #
+        $this->data['languages'] = $languages;
+        #
+        $this->data['current_langueage'] = $languages->id;
+        $this->load->view('admin/language_form',$this->data);
+    }
 	function index(){
     
 	}

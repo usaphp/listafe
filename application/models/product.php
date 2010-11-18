@@ -2,7 +2,7 @@
 class Product extends Datamapper {
     
     var $has_one = array('product_category');
-    var $has_many = array('language', 'mera', 'recipe', 'nutrition', 'ratio_mera', 'nutrition_category', 'products_recipe','nutrition_categories_product'); 
+    var $has_many = array('language', 'languages_product', 'mera', 'recipe', 'nutrition', 'ratio_mera', 'nutrition_category'); 
     
 //    var $validation = array(
 //        'name' => array(
@@ -24,22 +24,27 @@ class Product extends Datamapper {
     function get_full_info($id = false, $current_language = 'Russian'){
         $language   = new Language();
         $language->get_by_name($current_language);
-        #        
-        $this->include_join_fields()->get_by_related_language($language);
-        if($id){             
+        #                
+        if($id){
+            $this->include_join_fields()->where_related_language($language)->get_by_id($id);
             $this->nutrition_category->get_full_info();
             $this->nutrition->include_related('nutrition_category')->get_by_related($language);
             $this->product_category->include_join_fields()->get_by_related($language);
             $this->mera->include_join_fields()->get_by_related($language);
         }else{
+            $this->include_join_fields()->get_by_related_language($language);
             foreach($this as $product){                 
                 $product->product_category->include_join_fields()->get_by_related($language);
                 $product->mera->include_join_fields()->get_by_related($language);
             }
         }        
     }
+    function get_by_name($name = false){
+        if(!$name) return ;        
+        $this->where_related_languages_product('name',$name)->get();
+    } 
     function get_ratios($ratio = false){
-        $dm_ratio   = new Ratio_mera();
+        $dm_ratio = new Ratio_mera();
         $dm_ratio->where_related($this);
         if (!$ratio) return $dm_ratio->get();
         $dm_ratio->where('scalar',$ratio['scalar'])

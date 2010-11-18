@@ -122,8 +122,7 @@ class Upload_image_lib {
         #eslit file sushestvuet to udalit i zapishet ima faila v log
         if (file_exists($this->config['upload_path'].$this->_get_name_img($exp_name['name'])))
             if(unlink ($this->config['upload_path'].$this->_get_name_img($exp_name['name'])))
-                $this->_deleted_log_img($this->_get_name_img($exp_name['name']));
-        echo $this->_get_name_img($exp_name['name']);
+                $this->_deleted_log_img($this->_get_name_img($exp_name['name']));        
         #udalaet faili dannogo ima so vsemi sushestviushimi rozresheniami;
         foreach($this->image_sizes as $size)
             if (file_exists($this->config['upload_path'].$this->_get_name_img($exp_name['name'],$size)))

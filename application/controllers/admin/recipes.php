@@ -117,18 +117,19 @@ class Recipes extends Admin_Controller {
             return;
         }
         $recipe = new Recipe();
-        $recipe->get_by_id($id);
-        $recipe->recipes_image->where_related()->get();
-        #
-        $this->upload_image_lib->delete_img('recipe',$recipe->id.'_'.$recipe->recipes_image->id);
-        $recipe->recipes_image->delete();
-        #
-        $recipe->recipes_step->where_related()->get();
-        #
-        foreach($recipe->recipes_step as $step)
-            $this->upload_image_lib->delete_img('step',$step->image);
-        $recipe->recipes_step->delete();
-        $recipe->delete();
+        $recipe->get_full_info($id);        
+        if($recipe->id){    
+            #            
+            foreach($recipe->recipe_step as $recipe_step) 
+                $this->upload_image_lib->delete_img('recipe',$recipe_step->image);            
+            $recipe->recipe_step->delete_all();
+            #
+            foreach($recipe->recipe_image as $recipe_image)
+                $this->upload_image_lib->delete_img('recipe',$recipe->id.'_'.$recipe_image->id);
+            $recipe->recipe_image->delete_all();
+            #
+            $recipe->delete();
+        }
         $this->show();
     }
     
@@ -176,21 +177,7 @@ class Recipes extends Admin_Controller {
                     $product_qty        = $this->input->post('qty_'.$i);
                     $product_mera_id    = $this->input->post('mera_'.$i);
                     #
-                    if ($product_name && $product_qty && $product_mera_id && !in_array($i,$product_removed)){
-                       #$lang = new Language();
-                        #$lang->get_by_name('Russian');
-                       // # beret ID producta po imeni dla bazi Products_Recipe();                       
-//                        $products_id_by_name = $product->where('name', $product_name)->get()->id; #
-//                        $products_recipe = new Products_Recipe();
-//                        $products_recipe->where_related($recipe);
-//                        $products_recipe->where('product_id',$products_id_by_name)->get();
-//                        #prove na sushestvovanie zapisi
-//                        if ($products_recipe->result_count()==0)$products_recipe = new Products_Recipe(); #!vozmojno ect' bolee prodvinutiq variant
-//                        # izmenennie ili dobavlenie znachenii
-//                        $products_recipe->product_id = $products_id_by_name;
-//                        $products_recipe->mera_id = $product_mera_id;
-//                        $products_recipe->value = $product_qty;
-//                        $products_recipe->save($recipe);
+                    if ($product_name && $product_qty && $product_mera_id && !in_array($i,$product_removed)){                       
                         $language = new Language();
                         $language->get_by_name('Russian');
                         $language->product->where_join_field($language,'name',$product_name)->get();                        
@@ -208,17 +195,7 @@ class Recipes extends Admin_Controller {
                 }
                 #esli spisok udalaemih productov ne pust to vipolnaetsa uslovie 
                 if (!empty($product_removed)){
-//                    $products = new Product();
-//                    $products_recipe = new Products_Recipe();
-//                    #berem iz bazi producti po spisku hidden
-//                    $products->where_in('name',$products_name)->get();
-//                    #berem producti tol'ko te 4to otnosatsa k dannomy recepty
-//                    $products_recipe->where_related($recipe);
-//                    #berem producti tol'ko te 4to otnosatsa k spisku hidden
-//                    $products_recipe->where_related($products)->get();
-//                    #udalaem vse 4to ostalos' v zaprose 
-//                    $products_recipe->delete();
-                    
+
                     $language = new Language();
                     $language->get_by_name('Russian');
                     $language->product->where_join_field($language,'name',$product_name)->get();                        

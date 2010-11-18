@@ -15,6 +15,14 @@ function separator_div($height = 5){
 	return '<div style="padding:'.$height.'px 0px"></div>';
 }
 
+function button_language_add(){
+    $btn_add_language = array(        
+        'id'    => 'btn_language_add_id',
+        'class' => 'btn_language_add f_button green f_last'
+    );
+    return anchor('#','добавить',$btn_add_language);
+}
+
 if ( ! function_exists('form_hidden'))
 {
 	function form_hidden($name, $value = '', $recursing = FALSE)
