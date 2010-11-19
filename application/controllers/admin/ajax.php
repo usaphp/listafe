@@ -14,7 +14,8 @@ class Ajax extends Admin_Controller {
         #
         $languages->get_iterated();
         #
-        $this->data['languages'] = $languages;
+        $this->data['languages']    = $languages;
+        $this->data['text_value']   = '';
         #
         $this->data['current_langueage'] = $languages->id;
         $this->load->view('admin/language_form',$this->data);

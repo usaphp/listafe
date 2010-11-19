@@ -17,7 +17,8 @@ class Nutrition extends DataMapper {
     
     function save_by_language($data, $current_language = 'Russian'){
         $language = new Language();
-        $language->get_by_name($current_language);        
+        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
+            
         #NE MENAT' POSLEDOVATEL'NOST' - NE Budet rabotat'
         if(isset($data['nutrition_category']))  $this->nutrition_category_id = $data['nutrition_category'];
         $this->save($language);
@@ -25,13 +26,15 @@ class Nutrition extends DataMapper {
         
     }
     
-    function get_full_info($id = false, $current_language = 'Russian'){
-        $language = new Language();
-        $language->get_by_name($current_language);
+    function get_full_info($id = false, $current_language = false){        
         #svazivaet nutrition s vibranim language
-        if ($id)
-            $this->include_join_fields()->where_related($language)->get_by_id($id);
-        else                     
-            $this->include_join_fields()->get_by_related($language);       
+        if ($id){
+            $this->get_by_id($id);
+            $this->language->include_join_fields()->get_iterated();
+        }else{
+            $this->include_join_fields()->where_in_related('language')->get_iterated();
+            $this->id = null;    
+        }
+        
     }
 }

@@ -13,7 +13,17 @@
         <?php
         form_success_error($form_error, $form_success);
         echo form_label('Название категории', $category_name['id'], array('class' => 'f_label'));
-        echo form_input($category_name);
+        echo open_f_block('language_block_id');
+        echo form_hidden('total_language',$dm_objects->result_count());
+        foreach($dm_objects as $dm_object){
+            $data['text_value']         = $dm_object->join_name;
+           # $data['language_selected']  = $object->
+            $this->load->view('admin/language_form',$data);
+        }
+        echo close_f_block();
+        echo button_add_language();        
+        echo cleared_div();
+
         ?>
     </div>
     <div class="f_buttons">

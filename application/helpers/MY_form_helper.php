@@ -3,8 +3,8 @@ function cleared_div(){
     return "<div class='clear'></div>";
 }
 
-function open_f_block(){
-    return "<div class='f_block'>";
+function open_f_block($div_id = '', $div_class = ''){
+    return "<div id = '".$div_id."' class='f_block ".$div_class."'>";
 }
 
 function close_f_block(){
@@ -15,7 +15,7 @@ function separator_div($height = 5){
 	return '<div style="padding:'.$height.'px 0px"></div>';
 }
 
-function button_language_add(){
+function button_add_language(){
     $btn_add_language = array(        
         'id'    => 'btn_language_add_id',
         'class' => 'btn_language_add f_button green f_last'

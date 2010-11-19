@@ -34,10 +34,11 @@ class Product_categories extends Admin_Controller {
         $this->load->library('form_validation');
         # Js function from main.js which loads by default  
 		array_push($this->data['js_functions'], array('name' => 'categories_edit_init', 'data' => FALSE));   
-		        
-        $product_category = new Product_category();
         
-        if($id) $product_category->get_full_info($id);
+        $languages          = new Language();
+        $product_category   = new Product_category();
+        
+        $product_category->get_full_info($id);
         //if form validates
         if($this->form_validation->run('product_category')){   
             $category_name = $this->input->post('category_name');
@@ -50,6 +51,8 @@ class Product_categories extends Admin_Controller {
         }else{
             $this->data['form_error'] = validation_errors();
         }
+        $this->data['languages']        = $languages;
+        $this->data['current_language'] = 1;
         $this->data['product_category'] = $product_category;
         $this->template->load('/admin/templates/main_template', '/admin/product_categories/edit', $this->data);
     }

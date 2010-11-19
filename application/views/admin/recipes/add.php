@@ -29,22 +29,31 @@
 <div class="span-24 content">  
     <div class="f_header">Добавление рецепта</div>  
 	<?php echo form_open_multipart('/admin/recipes/add/', array('id' => 'add_recipe_form', 'class' => 'f_form span-24'));?>
-    <div class="f_content span-24">
-    	<?php form_success_error($form_error, $form_success); ?>
-		<?php echo form_label('Название Рецепта', $rec_name['id'], array('class' => 'f_label')); ?>
-		<?php echo form_input($rec_name); ?>
+    <div class="f_content span-24"><?php
+    	form_success_error($form_error, $form_success);
+        echo form_label('Название Рецепта', $rec_name['id'], array('class' => 'f_label'));
+        echo open_f_block('language_block_id');
+        echo form_hidden('total_language',$dm_objects->result_count());
+        foreach($dm_objects as $dm_object){
+            $data['text_value']         = $dm_object->join_name;
+            # $data['language_selected']  = $object->
+            $this->load->view('admin/language_form',$data);
+        }
+        echo close_f_block();
+        echo button_add_language();        
+        echo cleared_div();
 		
-		<?php echo form_label('Время Подготовки (мин.)', $prep_time['id'], array('class' => 'f_label')); ?>
-		<?php echo form_input($prep_time); ?>
+		echo form_label('Время Подготовки (мин.)', $prep_time['id'], array('class' => 'f_label'));
+		echo form_input($prep_time);
 		
-		<?php echo form_label('Время Готовки (мин.)', $cook_time['id'], array('class' => 'f_label')); ?>
-		<?php echo form_input($cook_time); ?>
+		echo form_label('Время Готовки (мин.)', $cook_time['id'], array('class' => 'f_label'));
+		echo form_input($cook_time);
 		
-		<?php echo form_label('Кол-во Порций', $servings['id'], array('class' => 'f_label')); ?>
-		<?php echo form_input($servings); ?>
+		echo form_label('Кол-во Порций', $servings['id'], array('class' => 'f_label'));
+		echo form_input($servings);
 		
-		<?php echo form_label('Фотография', $image['id'], array('class' => 'f_label')); ?>
-		<?php echo form_upload($image); ?>
+		echo form_label('Фотография', $image['id'], array('class' => 'f_label'));
+		echo form_upload($image);?>
 		
 		<div class="f_sub_header">Ингредиенты</div>
 		<div id="recipe_products">

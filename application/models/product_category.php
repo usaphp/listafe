@@ -16,7 +16,7 @@ class Product_category extends DataMapper {
     
     function save_by_language($data,$current_language = 'Russian'){
         $language = new Language();
-        $language->get_by_name($current_language);                
+        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);                
         if(isset($data['name'])){
             if (!$this->id){
                 $this->id = 1;
@@ -34,8 +34,10 @@ class Product_category extends DataMapper {
         $language->get_by_name($current_language);
         if($id)
             $this->include_join_fields()->where_related($language)->get_by_id($id);
-        else
+        else{
             $this->include_join_fields()->get_by_related_language($language);
+            $this->id = null;
+        }
     }
     
 }

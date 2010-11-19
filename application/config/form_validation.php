@@ -15,7 +15,7 @@ $config = array(
             'nutrition' =>
                 array('field' => 'nutrition_name', 'label' => 'Название Вещества', 'rules' => 'trim|required|xss_clean'),
             'nutrition_category' =>
-                array('field' => 'nutrition_categories_name', 'label' => 'Название Категории', 'rules' => 'trim|required'),
+                array('field' => 'inp_name', 'label' => 'Название Категории', 'rules' => 'trim|required'),
             'product_category' =>
                 array('field' => 'category_name', 'label' => 'Название Категории', 'rules' => 'trim|required')                        
 );  

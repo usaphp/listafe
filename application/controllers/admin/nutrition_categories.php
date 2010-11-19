@@ -39,12 +39,15 @@ class Nutrition_categories extends Admin_Controller {
         $nutrition_category = new Nutrition_category();
         
         $languages->get_iterated();
-        if($id) $nutrition_category->get_full_info($id);                
+        $nutrition_category->get_full_info($id);
+          
         //if form validates
-        if($this->form_validation->run('nutrition_category')){
-            $nutr_category_name = $this->input->post('nutrition_categories_name');
+        if($this->form_validation->run('nutrition_category')){            
+            $nutr_category_name         = $this->input->post('inp_name');
+            list($language_selected)    = $this->input->post('sel_languages');
+            #
             if($nutr_category_name){
-                $nutrition_category->save_by_language(array('name'=>$nutr_category_name));                                
+                $nutrition_category->save_by_language(array('name' => $nutr_category_name),$language_selected);                                
                 $this->data['form_success'] = 'Категория добавлена';
             }else{
                 $this->data['form_error'] = 'error';
@@ -53,7 +56,7 @@ class Nutrition_categories extends Admin_Controller {
             $this->data['form_error'] = validation_errors();
         }
         $this->data['languages']            = $languages;
-        $this->data['nutrition_categories'] = $nutrition_category;
+        $this->data['dm_objects'] = $nutrition_category;
         
         $this->template->load('admin/templates/main_template', 'admin/nutrition_categories/edit', $this->data);
     }    

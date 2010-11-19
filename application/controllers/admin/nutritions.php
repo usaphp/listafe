@@ -14,7 +14,7 @@ class Nutritions extends Admin_Controller {
         $nutritions             = new Nutrition();
         $nutrition_categories   = new Nutrition_category();        
 		$nutritions->get_full_info();        
-        $nutrition_categories->get_full_info();
+        $nutrition_categories->get_full_info();        
         $this->data['nutritions'] = $nutritions;
         $this->data['nutrition_categories'] = $nutrition_categories;
         $this->template->load('/admin/templates/main_template', '/admin/nutritions/show', $this->data);
@@ -37,10 +37,12 @@ class Nutritions extends Admin_Controller {
 		# Js function from main.js which loads by default  
 		array_push($this->data['js_functions'], array('name' => 'nutritions_edit_init', 'data' => FALSE));
         
+        $languages                = new Language();
         $nutrition                = new Nutrition();
 		$nutrition_categories     = new Nutrition_category();
-		         
-        if($id) $nutrition->get_full_info($id);	
+        
+        $languages->get_iterated();		         
+        $nutrition->get_full_info($id);	
         $nutrition_categories->get_full_info();
 
         //if form validates
@@ -57,8 +59,10 @@ class Nutritions extends Admin_Controller {
             }
         }else{
             #$this->data['form_error'] = validation_errors();
-        }        
-        $this->data['nutrition'] = $nutrition;
+        }
+        $this->data['languages']        = $languages;
+        $this->data['dm_main_object']   = $nutrition;
+        $this->data['current_language'] = 1; #Russian
         $this->data['nutrition_categories'] = $nutrition_categories; 
         $this->template->load('/admin/templates/main_template', '/admin/nutritions/edit', $this->data);
     }
