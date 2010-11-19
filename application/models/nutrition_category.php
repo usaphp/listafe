@@ -29,7 +29,7 @@ class Nutrition_category extends DataMapper {
         }
         #
     }
-    function get_full_info($id = false){        
+    function get_full_info($id = false,$current_language = false){        
         #svazivaet nutrition s vibranim language
         if ($id){
             $this->get_by_id($id);

@@ -3,46 +3,46 @@
         'name'  => 'product_name',
         'id'    => 'product_name',
         'class' => 'f_input required',
-        'value' => $product->join_name
+        'value' => $dm_main_object->join_name
     );
     $sel_product_category = array(
         'options' => array_for_dropbox($product_categories,'Категория продукта','id','join_name'),
         'name'  => 'product_category_id',
         'id'    => 'product_category_id',
         'class' => 'f_select wide required',
-        'selected' => $product->product_category_id #dm_get_object_by_id($product->product_category_id,$product->product_category)->join_name
+        'selected' => $dm_main_object->product_category_id #dm_get_object_by_id($product->product_category_id,$product->product_category)->join_name
     );
     $txt_description = array(
         'name'  => 'description',
         'id'    => 'description',
         'class' => 'f_textarea',
-        'value' => $product->join_description
+        'value' => $dm_main_object->join_description
     );
     $sel_mera = array(
         'options' => array_for_dropbox($meras,'Мера измерения','id','join_name'),
         'name'  => 'mera_id',
         'id'    => 'mera_id',
         'class' => 'f_select wide',
-        'selected' => $product->mera_id
+        'selected' => $dm_main_object->mera_id
     );
     $inp_price = array(
         'name'  => 'price',
         'id'    => 'price',
         'class' => 'f_input required',
-        'value' => $product->price
+        'value' => $dm_main_object->price
     );
     $inp_units_for_price = array(
         'name'  => 'units_for_price',
         'id'    => 'units_for_price',
         'class' => 'f_input f_joined number required',
-        'value' => $product->units_for_price
+        'value' => $dm_main_object->units_for_price
     );
     $sel_units_mera = array(
         'options' => array_for_dropbox($meras,'Мера измерения','id','join_name'),
         'name'  => 'mera_for_price',
         'id'    => 'mera_for_price',
         'class' => 'f_select wide f_joined',
-        'selected' => $product->mera_for_price
+        'selected' => $dm_main_object->mera_for_price
     );    
     $fu_image = array(
         'name'  => 'image',
@@ -57,18 +57,22 @@
         <li><a href="#" id="pe_additional">Дополнительное</a></li>
     </ul>
     <div class="clear"></div>
-<?php echo form_open_multipart('/admin/products/edit/'.$product->id, array('id' => 'product_edit_form', 'class' => 'f_form f_validate'));?>
+<?php echo form_open_multipart('/admin/products/edit/'.$dm_main_object->id, array('id' => 'product_edit_form', 'class' => 'f_form f_validate'));?>
     <div class="f_content">
         <?php echo form_success_error($form_error, $form_success); ?>
         <div id="pe_main_tab" class="tab_content">
         <?php
         echo form_label('Название продукта', $inp_product_name['id'], array('class' => 'f_label'));
+        echo open_f_block('language_block_id');
         echo form_hidden('total_language',$dm_main_object->result_count());
         foreach($dm_main_object->language as $language){
             $data['text_value']         = $language->join_name;
-            $data['language_selected']  = $language->id;        
+            $data['language_selected']  = $language->id;
             $this->load->view('admin/language_form',$data);
-        }        
+        }
+        echo close_f_block();
+        echo button_add_language();        
+        echo cleared_div();        
         echo form_label('Категория', $sel_product_category['id'], array('class' => 'f_label'));
         echo form_dropdown($sel_product_category['name'], $sel_product_category['options'], $sel_product_category['selected'], 'id = "'.$sel_product_category['id'].'" class = "'.$sel_product_category['class'].'"');
             
