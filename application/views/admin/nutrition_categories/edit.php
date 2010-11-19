@@ -10,7 +10,7 @@
         echo form_hidden('total_language',$dm_main_object->result_count());
         foreach($dm_main_object->language as $language){
             $data['text_value']         = $language->join_name;
-            $data['language_selected']  = $object->id;
+            $data['language_selected']  = $language->id;
             $this->load->view('admin/language_form',$data);
         }
         echo close_f_block();

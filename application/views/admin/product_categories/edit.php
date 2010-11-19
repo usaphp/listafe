@@ -14,10 +14,10 @@
         form_success_error($form_error, $form_success);
         echo form_label('Название категории', $category_name['id'], array('class' => 'f_label'));
         echo open_f_block('language_block_id');
-        echo form_hidden('total_language',$dm_objects->result_count());
-        foreach($dm_objects as $dm_object){
-            $data['text_value']         = $dm_object->join_name;
-           # $data['language_selected']  = $object->
+        echo form_hidden('total_language',$dm_main_object->result_count());
+        foreach($dm_main_object->language as $language){
+            $data['text_value']         = $language->join_name;
+            $data['language_selected']  = $language->id;        
             $this->load->view('admin/language_form',$data);
         }
         echo close_f_block();

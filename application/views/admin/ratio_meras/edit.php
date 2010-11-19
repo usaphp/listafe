@@ -10,7 +10,17 @@
     	'value' => set_value('product',$product->name)); #name- zagruzka iz bazi
         
         echo form_label('Продукт ', $inp_product['id'], array('class' => 'f_label'));
-    	echo form_input($inp_product);
+        echo open_f_block('language_block_id');
+        echo form_hidden('total_language',$dm_objects->result_count());
+        foreach($dm_objects as $dm_object){
+            $data['text_value']         = $dm_object->join_name;
+           # $data['language_selected']  = $object->
+            $this->load->view('admin/language_form',$data);
+        }
+        echo close_f_block();
+        echo button_add_language();        
+        echo cleared_div();
+
         echo anchor('#', 'Load Product', array('class'=> 'f_button grey wide', 'id' => 'load_product'));
         echo cleared_div();
         ?>                    

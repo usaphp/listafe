@@ -7,24 +7,23 @@ class Recipe extends DataMapper {
         parent::__construct($id);
     }
     
-    function get_full_info($id = false, $current_language = 'Russian'){
-        $language = new Language();
-        $language->get_by_name($current_language);
+    function get_full_info($id = false,$current_language = false){        
         #svazivaet nutrition s vibranim language
         if($id){
-            $this->include_join_fields()->where_related($language)->get_by_id($id);
+            $this->get_by_id($id);
+            $this->language->include_join_fields()->get_iterated();
             #IMAGE REC
             $this->recipe_image->get_by_image_type(RECIPE_IMAGE_MAIN_TYPE);
             #PRODUCTS
             $this->product->include_join_fields()->where_related($language)->include_join_fields()->get();
             foreach($this->product as $val_product){
-                    $val_product->product_category->include_join_fields()->get_by_related_language($language);
-                    $val_product->mera->include_join_fields()->get_by_related_language($language);
+                    $val_product->product_category->include_join_fields()->where_in_related('language')->get_iterated();
+                    $val_product->mera->include_join_fields()->where_in_related('language')->get_iterated();
             }
             #RECIPES
-            $this->recipe_step->include_join_fields()->get_by_related($language);
+            $this->recipe_step->include_join_fields()->where_in_related('language')->get_iterated();
         }else{
-            $this->include_join_fields()->get_by_related($language);
+            $this->include_join_fields()->where_in_related('language')->get_iterated();
             foreach($this as $recipe){
                 $recipe->recipe_image->get_by_image_type(RECIPE_IMAGE_MAIN_TYPE);
             }

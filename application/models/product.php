@@ -21,25 +21,25 @@ class Product extends Datamapper {
         if(isset($data['name']))        $this->set_join_field($language,'name',$data['name']);        
         if(isset($data['description'])) $this->set_join_field($language,'description',$data['description']);
     }
-    function get_full_info($id = false, $current_language = 'Russian'){
-        $language   = new Language();
-        $language->get_by_name($current_language);
+    function get_full_info($id = false){        
         #                
         if($id){
-            $this->include_join_fields()->where_related_language($language)->get_by_id($id);
+            $this->get_by_id($id);
+            $this->language->include_join_fields()->get_iterated();
             $this->nutrition_category->get_full_info();
-            $this->nutrition->include_related('nutrition_category')->get_by_related($language);
-            $this->product_category->include_join_fields()->get_by_related($language);
-            $this->mera->include_join_fields()->get_by_related($language);
+            $this->nutrition->include_related('nutrition_category')->where_in_related('language')->get_iterated();
+            $this->product_category->include_join_fields()->where_in_related('language')->get_iterated();
+            $this->mera->include_join_fields()->where_in_related('language')->get_iterated();
         }else{
-            $this->include_join_fields()->get_by_related_language($language);
-            foreach($this as $product){                 
-                $product->product_category->include_join_fields()->get_by_related($language);
-                $product->mera->include_join_fields()->get_by_related($language);
+            $this->include_join_fields()->where_in_related('language')->get_iterated();
+            foreach($this as $product){
+                $product->product_category->include_join_fields()->where_in_related('language')->get_iterated();
+                $product->mera->include_join_fields()->where_in_related('language')->get_iterated();            
             }
+            $this->id = null;
         }        
     }
-    function get_by_name($name = false){
+    function get_by_name($name = false,$current_language = false){
         if(!$name) return ;        
         $this->where_related_languages_product('name',$name)->get();
     } 

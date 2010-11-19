@@ -60,6 +60,7 @@ class Nutritions extends Admin_Controller {
         }else{
             #$this->data['form_error'] = validation_errors();
         }
+        
         $this->data['languages']        = $languages;
         $this->data['dm_main_object']   = $nutrition;
         $this->data['current_language'] = 1; #Russian
