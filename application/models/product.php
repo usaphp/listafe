@@ -17,9 +17,14 @@ class Product extends Datamapper {
     }
     function save_by_language($data,$current_language = 'Russian'){        
         $language = new Language();
-        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);       
-        if(isset($data['name']))        $this->set_join_field($language,'name',$data['name']);        
-        if(isset($data['description'])) $this->set_join_field($language,'description',$data['description']);
+        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);        
+        if(isset($data['name'])){
+            $this->save($language);
+            $this->set_join_field($language,'name',$data['name']);
+            if(isset($data['description'])) 
+                $this->set_join_field($language,'description',$data['description']);
+        }        
+        
     }
     function get_full_info($id = false){        
         #                

@@ -3,28 +3,28 @@
         'name'  => 'recipe_name',
         'id'    => 'recipe_name',
         'class' => 'f_input wide',
-        'value' => $recipe->join_name
+        'value' => $dm_recipe->join_name
     );
     
     $prep_time = array(
         'name'	=> 'prep_time',
         'id'	=> 'prep_time',
         'class' => 'f_input',
-        'value' => $recipe->prepare_time
+        'value' => $dm_recipe->prepare_time
     );
     
     $cook_time = array(
         'name'	=> 'cook_time',
         'id'	=> 'cook_time',
         'class' => 'f_input',
-        'value' => $recipe->cook_time
+        'value' => $dm_recipe->cook_time
     );
     
     $servings  = array(
         'name'	=> 'servings',
         'id'	=> 'servings',
         'class' => 'f_input',
-        'value' => $recipe->servings
+        'value' => $dm_recipe->servings
     );
     
     $image_upload = array(
@@ -41,20 +41,13 @@
 
 <div class="span-24 content">  
     <div class="f_header">Добавление рецепта</div>  
-	<?php echo form_open_multipart('/admin/recipes/edit/'.$recipe->id, array('id' => 'edit_recipe_form', 'class' => 'f_form span-24'));?>
+	<?php echo form_open_multipart('/admin/recipes/edit/'.$dm_recipe->id, array('id' => 'edit_recipe_form', 'class' => 'f_form span-24'));?>
     <div class="f_content span-24"><?php
         form_success_error($form_error, $form_success);
         echo form_label('Название Рецепта', $rec_name['id'], array('class' => 'f_label'));
-        echo open_f_block('language_block_id');
-        echo form_hidden('total_language',$dm_main_object->result_count());
-        foreach($dm_main_object->language as $language){
-            $data['text_value']         = $language->join_name;
-            $data['language_selected']  = $language->id;
-            $this->load->view('admin/language_form',$data);
-        }
-        echo close_f_block();
-        echo button_add_language();        
-        echo cleared_div();
+        #NAME
+        $data['dm_object'] = $dm_recipe;
+        $this->load->view('admin/language_form/block_name',$data);
 		
 		echo form_label('Время Подготовки (мин.)', $prep_time['id'], array('class' => 'f_label'));
 		echo form_input($prep_time);
@@ -66,13 +59,13 @@
 		echo form_input($servings);
 		
 		echo form_label('Фотография', $image_upload['id'], array('class' => 'f_label'));
-		echo form_upload($image_upload); ?>
-		if ($recipe->recipes_image->id) echo '<img src="'.get_name_image($recipe->id, $recipe->recipe_image->id, 'tiny').'"/>'; ?>
+		echo form_upload($image_upload);
+		if ($dm_recipe->recipe_image->id) echo '<img src="'.get_name_image($dm_recipe->id, $dm_recipe->recipe_image->id, 'tiny').'"/>'; ?>
 		<div class="f_sub_header">Ингредиенты</div>
     		<div id="recipe_products">
         		<?php                 
                 #$recipe->products opredelaensa v modele Resipe 4erez Activ Record i sohranaetsa kak array
-        		foreach($recipe->product as $key => $product){                    
+        		foreach($dm_recipe->product as $key => $product){                    
         			$data['recipe_product_id'] = $key+1;
                     $data['name']   = $product->join_name;
                     $data['mera']   = $product->join_mera_id;
@@ -84,7 +77,7 @@
     		</div>
     		<?php
             #
-    		echo form_hidden('total_products', $recipe->product->result_count());
+    		echo form_hidden('total_products', $dm_recipe->product->result_count());
     		$data['step_id'] = 1;
     		echo separator_div(5);
     		?>
@@ -96,13 +89,13 @@
     		<div id="recipe_steps">
     		<?php 
                 #vse shagi iz bazi
-                foreach($recipe->recipe_step as $key => $step){
+                foreach($dm_recipe->recipe_step as $key => $step){
                     $data['step_id'] = $key+1;
                     $data['text'] = $step->join_text;
                     $data['image'] = $step->image;
                     $this->load->view('/admin/recipes/subs/step.php', $data);
                 }
-    			echo form_hidden('total_steps', $recipe->recipe_step->result_count());
+    			echo form_hidden('total_steps', $dm_recipe->recipe_step->result_count());
     		?>
 		</div>
 	</div>

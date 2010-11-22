@@ -17,12 +17,11 @@ class Nutrition extends DataMapper {
     
     function save_by_language($data, $current_language = 'Russian'){
         $language = new Language();
-        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
-            
-        #NE MENAT' POSLEDOVATEL'NOST' - NE Budet rabotat'
-        if(isset($data['nutrition_category']))  $this->nutrition_category_id = $data['nutrition_category'];
-        $this->save($language);
-        if(isset($data['name']))                $this->set_join_field($language,'name',$data['name']);
+        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);                
+        if(isset($data['name'])){
+            if(!$this->save($language)) return ;
+            $this->set_join_field($language,'name',$data['name']);
+        }
         
     }
     

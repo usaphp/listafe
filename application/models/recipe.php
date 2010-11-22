@@ -15,7 +15,7 @@ class Recipe extends DataMapper {
             #IMAGE REC
             $this->recipe_image->get_by_image_type(RECIPE_IMAGE_MAIN_TYPE);
             #PRODUCTS
-            $this->product->include_join_fields()->where_related($language)->include_join_fields()->get();
+            $this->product->include_join_fields()->where_related('language')->include_join_fields()->get();
             foreach($this->product as $val_product){
                     $val_product->product_category->include_join_fields()->where_in_related('language')->get_iterated();
                     $val_product->mera->include_join_fields()->where_in_related('language')->get_iterated();

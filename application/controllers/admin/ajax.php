@@ -8,18 +8,7 @@ class Ajax extends Admin_Controller {
         $this->output->enable_profiler(FALSE);
 	}
 	
-    function add_language(){                
-        #
-        $languages = new Language();        
-        #
-        $languages->get_iterated();
-        #
-        $this->data['languages']    = $languages;
-        $this->data['text_value']   = '';
-        #
-        $this->data['current_langueage'] = $languages->id;
-        $this->load->view('admin/language_form',$this->data);
-    }
+    
 	function index(){
     
 	}
@@ -82,6 +71,22 @@ class Ajax extends Admin_Controller {
         
         $this->load->view('admin/ratio_meras/subs/product_data', $this->data);
         $this->output->enable_profiler(TRUE);
+    }
+    
+    function add_language(){
+        $total_language_names = $this->input->post('total_language_names');
+        #
+        $languages = new Language();        
+        #
+        $languages->get_iterated();
+        if ($total_language_names >= $languages->count()) return false;
+        #
+        $this->data['number']       = $total_language_names+1;
+        #ves' spisok lang
+        $this->data['languages']    = $languages;
+        #dla dla vibranogo lang
+        $this->data['language']     = $languages;        
+        $this->load->view('admin/language_form/sub/input_name',$this->data);
     }
     
    	function add_ratio_mera(){

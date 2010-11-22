@@ -18,27 +18,20 @@ class Product_category extends DataMapper {
         $language = new Language();
         is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);                
         if(isset($data['name'])){
-            if (!$this->id){
-                $this->id = 1;
-                $count = $this->count();                
-                if($count>=1)
-                    $this->id = $this->id + $this->get(1,$count-1)->id;                                                    
-                $this->save_as_new($language);
-            }
+            $this->value = 1;
+            $this->save($language);
             $this->set_join_field($language,'name',$data['name']);
         }
     }
-
-    function get_full_info($id = false,$current_language = false){        
+    function get_full_info($id = false,$current_language = false){
         if ($id){
             $this->get_by_id($id);
             $this->language->include_join_fields()->get_iterated();
         }else{
             $this->include_join_fields()->where_in_related('language')->get_iterated();
-            $this->id = null;    
+            $this->id = null;
         }
     }
-    
 }
 
 /* End of file name.php */

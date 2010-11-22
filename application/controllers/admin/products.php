@@ -13,8 +13,7 @@ class Products extends Admin_Controller {
         $this->show();
 	}
     
-    function show()
-    {        
+    function show(){        
         $products   = new Product();
         $meras      = new Mera();
         #vzat' product i dobavit' kategoriu producta
@@ -26,7 +25,7 @@ class Products extends Admin_Controller {
     }
     
     function delete($id = false){
-        if($id){            
+        if($id){
             $product = new Product($id);
             if($product->exists()){
                 $product->delete();
@@ -42,7 +41,9 @@ class Products extends Admin_Controller {
         array_push($this->data['js_functions'], array('name' => 'products_edit_init', 'data' => FALSE));
         $product                = new Product($id);
         # if form validates
-        if($this->form_validation->run('products_edit')){            
+        
+        if($this->form_validation->run('products_edit')){
+            echo 1;
             if($this->_save($id)){                
                 #esli biblioteka my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i resize
                 $this->upload_image_lib->initialize(array('type'=>'product', 'size' => 'tiny'));
@@ -63,6 +64,7 @@ class Products extends Admin_Controller {
         $product_categories     = new Product_category();
         $nutrition              = new Nutrition();
         $nutrition_categories   = new Nutrition_category();
+        $languages              = new Language();        
         #
         $product->get_full_info($id);                
         #
@@ -73,24 +75,20 @@ class Products extends Admin_Controller {
         $nutrition->get_full_info();
         #
         $nutrition_categories->get_full_info();        
-        #        
-        $this->data['product']                      = $product;
+        #
+        $languages->get_iterated();
+        
+        $this->data['dm_product']                   = $product;
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;
-        
+        $this->data['languages']                    = $languages;
         $this->data['meras']                        = $meras;
         $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
     }
 
     function _save($id = false){
+        echo 1 ;
         $product = new Product($id);
-        #
-        $data = array(
-                    'name'          => $this->input->post('product_name'),
-                    'description'   => $this->input->post('description')
-        );
-        #        
-        $product->save_by_language($data);
         #                        
         $product->product_category_id   = $this->input->post('product_category_id');
         $product->mera_id               = $this->input->post('mera_id');
@@ -99,7 +97,7 @@ class Products extends Admin_Controller {
         $product->mera_for_price        = $this->input->post('mera_for_price');        
 
         # If products was saved to db successfully
-        if($product->skip_validation()->save()){
+        if($this->save_object_name($product)){
             
             $nutrition_categories   = new Nutrition_category();
             $nutrition_categories->get_iterated();

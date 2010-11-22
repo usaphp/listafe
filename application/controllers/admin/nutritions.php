@@ -41,18 +41,16 @@ class Nutritions extends Admin_Controller {
         $nutrition                = new Nutrition();
 		$nutrition_categories     = new Nutrition_category();
         
-        $languages->get_iterated();		         
-        $nutrition->get_full_info($id);	
+        $languages->get_iterated();
+        $nutrition->get_full_info($id);
         $nutrition_categories->get_full_info();
 
         //if form validates
         if($this->form_validation->run('nutrition')){
-            $data = array(
-                    'name' => $this->input->post('nutrition_name'),
-                    'nutrition_category' => $this->input->post('nutritions_categories_id')
-            );
-            if($data['name']){
-                $nutrition->save_by_language($data);
+            $nutrition_category = new Nutrition_category();
+            $nutrition_category->get_by_id($this->input->post('nutritions_categories_id'));
+            $nutrition->nutrition_category_id = $nutrition_category->id; 
+            if($this->save_object_name($nutrition)){                
                 $this->data['form_success'] = 'Вещество  добавлено';
             }else{
                 $this->data['form_error'] = $nutrition->error->string;
@@ -61,9 +59,9 @@ class Nutritions extends Admin_Controller {
             #$this->data['form_error'] = validation_errors();
         }
         
-        $this->data['languages']        = $languages;
-        $this->data['dm_main_object']   = $nutrition;
-        $this->data['current_language'] = 1; #Russian
+        $this->data['languages']            = $languages;
+        $this->data['dm_nutrition']         = $nutrition;
+        $this->data['current_language']     = 1; #Russian
         $this->data['nutrition_categories'] = $nutrition_categories; 
         $this->template->load('/admin/templates/main_template', '/admin/nutritions/edit', $this->data);
     }

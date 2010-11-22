@@ -44,31 +44,26 @@ class Recipes extends Admin_Controller {
 		# Js function from main.js which loads by default  
         array_push($this->data['js_functions'], array('name' => 'recipes_edit_init', 'data' => FALSE));
 		/* Get data for select boxes */        
-        $recipe = new Recipe();                                
-        $meras  = new Mera();
+        $recipe     = new Recipe();                                
+        $meras      = new Mera();
+        $languages  = new Language();
         
-        $recipe->get_full_info($id);
-        
+        $languages->get_iterated();
+        $recipe->get_full_info($id);                
         $meras->get_full_info();
         #soedinit' sushestvuushie shagi po language        	
-        
-		/* If validation passed try to save a recipe */
-        
-        
-		if ($this->form_validation->run('recipe_edit'))
-		{
+        		
+		if ($this->form_validation->run('recipe_edit')){
             $this->_save($recipe);
             return ;
-		}
-		else
-		{
+		}else{
 			/* Error on validation */
 			$this->data['form_error'] = validation_errors();
 		}
-        #        
-		$this->data['recipe'] = $recipe;
-                
-        $this->data['meras']  = $meras; 
+        #
+		$this->data['dm_recipe'] = $recipe;
+        $this->data['languages'] = $languages;                 
+        $this->data['dm_meras']  = $meras;
         $this->template->load('/admin/templates/main_template', '/admin/recipes/edit', $this->data);
 	}
 
@@ -253,3 +248,4 @@ class Recipes extends Admin_Controller {
 
 /* End of file admin.php */
 /* Location: ./system/application/controllers/admin/admin.php */
+?>

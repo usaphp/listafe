@@ -13,22 +13,6 @@ class Nutrition_category extends DataMapper {
     function __construct($id = NULL){
         parent::__construct($id);
     }
-    function save_by_language($data,$current_language = 'Russian'){        
-        $language = new Language();
-        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);        
-        #
-        if(isset($data['name'])){
-            if (!$this->id){
-                $this->id = 1;
-                $count = $this->count();                
-                if($count>=1)
-                    $this->id = $this->id + $this->get(1,$count-1)->id;                                                    
-                $this->save_as_new($language);
-            }                            
-            $this->set_join_field($language,'name',$data['name']);
-        }
-        #
-    }
     function get_full_info($id = false,$current_language = false){        
         #svazivaet nutrition s vibranim language
         if ($id){
@@ -39,7 +23,17 @@ class Nutrition_category extends DataMapper {
             $this->id = null;    
         }        
     }
-	
+    function save_by_language($data,$current_language = 'Russian'){        
+        $language = new Language();
+        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);        
+        #
+        if(isset($data['name'])){
+            $this->value = 1;
+            $this->save($language);
+            $this->set_join_field($language,'name',$data['name']);
+        }
+        #
+    }
 }
 
 /* End of file name.php */

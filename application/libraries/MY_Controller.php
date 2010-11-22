@@ -23,7 +23,7 @@ class Admin_Controller extends Controller {
 		array_push($this->data['js_functions'], array('name' => 'general_init', 'data' => FALSE));
 		array_push($this->data['js_functions'], array('name' => 'tabs_init', 'data' => FALSE));
 		array_push($this->data['js_functions'], array('name' => 'dropdown_init', 'data' => FALSE));
-		
+        array_push($this->data['js_functions'], array('name' => 'language_name_init', 'data' => FALSE));		
 		$this->output->enable_profiler(TRUE);
     }
     function get_current_language(){
@@ -34,6 +34,19 @@ class Admin_Controller extends Controller {
     }
     function set_current_language($language){
         $this->data['language']['current'] = $language; 
+    }
+    function save_object_name($dm_object){
+        $total_language_names = $this->input->post('total_language_names');
+        if ($total_language_names){
+            #sohranaet name i language po ID
+            for($i=1;$i<=$total_language_names;$i++){
+                $language_names = $this->input->post('inp_name_'.$i);
+                $dm_object->save_by_language(array('name' => $this->input->post('inp_name_'.$i)),
+                                                    $this->input->post('sel_languages_'.$i));
+            }
+            return true;
+        }
+        return false;
     }
 }
 

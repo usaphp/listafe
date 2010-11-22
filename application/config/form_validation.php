@@ -1,7 +1,7 @@
 <?php
-$config = array(
+        $config = array(
 			'products_edit' => array ( 
-        		array('field' => 'product_name', 'label' => 'Название продукта', 'rules' => 'trim|required|xss_clean|_product_name_exists')),
+        		array('label' => 'Название продукта')),
             'recipe_add' => 
                 array('field' => 'recipe_name', 'label' => 'Название Рецепта', 'rules' => 'trim|required'),
             'recipe_edit' =>
@@ -18,5 +18,5 @@ $config = array(
                 array('field' => 'inp_name', 'label' => 'Название Категории', 'rules' => 'trim|required'),
             'product_category' =>
                 array('field' => 'category_name', 'label' => 'Название Категории', 'rules' => 'trim|required')                        
-);  
+        );  
 ?>

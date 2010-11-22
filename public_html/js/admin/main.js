@@ -57,10 +57,11 @@ function main(){
     	$('#add_step').click(function(){
     		var next_step = parseInt($('#total_steps').val()) + 1;
     		$.ajax({
-    			url : main.admin_url + 'ajax/add_step',
-    			data : { 'step_id' : next_step },
+    			url  : main.admin_url + 'ajax/add_step',    			 
+                data : {'step_id' : next_step },
     			type : 'post',
     			success : function(response){
+                    		     
     				$('#recipe_steps').append(response);
     				$('#total_steps').val(next_step);
     			}
@@ -103,16 +104,7 @@ function main(){
     	$('.suggest_product').autocomplete(main.admin_url + "ajax/suggest_products", {
             width : $(this).attr('width')
         });
-        $('#btn_language_add_id').click(function(){		
-            $.ajax({
-    			url  : '/admin/ajax/add_language',                
-    			type : 'post',
-    			success : function(response){
-    				$('#language_block_id').append(response);				
-    			}
-    		});
-    		return false;
-    	});
+        
     }
     
     main.prototype.product_edit_init = function(){
@@ -137,16 +129,7 @@ function main(){
                 main.prototype.process_ajax_response(response, 'add_product');
             }
         })*/
-        $('#btn_language_add_id').click(function(){		
-    		$.ajax({
-    			url  : '/admin/ajax/add_language',                
-    			type : 'post',
-    			success : function(response){
-    				$('#language_block_id').append(response);				
-    			}
-    		});
-    		return false;
-    	});
+        
     }
     
     main.prototype.product_category_edit_init = function(){
@@ -154,17 +137,7 @@ function main(){
             rules : {
                 'product_category_name' : "required"
                 }
-        });
-            $('#btn_language_add_id').click(function(){		
-    		$.ajax({
-    			url  : '/admin/ajax/add_language',                
-    			type : 'post',
-    			success : function(response){
-    				$('#language_block_id').append(response);				
-    			}
-    		});
-    		return false;
-    	});
+        });           
     }
     
     main.prototype.process_ajax_response = function(response, form_name){
@@ -181,17 +154,7 @@ function main(){
                 //'nutrition_name'				: "required",
                 //'nutritions_categories_id'		: "required"
                 }
-        });
-        $('#btn_language_add_id').click(function(){		
-    		$.ajax({
-    			url  : '/admin/ajax/add_language',                
-    			type : 'post',
-    			success : function(response){
-    				$('#language_block_id').append(response);				
-    			}
-    		});
-    		return false;
-    	});
+        });        
     }
 
     main.prototype.products_edit_init = function(){
@@ -244,16 +207,6 @@ function main(){
             }
     		return false;
     	});
-        $('#btn_language_add_id').click(function(){		
-    		$.ajax({
-    			url  : '/admin/ajax/add_language',                
-    			type : 'post',
-    			success : function(response){
-    				$('#language_block_id').append(response);				
-    			}
-    		});
-    		return false;
-    	});
     }
     main.prototype.ratio_meras_edit_init = function(){            	
     	$('#load_product').click(function(){
@@ -304,50 +257,21 @@ function main(){
         
     }
     main.prototype.product_categories_edit_init = function(){
-        $('#btn_language_add_id').click(function(){		
-    		$.ajax({
-    			url  : '/admin/ajax/add_language',                
-    			type : 'post',
-    			success : function(response){
-    				$('#language_block_id').append(response);				
-    			}
-    		});
-    		return false;
-    	});
         
     }
     main.prototype.nutrition_categories_edit_init = function(){
-        $('#btn_language_add_id').click(function(){		
-    		$.ajax({
-    			url  : '/admin/ajax/add_language',                
-    			type : 'post',
-    			success : function(response){
-    				$('#language_block_id').append(response);				
-    			}
-    		});
-    		return false;
-    	});     
+        
 	}
     main.prototype.nutritions_edit_init = function(){
-        $('#btn_language_add_id').click(function(){		
-    		$.ajax({
-    			url  : '/admin/ajax/add_language',                
-    			type : 'post',
-    			success : function(response){
-    				$('#language_block_id').append(response);				
-    			}
-    		});
-    		return false;
-    	});
 	}
     main.prototype.recipes_edit_init = function(){
        	$('#add_step').click(function(){
     		var next_step = parseInt($('#total_steps').val()) + 1;
     		$.ajax({
-    			url : '/admin/ajax/add_step',
-    			data : { 'step_id' : next_step },
+    			url  : '/admin/ajax/add_step',    			
+                data :{'step_id' : next_step},
     			type : 'post',
-    			success : function(response){
+    			success : function(response){                        			     
     				$('#recipe_steps').append(response);
     				$('#total_steps').val(next_step);
     			}
@@ -405,16 +329,7 @@ function main(){
     	$('.suggest_product').autocomplete('/admin/ajax/suggest_products', {
             width : $(this).attr('width')
         });
-        $('#btn_language_add_id').click(function(){		
-    		$.ajax({
-    			url  : '/admin/ajax/add_language',                
-    			type : 'post',
-    			success : function(response){
-    				$('#language_block_id').append(response);				
-    			}
-    		});
-    		return false;
-    	});
+        
     }
     	
     // recipes translation adding/editing page	
@@ -425,15 +340,15 @@ function main(){
     					required : true , 
     					remote : { 
     						url: "/admin/ajax/translate_recipe_url_valid_insert", 
-    						type: 'post', 
+    						type: 'post',
     						data : { recipe_translate_id : function(){ return $('#recipe_translate_id').val(); } } }
     			
     		 			},
-    		 		'text_name' : { 
+    		 		'text_name' : {
     		 			required : true,
-    		 			remote : { 
-    		 				url: "/admin/ajax/translate_recipe_name_valid_insert", 
-    		 				type: 'post', 
+    		 			remote : {
+    		 				url: "/admin/ajax/translate_recipe_name_valid_insert",
+    		 				type: 'post',
     		 				data : { recipe_translate_id : function(){ return $('#recipe_translate_id').val(); } } }
     		 		 }	 
     		 	},
@@ -443,4 +358,18 @@ function main(){
     		}
     	});
     }
+    main.prototype.language_name_init = function(){
+        $('#btn_language_add_id').click(function(){
+    		$.ajax({
+    			url  : '/admin/ajax/add_language',
+                data : {total_language_names : $('#total_language_names').val()},
+    			type : 'post',
+    			success : function(response){
+    			    if (response) $('#total_language_names').val(parseInt($('#total_language_names').val())+1);  
+                    $('#language_block_id').append(response);				
+    			}
+    		});
+    		return false;
+   	    });
+    }    
 }

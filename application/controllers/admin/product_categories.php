@@ -33,17 +33,15 @@ class Product_categories extends Admin_Controller {
     function edit($id = false){
         $this->load->library('form_validation');
         # Js function from main.js which loads by default  
-		array_push($this->data['js_functions'], array('name' => 'categories_edit_init', 'data' => FALSE));   
-        
+		array_push($this->data['js_functions'], array('name' => 'product_categories_edit_init', 'data' => FALSE));        
         $languages          = new Language();
         $product_category   = new Product_category();
         
+        $languages->get_iterated();
         $product_category->get_full_info($id);
         //if form validates
-        if($this->form_validation->run('product_category')){   
-            $category_name = $this->input->post('category_name');
-            if($category_name){
-                $product_category->save_by_language(array('name' => $category_name));
+        if($this->form_validation->run('product_category')){                     
+            if($this->save_object_name($product_category)){
                 $this->data['form_success'] = 'Категория добавлена';
             }else{
                 $this->data['form_error'] = $product_category->error->string;
@@ -51,9 +49,9 @@ class Product_categories extends Admin_Controller {
         }else{
             $this->data['form_error'] = validation_errors();
         }
-        $this->data['languages']        = $languages;
-        $this->data['current_language'] = 1;
-        $this->data['product_category'] = $product_category;
+        $this->data['languages']            = $languages;
+        $this->data['current_language']     = 1;
+        $this->data['dm_product_category']  = $product_category;
         $this->template->load('/admin/templates/main_template', '/admin/product_categories/edit', $this->data);
     }
     

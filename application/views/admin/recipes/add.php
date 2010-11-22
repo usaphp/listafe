@@ -31,18 +31,10 @@
 	<?php echo form_open_multipart('/admin/recipes/add/', array('id' => 'add_recipe_form', 'class' => 'f_form span-24'));?>
     <div class="f_content span-24"><?php
     	form_success_error($form_error, $form_success);
-        echo form_label('Название Рецепта', $rec_name['id'], array('class' => 'f_label'));
-        echo open_f_block('language_block_id');
-        echo open_f_block('language_block_id');
-        echo form_hidden('total_language',$dm_main_object->result_count());
-        foreach($dm_main_object->language as $language){
-            $data['text_value']         = $language->join_name;
-            $data['language_selected']  = $language->id;
-            $this->load->view('admin/language_form',$data);
-        }
-        echo close_f_block();
-        echo button_add_language();        
-        echo cleared_div();
+        echo form_label('Название Рецепта', $rec_name['id'], array('class' => 'f_label'));        
+        #NAME
+        $data['dm_object'] = $dm_recipe;
+        $this->load->view('admin/language_form/block_name',$data);
 		
 		echo form_label('Время Подготовки (мин.)', $prep_time['id'], array('class' => 'f_label'));
 		echo form_input($prep_time);
