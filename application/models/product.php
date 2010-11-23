@@ -26,20 +26,21 @@ class Product extends Datamapper {
         }        
         
     }
-    function get_full_info($id = false){        
-        #                
+    function get_full_info($id = false,$current_language = 'Russian'){        
+        #
+        $language = new Language();
+        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
         if($id){
             $this->get_by_id($id);
             $this->language->include_join_fields()->get_iterated();
-            $this->nutrition_category->get_full_info();
-            $this->nutrition->include_related('nutrition_category')->where_in_related('language')->get_iterated();
-            $this->product_category->include_join_fields()->where_in_related('language')->get_iterated();
-            $this->mera->include_join_fields()->where_in_related('language')->get_iterated();
+            $this->nutrition_category->include_join_fields()->get_iterated();
+            $this->nutrition->include_related('nutrition_category')->where_in_related($language)->get_iterated();
+            $this->mera->include_join_fields()->where_in_related($language)->get_iterated();
         }else{
-            $this->include_join_fields()->where_in_related('language')->get_iterated();
+            $this->include_join_fields()->where_in_related($language)->get_iterated();
             foreach($this as $product){
-                $product->product_category->include_join_fields()->where_in_related('language')->get_iterated();
-                $product->mera->include_join_fields()->where_in_related('language')->get_iterated();            
+                $product->product_category->include_join_fields()->where_in_related($language)->get_iterated();
+                $product->mera->include_join_fields()->where_in_related($language)->get_iterated();            
             }
             $this->id = null;
         }        

@@ -90,9 +90,8 @@
     		<?php 
                 #vse shagi iz bazi
                 foreach($dm_recipe->recipe_step as $key => $step){
-                    $data['step_id'] = $key+1;
-                    $data['text'] = $step->join_text;
-                    $data['image'] = $step->image;
+                    $data['number'] = $key+1;
+                    $data['step']   = $step;
                     $this->load->view('/admin/recipes/subs/step.php', $data);
                 }
     			echo form_hidden('total_steps', $dm_recipe->recipe_step->result_count());

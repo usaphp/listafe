@@ -43,19 +43,20 @@ class Recipes extends Admin_Controller {
 		$this->load->library('form_validation');
 		# Js function from main.js which loads by default  
         array_push($this->data['js_functions'], array('name' => 'recipes_edit_init', 'data' => FALSE));
+        array_push($this->data['js_functions'], array('name' => 'language_text_init', 'data' => FALSE));
 		/* Get data for select boxes */        
         $recipe     = new Recipe();                                
         $meras      = new Mera();
         $languages  = new Language();
         
         $languages->get_iterated();
-        $recipe->get_full_info($id);                
+        $recipe->get_full_info($id);
+        #print_flex($recipe->recipe_step->language);
         $meras->get_full_info();
-        #soedinit' sushestvuushie shagi po language        	
+        #soedinit' sushestvuushie shagi po language
         		
 		if ($this->form_validation->run('recipe_edit')){
             $this->_save($recipe);
-            return ;
 		}else{
 			/* Error on validation */
 			$this->data['form_error'] = validation_errors();
@@ -86,11 +87,8 @@ class Recipes extends Admin_Controller {
 
 		if ($this->form_validation->run('recipe_edit'))
 		{            
-			/* Success on validation */
-            
-            
+			/* Success on validation */                        
             $this->_save();
-            return ;
 			$data['form_success'] = 'Рецепт Сохранен';
 		}
 		else
@@ -133,9 +131,8 @@ class Recipes extends Admin_Controller {
             if ($recipe == NULL) {
                 $recipe = new Recipe();                                
             }
-            $recipe_image = new Recipes_Image();
-            
-                        
+            $recipe_image = new Recipe_Image();
+                                    
             $recipe->prepare_time   = $this->input->post('prep_time');
             $recipe->cook_time      = $this->input->post('cook_time');
             $recipe->servings       = $this->input->post('servings');
@@ -143,25 +140,24 @@ class Recipes extends Admin_Controller {
             $total_products = $this->input->post('total_products');
             #find filling fields of product and create array $product_name
             
-            if($recipe->save()){
-                //$recipe->reinitialize_model();
-                $recipe->save_by_language(array('name' => $this->input->post('recipe_name')));
+            if($this->save_object_name($recipe)){                
                 #RECIPE IMAGE
                 #esli net svazannoi image to sozdaetsa novaia i zadaetsa id                
-                if ($recipe->recipes_image->result_count()==0){
-                    $recipe_image_id = $recipe->recipes_image->result_count()+1;
-                    $recipe_image = new Recipes_Image();
+                if ($recipe->recipe_image->result_count()==0){
+                    $recipe_image_id = $recipe->recipe_image->result_count()+1;
+                    $recipe_image = new Recipe_Image();
                     $recipe_image->image_type = 1; 
                 }else {
-                    $recipe_image_id = $recipe->recipes_image->id; #beret sushestvushii ID image is Recipes_Image
+                    $recipe_image_id = $recipe->recipe_image->id; #beret sushestvushii ID image is Recipes_Image
                 }
                 #esli my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i resize
                 $this->upload_image_lib->initialize(array('type'=>'recipe', 'size' => 'tiny'));
                     #vozvrashaet polnoe ima kartinki primer: re_id_id.jpg; v bazu sohranaetsa tol'ko $recipe_image_id
                 if ($this->upload_image_lib->upload_resize_img('recipe_image',$recipe->id.'_'.$recipe_image_id))
                     $recipe_image->save($recipe);
-                else 
-                    $this->data['form_error'] = $this->upload->display_errors(); #vivodit log oshibok                
+                
+                #else 
+                    #$this->data['form_error'] = $this->upload->display_errors(); #vivodit log oshibok
                                                            
                 #PRODUKTI
                 #zagruzka udaleniih productov 

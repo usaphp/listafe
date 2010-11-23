@@ -51,7 +51,10 @@ class Ajax extends Admin_Controller {
 	
 	/* Adds a step to recipe */
 	function add_step(){
-		$data['step_id'] = $this->input->post('step_id');
+        $languages = new Language();
+        $languages->get_iterated();
+		$data['number']   = $this->input->post('step_id');
+        $data['languages']= $languages;
 		$this->load->view('admin/recipes/subs/step', $data);
 	}
     
@@ -85,8 +88,11 @@ class Ajax extends Admin_Controller {
         #ves' spisok lang
         $this->data['languages']    = $languages;
         #dla dla vibranogo lang
-        $this->data['language']     = $languages;        
-        $this->load->view('admin/language_form/sub/input_name',$this->data);
+        $this->data['language']     = $languages;
+        if($this->input->post('param')) 
+            $this->load->view('admin/language_form/sub/input_text',$this->data);
+        else
+            $this->load->view('admin/language_form/sub/input_name',$this->data);        
     }
     
    	function add_ratio_mera(){

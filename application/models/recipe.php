@@ -20,8 +20,10 @@ class Recipe extends DataMapper {
                     $val_product->product_category->include_join_fields()->where_in_related('language')->get_iterated();
                     $val_product->mera->include_join_fields()->where_in_related('language')->get_iterated();
             }
-            #RECIPES
-            $this->recipe_step->include_join_fields()->where_in_related('language')->get_iterated();
+            #STEPS
+            $this->recipe_step->get();
+            foreach($this->recipe_step as $step)
+                $step->language->include_join_fields()->get_iterated();
         }else{
             $this->include_join_fields()->where_in_related('language')->get_iterated();
             foreach($this as $recipe){

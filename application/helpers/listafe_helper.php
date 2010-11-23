@@ -114,7 +114,7 @@
     function dm_get_field_by_id($needle,DataMapper $haystack , $field = 'value'){        
         foreach($haystack as $val)
             if($needle==$val->id) 
-                if($val->$field) return $val->field;
+                if($val->$field) return $val->$field;
         return false;                
     }
     #vozvrashaet nabor otnosheni' velichit

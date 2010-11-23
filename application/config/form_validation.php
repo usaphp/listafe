@@ -1,7 +1,7 @@
 <?php
         $config = array(
 			'products_edit' => array ( 
-        		array('label' => 'Название продукта')),
+        		array('field' => 'inp_name_1', 'label' => 'Название продукта','rules' => 'trim|required')),
             'recipe_add' => 
                 array('field' => 'recipe_name', 'label' => 'Название Рецепта', 'rules' => 'trim|required'),
             'recipe_edit' =>

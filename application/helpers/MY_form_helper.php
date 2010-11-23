@@ -15,11 +15,12 @@ function separator_div($height = 5){
 	return '<div style="padding:'.$height.'px 0px"></div>';
 }
 
-function button_add_language(){
+function button_add_language($id_postfix = false, $class_postfix = false){
     $btn_add_language = array(        
-        'id'    => 'btn_language_add_id',
-        'class' => 'btn_language_add f_button green f_last'
+        'id'    => ($id_postfix)?'btn_language_add_'.$id_postfix:'btn_language_add_id',
+        'class' => ($class_postfix)?'btn_language_add_'.$class_postfix:'btn_language_add'
     );
+    $btn_add_language['class'] .= ' f_button green f_last';
     return anchor('#','добавить',$btn_add_language);
 }
 

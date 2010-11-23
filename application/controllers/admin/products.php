@@ -43,8 +43,52 @@ class Products extends Admin_Controller {
         # if form validates
         
         if($this->form_validation->run('products_edit')){
-            echo 1;
-            if($this->_save($id)){                
+            $product->product_category_id   = $this->input->post('product_category_id');
+            $product->mera_id               = $this->input->post('mera_id');
+            $product->price                 = $this->input->post('price');
+            $product->units_for_price       = $this->input->post('units_for_price');
+            $product->mera_for_price        = $this->input->post('mera_for_price');
+            #
+            if($this->save_object_name($product)){
+                $nutrition_categories   = new Nutrition_category();
+                $nutrition_categories->get();
+                #
+                foreach($nutrition_categories as $nc){
+                    if(!$this->input->post('nutrition_category_'.$nc->id)) continue;
+                    $nc->save($product);
+                    $nc->set_join_field($product,'value', $this->input->post('nutrition_category_'.$nc->id));
+                    echo 1;
+                }                                               
+                #NUTRITION          
+                $hidden_nutrition_add       = ($this->input->post('hidden_nutrition'))?$this->input->post('hidden_nutrition'):array();
+                $hidden_nutrition_remove    = ($this->input->post('hidden_nutrition_removed'))?$this->input->post('hidden_nutrition_removed'):array();                                                                                                                 
+                #
+                $hidden_nutrition_add = array_map('explode_ext',$hidden_nutrition_add);
+                #
+                $hidden_nutrition_remove = array_diff($hidden_nutrition_remove,return_subarray_by_key('id',$hidden_nutrition_add));
+                #SAVE Nutrition
+                $nutrition = new Nutrition();                            
+                foreach($hidden_nutrition_add as $hn_add){
+                    $nutrition->get_by_id($hn_add['id']);
+                    $product->save($nutrition);
+                    $product->set_join_field($nutrition,'value',$hn_add['value']);                            
+                }
+                #DELETE Nutrition
+                if($hidden_nutrition_remove){
+                    $nutrition->where_in('id',$hidden_nutrition_remove)->get();
+                    $product->delete($nutrition->all);
+                }
+                #MERAS-PRODUCT
+                $selected_mera = $this->input->post('selected_meras');
+                
+                $meras = new Mera();            
+                if($selected_mera){
+                    $meras->where_not_in('id',$selected_mera)->get();
+                    $product->delete($meras->all);
+                    $meras->where_in('id',$selected_mera)->get();        
+                    $product->save($meras->all);                
+                }
+                #IMAGES
                 #esli biblioteka my_upload_image_lib proinicializirovalas' verno to image zagrujaetca i resize
                 $this->upload_image_lib->initialize(array('type'=>'product', 'size' => 'tiny'));
                 #vozvrashaet polnoe ima kartinki primer: pi_id.jpg; v bazu sohranaetsa tol'ko $recipe_image_id
@@ -66,7 +110,8 @@ class Products extends Admin_Controller {
         $nutrition_categories   = new Nutrition_category();
         $languages              = new Language();        
         #
-        $product->get_full_info($id);                
+        $product->get_full_info($id);
+        #print_flex($product->nutrition_category);
         #
         $meras->get_full_info();
         #
@@ -76,70 +121,13 @@ class Products extends Admin_Controller {
         #
         $nutrition_categories->get_full_info();        
         #
-        $languages->get_iterated();
-        
+        $languages->get_iterated();        
         $this->data['dm_product']                   = $product;
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;
         $this->data['languages']                    = $languages;
         $this->data['meras']                        = $meras;
         $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
-    }
-
-    function _save($id = false){
-        echo 1 ;
-        $product = new Product($id);
-        #                        
-        $product->product_category_id   = $this->input->post('product_category_id');
-        $product->mera_id               = $this->input->post('mera_id');
-        $product->price                 = $this->input->post('price');
-        $product->units_for_price       = $this->input->post('units_for_price');
-        $product->mera_for_price        = $this->input->post('mera_for_price');        
-
-        # If products was saved to db successfully
-        if($this->save_object_name($product)){
-            
-            $nutrition_categories   = new Nutrition_category();
-            $nutrition_categories->get_iterated();
-            #
-            foreach($nutrition_categories as $nc){            
-                if(!$this->input->post('nutrition_category_'.$nc->id)) continue;
-                $nc->save($product);
-                $nc->set_join_field($product,'value', $this->input->post('nutrition_category_'.$nc->id));
-            }                                               
-            #NUTRITION          
-            $hidden_nutrition_add       = ($this->input->post('hidden_nutrition'))?$this->input->post('hidden_nutrition'):array();
-            $hidden_nutrition_remove    = ($this->input->post('hidden_nutrition_removed'))?$this->input->post('hidden_nutrition_removed'):array();                                                                                                                 
-            #
-            $hidden_nutrition_add = array_map('explode_ext',$hidden_nutrition_add);
-            #
-            $hidden_nutrition_remove = array_diff($hidden_nutrition_remove,return_subarray_by_key('id',$hidden_nutrition_add));
-            #SAVE Nutrition
-            $nutrition = new Nutrition();                            
-            foreach($hidden_nutrition_add as $hn_add){
-                $nutrition->get_by_id($hn_add['id']);
-                $product->save($nutrition);
-                $product->set_join_field($nutrition,'value',$hn_add['value']);                            
-            }
-            #DELETE Nutrition
-            if($hidden_nutrition_remove){
-                $nutrition->where_in('id',$hidden_nutrition_remove)->get();
-                $product->delete($nutrition->all);
-            }
-            #MERAS-PRODUCT
-            $selected_mera = $this->input->post('selected_meras');
-            
-            $meras = new Mera();            
-            if($selected_mera){
-                $meras->where_not_in('id',$selected_mera)->get();
-                $product->delete($meras->all);
-                $meras->where_in('id',$selected_mera)->get();        
-                $product->save($meras->all);                
-            }                                                                                      
-        }else{
-            return false;
-        }
-        return true;            
     }
     //checks to see if product name already exists    
     function _product_name_exists($product_name){

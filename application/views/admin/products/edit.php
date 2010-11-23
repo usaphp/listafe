@@ -74,7 +74,7 @@
 		$nutrition_fact_count = 1;
         foreach($all_nutrition_categories as $nutrition_category):            
             #
-            $value = dm_get_field_by_id($nutrition_category->id,$dm_product->nutrition_category);
+            $value = dm_get_field_by_id($nutrition_category->id,$dm_product->nutrition_category,'join_value');
             #
             $inp_nutrition_category = array(
 	            'name'  => 'nutrition_category_'.$nutrition_category->id,        
