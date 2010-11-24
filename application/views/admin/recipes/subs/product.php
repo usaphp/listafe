@@ -2,34 +2,33 @@
     #ecli zagruzka stranici proishodit 4erez 'recipe/add' to name,value,mera ne sozdautsa 
     #vozmojno ect' lutshii variant! 
     #mera vremenno ne realizovana  
-    if(!isset($name))$name='';
-    if(!isset($mera))$mera='';
-    if(!isset($value))$value='';
-    if(!isset($image))$image='';
-	$product= array(
-    	'id'	=> 'product_'.$recipe_product_id,
-    	'name'	=> 'product_'.$recipe_product_id,
+    if(!isset($name))$name = '';
+    if(!isset($value))$value = '';
+    if(!isset($mera_selected))$mera_selected = '';
+	$inp_product   = array(
+    	'id'	=> 'product_'.$number,
+    	'name'	=> 'product_'.$number,
     	'class'	=> 'f_input f_joined suggest_product',
-    	'value' => set_value('product_'.$recipe_product_id,$name)
+    	'value' => $name
     ); #name- zagruzka iz bazi
-	$mera	= array(
-    	'options' => array_for_dropbox($meras, 'Мера Измерения','id','join_name'),
-    	'id'	=> 'mera_'.$recipe_product_id,
-    	'name'	=> 'mera_'.$recipe_product_id,
-    	'selected' => set_value('mera_'.$recipe_product_id,$mera), 
+	$sel_mera  = array(
+    	'options' => array_for_dropbox($dm_meras, 'Мера Измерения','id','join_name'),
+    	'id'	=> 'mera_'.$number,
+    	'name'	=> 'mera_'.$number,
+    	'selected' => $mera_selected, 
     	'class'	=> 'f_select f_joined'
     );
-	$qty	= array(
-    	'id'	=> 'qty_'.$recipe_product_id,
-    	'name'	=> 'qty_'.$recipe_product_id,
+	$inp_qty	= array(
+    	'id'	=> 'qty_'.$number,
+    	'name'	=> 'qty_'.$number,
     	'class'	=> 'f_input tiny f_joined f_last',
-    	'value' => set_value('qty_'.$recipe_product_id,$value)
+    	'value' => $value
     ); #value-onalogi4no name
-	echo form_label('Продукт '.$recipe_product_id, $product['id'], array('class' => 'f_label'));
-	echo form_input($product);
-	echo form_dropdown($mera['name'], $mera['options'], $mera['selected'], 'id = "'.$mera['id'].'" class = "'.$mera['class'].'"');
-	echo form_input($qty);
-    if($image!='') echo '<img src="/photos/product_images/'.substr($image,0,strpos($image,'.')).'_tiny.jpg'.'"/>';
-    echo anchor('#','delete',array('id'=>'remove_product_'.$recipe_product_id,'class'=>'f_remove f_button grey'));
+	echo form_label('Продукт '.$number, $inp_product['id'], array('class' => 'f_label'));
+	echo form_input($inp_product);
+	echo form_dropdown($sel_mera['name'], $sel_mera['options'], $sel_mera['selected'], 'id = "'.$sel_mera['id'].'" class = "'.$sel_mera['class'].'"');
+	echo form_input($inp_qty);
+    if(isset($image)) echo '<img src="/photos/product_images/'.substr($image,0,strpos($image,'.')).'_tiny.jpg'.'"/>';
+    echo anchor('#','delete',array('id'=>'remove_product_'.$number,'class'=>'f_remove f_button grey'));
     echo cleared_div();
 ?>

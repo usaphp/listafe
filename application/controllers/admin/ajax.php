@@ -43,8 +43,8 @@ class Ajax extends Admin_Controller {
 	function add_recipe_product(){
         $meras = new Mera();
         $meras->get_full_info();
-		$this->data['meras'] = $meras; 
-		$this->data['recipe_product_id'] = $this->input->post('recipe_product_id');
+		$this->data['dm_meras'] = $meras; 
+		$this->data['number'] = $this->input->post('recipe_product_id');
         
 		$this->load->view('admin/recipes/subs/product', $this->data);
 	}
@@ -53,8 +53,10 @@ class Ajax extends Admin_Controller {
 	function add_step(){
         $languages = new Language();
         $languages->get_iterated();
-		$data['number']   = $this->input->post('step_id');
-        $data['languages']= $languages;
+		#$data['main_number']  = $this->input->post('step_id');
+        #pri dobavlenii novogo shaga budet odno pole vvoda
+        $data['number']       = $this->input->post('step_id');
+        $data['dm_languages']= $languages;
 		$this->load->view('admin/recipes/subs/step', $data);
 	}
     
@@ -86,7 +88,7 @@ class Ajax extends Admin_Controller {
         #
         $this->data['number']       = $total_language_names+1;
         #ves' spisok lang
-        $this->data['languages']    = $languages;
+        $this->data['dm_languages'] = $languages;
         #dla dla vibranogo lang
         $this->data['language']     = $languages;
         if($this->input->post('param')) 

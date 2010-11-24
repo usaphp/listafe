@@ -19,11 +19,7 @@ class Recipes extends Admin_Controller {
         #
         $language->get_by_name('Russian');
         $recipe->include_join_fields()->get_by_related_language($language);
-                                
-                
-        
         #print_flex($recipe);
-        
     }
     function show(){        
         #
@@ -49,12 +45,11 @@ class Recipes extends Admin_Controller {
         $meras      = new Mera();
         $languages  = new Language();
         
-        $languages->get_iterated();
         $recipe->get_full_info($id);
-        #print_flex($recipe->recipe_step->language);
+        $languages->get_iterated();
         $meras->get_full_info();
         #soedinit' sushestvuushie shagi po language
-        		
+
 		if ($this->form_validation->run('recipe_edit')){
             $this->_save($recipe);
 		}else{
@@ -62,9 +57,9 @@ class Recipes extends Admin_Controller {
 			$this->data['form_error'] = validation_errors();
 		}
         #
-		$this->data['dm_recipe'] = $recipe;
-        $this->data['languages'] = $languages;                 
-        $this->data['dm_meras']  = $meras;
+		$this->data['dm_recipe']    = $recipe;
+        $this->data['dm_languages'] = $languages;                 
+        $this->data['dm_meras']     = $meras;
         $this->template->load('/admin/templates/main_template', '/admin/recipes/edit', $this->data);
 	}
 
@@ -73,19 +68,12 @@ class Recipes extends Admin_Controller {
 		$this->load->library('form_validation');
 		# Js function from main.js which loads by default
         array_push($this->data['js_functions'], array('name' => 'recipe_add_init', 'data' => FALSE));
-		/* Get data for select boxes */
-        $recipes = new Recipe();
-        $products = new Product();
-        $meras = new Mera();
-        
-        $meras->get();
-		/* Settting up validation rules */
-		/* If validation passed try to save a recipe */
-        #get total number fields for product
-        
+		
         $total_products = $this->input->post('total_products'); #peremenna producta catoraia idet v predstavlenie
-
-		if ($this->form_validation->run('recipe_edit'))
+        $meras = new Mera();
+        $meras->get_iterated();
+		
+        if ($this->form_validation->run('recipe_edit'))
 		{            
 			/* Success on validation */                        
             $this->_save();
@@ -96,9 +84,8 @@ class Recipes extends Admin_Controller {
 			/* Error on validation */
 			$data['form_error'] = validation_errors();
 		}
-		//$this->data['recipes'] = $recipes;
-        $this->data['meras'] = $meras;
-        
+
+        $this->data['dm_meras'] = $meras;
         $this->data['total_products'] = $total_products;
         $this->template->load('/admin/templates/main_template', '/admin/recipes/add', $this->data);
 	}
@@ -161,72 +148,66 @@ class Recipes extends Admin_Controller {
                                                            
                 #PRODUKTI
                 #zagruzka udaleniih productov 
-                $product_removed = $this->input->post('hidden_product_removed');                
-                if (!$product_removed) $product_removed = array();                 
-                for($i=1;$i<=$total_products;$i++){
-                    $product_name       = $this->input->post('product_'.$i);
-                    $product_qty        = $this->input->post('qty_'.$i);
-                    $product_mera_id    = $this->input->post('mera_'.$i);
+                $products_remove_selected = $this->input->post('hidden_product_removed');                
+                if (!$products_remove_selected) $products_remove_selected = array();                 
+                for($number=1;$number<=$total_products;$number++){
+                    $product_name       = $this->input->post('product_'.$number);
+                    $product_qty        = $this->input->post('qty_'.$number);
+                    $product_mera_id    = $this->input->post('mera_'.$number);
                     #
-                    if ($product_name && $product_qty && $product_mera_id && !in_array($i,$product_removed)){                       
-                        $language = new Language();
-                        $language->get_by_name('Russian');
-                        $language->product->where_join_field($language,'name',$product_name)->get();                        
-                        $recipe->save($language->product);
-                        $recipe->set_join_field($language->product,array('mera_id'=>$product_mera_id,'value'=>$product_qty));
-                        
-                        
+                    if ($product_name && $product_qty && $product_mera_id && !in_array($number,$products_remove_selected)){                       
+                        $dm_product = new Product();
+                        $dm_product->where_related('languages_product','name',$product_name)->get();
+                        $recipe->save($dm_product);
+                        $recipe->set_join_field($dm_product,array('mera_id'=>$product_mera_id,'value'=>$product_qty));
                     }    
                 }                
                 # udalit' vibrannie producti
                 $products_name = array(); #peremenaia spiska productov
-                foreach($product_removed as $id){
+                foreach($products_remove_selected as $number){
                     #sozdaet spisok udalaemih productov
-                    array_push($products_name,$this->input->post('product_'.$id));
+                    array_push($products_name,$this->input->post('product_'.$number));
                 }
-                #esli spisok udalaemih productov ne pust to vipolnaetsa uslovie 
-                if (!empty($product_removed)){
+                #esli spisok udalaemih productov ne pust to vipolnaetsa uslovie
+                if (!empty($products_name)){
+                    $dm_products = new Product();
+                    $dm_products->where_in_related('languages_product','name',$products_name)->get();
+                    $recipe->delete($dm_products->all);
+                }
 
-                    $language = new Language();
-                    $language->get_by_name('Russian');
-                    $language->product->where_join_field($language,'name',$product_name)->get();                        
-                    $recipe->delete($language->product);
-                }
-                
-                #print_flex($products_recipe);
                 #SHAGI
-                $language = new Language();
-                $language->get_by_name('Russian');
-                
-                $recipe->recipe_step->get();
-                $total_steps = $this->input->post('total_steps');                                
-                for($i=1;$i<=$total_steps;$i++){
-                    #
-                    $steps_descript = $this->input->post('step_description_'.$i);
-                    $step = new Recipe_Step();
-                    #
-                    $step->where('number',$i)->get_by_related($recipe);                    
-                    #
-                    if (!$step->id){
-                        $step->number = $i;
-                        $step->save($recipe);
+                $total_steps = $this->input->post('total_steps');                                             
+                for($step_number = 1; $step_number <= $total_steps;$step_number++){
+                    
+                    #Languages
+                    $total_languages = $this->input->post('total_language_'.$step_number);                    
+                    $dm_current_step = dm_get_object_by_field($step_number,$recipe->recipe_step,'number');
+                    if(!$dm_current_step){
+                        $dm_current_step = new Recipe_Step();
+                        $dm_current_step->number = $step_number;
+                        $dm_current_step->save($recipe);
+                        
+                    }                     
+                    for($lang_number = 1; $lang_number <= $total_languages; $lang_number++){
+                        
+                        $language_selected  = $this->input->post('sel_languages_text_'.$step_number.'_'.$lang_number);
+                        $language_text      = $this->input->post('inp_text_'.$step_number.'_'.$lang_number);
+                        echo $dm_current_step->id.' '.$language_text.' '; 
+                        $dm_current_step->save_by_language(array('text'=>$language_text),$language_selected);                    
                     }
-                    $step->save($language);
-                    #
-                    $step->set_join_field($language,'text',$steps_descript)->get();                    
                     #IMAGE
-                    $form_name  = 'step_photo_'.$i;                                                                         
-                    $image_name = ($step->id)?$recipe->id.'_'.$step->id:$recipe->id.'_'.$step->result_count()+1;
+                    $form_name  = 'step_photo_'.$number;                                                                         
+                    $image_name = (isset($recipe->recipe_step->id))?$recipe->id.'_'.$recipe->recipe_step:$recipe->id.'_'.$recipe->recipe_step->count()+1;
                     #                    
                     if($this->upload_image_lib->initialize(array('type'=>'step', 'size' => 'tiny'))){                        
                         $image_name = $this->upload_image_lib->upload_resize_img($form_name,$image_name);                        
                         if($image_name)
-                            $recipe->recipe_step->image = $image_name;    
+                            $recipe->recipe_step->image = $image_name;
                         else
                             $data['form_error'] = $this->upload_image_lib->get_errors().$this->upload->display_errors();
                     }
                 }
-                $this->data['form_success'] = 'Рецепт Сохранен';                
+                $this->data['form_success'] = 'Рецепт Сохранен';
             }else{
                  $this->data['form_error'] = $recipe->error->string;
             }

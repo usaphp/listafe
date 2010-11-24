@@ -35,7 +35,7 @@ class Admin_Controller extends Controller {
     function set_current_language($language){
         $this->data['language']['current'] = $language; 
     }
-    function save_object_name($dm_object){
+    protected function save_object_name($dm_object){
         $total_language_names = $this->input->post('total_language_names');
         if ($total_language_names){
             #sohranaet name i language po ID

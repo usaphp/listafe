@@ -374,7 +374,7 @@ function main(){
     }
     main.prototype.language_text_init = function(){
         $('.btn_language_add_text').live('click', function(){
-        var elem_id = $(this).attr('id').replace('btn_language_add_', '');
+        var elem_id = $(this).attr('id').replace('btn_language_add_', '');                
     		$.ajax({
     			url  : '/admin/ajax/add_language',
                 data : {total_language_names : $('#total_language_' + elem_id).val(),param : 'textarea'},

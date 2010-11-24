@@ -6,7 +6,7 @@
         'value' => (isset($language))?$language->join_name:''
     );
     $sel_languages = array(
-        'options'   => array_for_dropbox($languages,''),
+        'options'   => array_for_dropbox($dm_languages,''),
         'selected'  => ($language->id)?$language->id:$number,
         'name'      => 'sel_languages_'.$number,
     );

@@ -111,6 +111,12 @@
             if($needle==$val->id) return $val;
         }
     }
+    function dm_get_object_by_field($needle, DataMapper $haystack,$search_key){        
+        foreach($haystack as $val){
+            if($needle==$val->$search_key) return $val;
+        }
+        return false;
+    }
     function dm_get_field_by_id($needle,DataMapper $haystack , $field = 'value'){        
         foreach($haystack as $val)
             if($needle==$val->id) 

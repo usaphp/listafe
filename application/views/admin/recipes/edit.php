@@ -63,14 +63,13 @@
 		if ($dm_recipe->recipe_image->id) echo '<img src="'.get_name_image($dm_recipe->id, $dm_recipe->recipe_image->id, 'tiny').'"/>'; ?>
 		<div class="f_sub_header">Ингредиенты</div>
     		<div id="recipe_products">
-        		<?php                 
-                #$recipe->products opredelaensa v modele Resipe 4erez Activ Record i sohranaetsa kak array
+        		<?php
         		foreach($dm_recipe->product as $key => $product){                    
-        			$data['recipe_product_id'] = $key+1;
+        			$data['number'] = $key+1;
                     $data['name']   = $product->join_name;
-                    $data['mera']   = $product->join_mera_id;
                     $data['value']  = $product->join_value;
                     $data['image']  = $product->image;
+                    $data['mera_selected']  = $product->join_mera_id;
         			$this->load->view('/admin/recipes/subs/product.php', $data);
         		}
         		?>
