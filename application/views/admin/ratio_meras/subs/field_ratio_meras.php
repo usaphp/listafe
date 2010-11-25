@@ -6,12 +6,12 @@
         if(!isset($scalar_relative))    $scalar_relative = '_';
         $sel_scalar_mera	= array(            
             'name'    => 'mera_scalars[]',
-            'options' => array_for_dropbox($scalar_meras, 'Мера Измерения'),            
+            'options' => array_for_dropbox($scalar_meras, 'Мера Измерения','id','join_name'),            
             'selected'=> $scalar_selected,
             'class'   => 'f_select f_joined');        
         $sel_relative_mera	= array(
             'name'    => 'mera_relatives[]',
-            'options' => array_for_dropbox($relative_meras, 'Мера Измерения'),                        
+            'options' => array_for_dropbox($relative_meras, 'Мера Измерения','id','join_name'),
             'selected'=> $relative_selected,
             'class'   => 'f_select f_joined');
         $inp_scalar = array(   	        	

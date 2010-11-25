@@ -67,12 +67,13 @@ class Ajax extends Admin_Controller {
         $ratios     = new Ratio_mera();        
         $product_name = $this->input->post('product_name');        
         $product->get_by_name($product_name);
-        if (!$product->id) return ;                            
+        if (!$product->id) return ;       
+        $meras->get_full_info();                     
         $this->data['product']          = $product;
         $this->data['ratios']           = $product->get_ratios();
-        $this->data['meras']            = $meras->get_iterated();                  
-        $this->data['scalar_meras']     = $meras->get_clone(true)->where('type',1)->get_iterated();                
-        $this->data['relative_meras']   = $meras->get_clone(true)->where('type',2)->get_iterated();      
+        $this->data['meras']            = $meras;                  
+        $this->data['scalar_meras']     = dm_get_array_by_filtr('type',1,$meras);                
+        $this->data['relative_meras']   = dm_get_array_by_filtr('type',2,$meras);      
         
         $this->load->view('admin/ratio_meras/subs/product_data', $this->data);
         $this->output->enable_profiler(TRUE);

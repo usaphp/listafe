@@ -39,11 +39,12 @@ class Product extends Datamapper {
         }else{
             $this->include_join_fields()->where_in_related($language)->get_iterated();
             foreach($this as $product){
-                $product->product_category->include_join_fields()->where_in_related($language)->get_iterated();
+                $product->include_related('product_category')->get_iterated();
                 $product->mera->include_join_fields()->where_in_related($language)->get_iterated();            
             }
             $this->id = null;
-        }        
+        }
+               
     }
     function get_by_name($name = false,$current_language = false){
         if(!$name) return ;        

@@ -1,13 +1,13 @@
 <?php
-    if (!isset($number)) $number = 1;
+    if (!isset($language_number)) $language_number = 1;
     #if (!isset($main_number)) $main_number = 1;
     $sel_languages = array(
         'options'   => array_for_dropbox($dm_languages,''),
-        'selected'  => (isset($language->id))?$language->id:$number,
-        'name'      => 'sel_languages_text_'.$main_number.'_'.$number,
+        'selected'  => (isset($language->id))?$language->id:$language_number,
+        'name'      => 'sel_languages_text_'.$number.'_'.$language_number,
     );
     $inp_textarea = array(
-        'name'  => 'inp_text_'.$main_number.'_'.$number,
+        'name'  => 'inp_text_'.$number.'_'.$language_number,
         'id'    => 'inp_text_id',
         'class' => 'f_textarea small',
         'value' => (isset($language))?$language->join_text:''

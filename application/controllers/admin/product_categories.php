@@ -49,7 +49,7 @@ class Product_categories extends Admin_Controller {
         }else{
             $this->data['form_error'] = validation_errors();
         }
-        $this->data['languages']            = $languages;
+        $this->data['dm_languages']            = $languages;
         $this->data['current_language']     = 1;
         $this->data['dm_product_category']  = $product_category;
         $this->template->load('/admin/templates/main_template', '/admin/product_categories/edit', $this->data);

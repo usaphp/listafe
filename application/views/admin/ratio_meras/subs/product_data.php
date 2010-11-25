@@ -1,10 +1,11 @@
 <?php
-$sel_main_mera = array(
-	'options' => array_for_dropbox($meras, 'Мера Измерения'),
-	'id'	=> 'main_mera_'.$product->mera_id,
-	'name'	=> 'main_mera_'.$product->mera_id,
-	'selected' => $product->mera_id, 
-	'class'	=> 'f_select f_joined');
+    $sel_main_mera = array(
+    	'options' => array_for_dropbox($meras, 'Мера Измерения','id','join_name'),
+    	'id'	=> 'main_mera_'.$product->mera_id,
+    	'name'	=> 'main_mera_'.$product->mera_id,
+    	'selected' => $product->mera_id, 
+    	'class'	=> 'f_select f_joined'
+    );
     echo form_label('Основная мера', '', array('class' => 'f_label'));
     echo form_dropdown($sel_main_mera['name'], $sel_main_mera['options'], $sel_main_mera['selected'], 'id = "'.$sel_main_mera['id'].'" class = "'.$sel_main_mera['class'].'"');
     echo cleared_div();?>

@@ -7,10 +7,10 @@
     	'id'	=> 'inp_product',
     	'name'	=> 'inp_product',
     	'class'	=> 'f_input f_joined suggest_product',
-    	'value' => set_value('product',$product->name)); #name- zagruzka iz bazi
-        
+    	'value' => $product->join_name
+        );
         echo form_label('Продукт ', $inp_product['id'], array('class' => 'f_label'));
-
+        echo form_input($inp_product);
         echo anchor('#', 'Load Product', array('class'=> 'f_button grey wide', 'id' => 'load_product'));
         echo cleared_div();
         ?>                    

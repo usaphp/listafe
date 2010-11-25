@@ -98,6 +98,11 @@
             array_push($result_array, $val[$search_key]);
         return $result_array;
     }
+    #vozvrashaet nabor otnosheni' velichit
+    function get_ratios_array($scalar,$val_scalar,$relative,$val_relative){        
+        if ($scalar && $relative) 
+            return array('scalar'=>$scalar,'val_scalar'=>$val_scalar,'relative'=>$relative,'val_relative'=>$val_relative);         
+    }
     #
     function dm_object_exist(DataMapper $needle,DataMapper $haystack){        
         foreach($haystack as $val){
@@ -121,15 +126,15 @@
         foreach($haystack as $val)
             if($needle==$val->id) 
                 if($val->$field) return $val->$field;
-        return false;                
+        return false;
     }
-    #vozvrashaet nabor otnosheni' velichit
-    function dm_get_ratios_array($scalar,$val_scalar,$relative,$val_relative){        
-        if ($scalar && $relative) 
-            return array('scalar'=>$scalar,'val_scalar'=>$val_scalar,'relative'=>$relative,'val_relative'=>$val_relative);         
-    }
-    function array_wrap($var){
-        return array($var);
+    #
+    function dm_get_array_by_filtr($field, $filtr, DataMapper $haystack){
+        $result = array();
+        foreach($haystack as $val)
+            if($val->$field == $filtr)
+                array_push($result,$val);
+        return $result;
     }
     function print_flex($arr){
         echo '<pre>';

@@ -9,9 +9,9 @@
     }else{                    
         echo form_hidden('total_language_'.$number, $dm_object->language->result_count());
         foreach($dm_object->language as $key => $language){
-            $data['language']   = $language;
-            $data['main_number']= $number;
-            $data['number']     = $key+1;
+            $data['language']       = $language;
+            $data['number']         = $number;
+            $data['language_number']= $key+1;
             $this->load->view('admin/language_form/sub/input_text',$data);
         }
     }

@@ -17,13 +17,12 @@ class Mera extends DataMapper {
     function get_full_info($id = false, $current_language = 'Russian'){
         $language = new Language();
         $language->get_by_name($current_language);
-        if($id)            
+        if($id)
             $this->include_join_fields()->where_related($language)->get_by_id($id);
         else
             $this->include_join_fields()->get_by_related($language);
-        
     }
-    
+
     function array_for_dropbox(){
         $o = $this->get_iterated();
         $data = array('' => 'Выберите меру измерения');

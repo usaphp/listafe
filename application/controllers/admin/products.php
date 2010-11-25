@@ -17,8 +17,9 @@ class Products extends Admin_Controller {
         $products   = new Product();
         $meras      = new Mera();
         #vzat' product i dobavit' kategoriu producta
-        $products->get_full_info();        
-        
+        $products->get_full_info();
+        foreach($products as $product)        
+        print_flex($product->product_category);
         $this->data['products'] = $products;
         
         $this->template->load('/admin/templates/main_template', '/admin/products/show', $this->data);
@@ -125,7 +126,7 @@ class Products extends Admin_Controller {
         $this->data['dm_product']                   = $product;
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;
-        $this->data['languages']                    = $languages;
+        $this->data['dm_languages']                    = $languages;
         $this->data['meras']                        = $meras;
         $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
     }
