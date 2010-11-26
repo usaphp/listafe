@@ -41,7 +41,7 @@
         'options' => array_for_dropbox($meras,'Мера измерения','id','join_name'),
         'name'  => 'mera_for_price',
         'id'    => 'mera_for_price',
-        'class' => 'f_select wide f_joined',
+        'class' => 'f_select wide',
         'selected' => $dm_product->mera_for_price
     );    
     $fu_image = array(
@@ -137,11 +137,12 @@
             echo form_label('Кол-во продукта за эту цену', $inp_units_for_price['id'], array('class' => 'f_label'));
             echo form_input($inp_units_for_price);
             echo form_dropdown($sel_units_mera['name'], $sel_units_mera['options'], $sel_units_mera['selected'], 'id = "'.$sel_units_mera['id'].'" class = "'.$sel_units_mera['class'].'"');
-            echo cleared_div();
+            echo separator_div();
+            
             foreach($meras as $mera){   
                 echo open_f_block();
                 echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'checked' => dm_object_exist($mera,$dm_product->mera), 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
-                echo form_label($mera->name, 'selected_meras_'.$mera->id, array('class' => 'f_label_cb'));
+                echo form_label($mera->join_name, 'selected_meras_'.$mera->id, array('class' => 'f_label_cb'));
                 echo cleared_div();
                 echo close_f_block();                  
             }?>

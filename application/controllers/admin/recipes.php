@@ -191,8 +191,7 @@ class Recipes extends Admin_Controller {
                     for($lang_number = 1; $lang_number <= $total_languages; $lang_number++){
                         
                         $language_selected  = $this->input->post('sel_languages_text_'.$step_number.'_'.$lang_number);
-                        $language_text      = $this->input->post('inp_text_'.$step_number.'_'.$lang_number);
-                        echo $dm_current_step->id.' '.$language_text.' '; 
+                        $language_text      = $this->input->post('inp_text_'.$step_number.'_'.$lang_number); 
                         $dm_current_step->save_by_language(array('text'=>$language_text),$language_selected);                    
                     }
                     #IMAGE

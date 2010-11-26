@@ -105,10 +105,10 @@
     }
     #
     function dm_object_exist(DataMapper $needle,DataMapper $haystack){        
-        foreach($haystack as $val){
+        foreach($haystack as $val){            
             if($needle->id==$val->id) return true;                        
         }
-        return false;    
+        return false;
     }
     #
     function dm_get_object_by_id($needle,DataMapper $haystack){        

@@ -18,8 +18,7 @@ class Products extends Admin_Controller {
         $meras      = new Mera();
         #vzat' product i dobavit' kategoriu producta
         $products->get_full_info();
-        foreach($products as $product)        
-        print_flex($product->product_category);
+
         $this->data['products'] = $products;
         
         $this->template->load('/admin/templates/main_template', '/admin/products/show', $this->data);
@@ -110,9 +109,8 @@ class Products extends Admin_Controller {
         $nutrition              = new Nutrition();
         $nutrition_categories   = new Nutrition_category();
         $languages              = new Language();        
-        #
+        
         $product->get_full_info($id);
-        #print_flex($product->nutrition_category);
         #
         $meras->get_full_info();
         #
@@ -122,13 +120,16 @@ class Products extends Admin_Controller {
         #
         $nutrition_categories->get_full_info();        
         #
-        $languages->get_iterated();        
-        $this->data['dm_product']                   = $product;
+        $languages->get_iterated();            
+            
+        $this->data['dm_product']                   = $product;        
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;
-        $this->data['dm_languages']                    = $languages;
+        $this->data['dm_languages']                 = $languages;
         $this->data['meras']                        = $meras;
+        
         $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
+        
     }
     //checks to see if product name already exists    
     function _product_name_exists($product_name){
