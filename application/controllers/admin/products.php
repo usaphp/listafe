@@ -121,7 +121,7 @@ class Products extends Admin_Controller {
         $nutrition_categories->get_full_info();        
         #
         $languages->get_iterated();            
-            
+        #
         $this->data['dm_product']                   = $product;        
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;
