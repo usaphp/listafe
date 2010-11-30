@@ -1,4 +1,5 @@
 <?php
+    
     $inp_product_name = array(
         'name'  => 'product_name',
         'id'    => 'product_name',
@@ -19,11 +20,11 @@
         'value' => $dm_product->join_description
     );
     $sel_mera = array(
-        'options' => array_for_dropbox($meras,'Мера измерения','id','join_name'),
-        'name'  => 'mera_id',
-        'id'    => 'mera_id',
-        'class' => 'f_select wide',
-        'selected' => $dm_product->mera_id
+        'options'   => $meras_available,
+        'name'      => 'mera_id',
+        'id'        => 'mera_id',
+        'class'     => 'f_select wide',
+        'selected'  => '1'
     );
     $inp_price = array(
         'name'  => 'price',
@@ -104,31 +105,10 @@
 						echo form_dropdown($sel_nutritions['name'], $sel_nutritions['options'], $sel_nutritions['selected'], 'id = "'.$sel_nutritions['id'].'" class = "'.$sel_nutritions['class'].'"');
 						echo form_input($inp_nutritions_value);
 						echo anchor('#', 'Add', array('class' => 'f_joined add_nutrition_fact', 'id' => 'add_product_fact_'.$nutrition_category->id));
-						echo cleared_div();
-					?>
-				</div>
-					<div class='prod_nutritions_wrapper' id='prod_nutritions_wrapper_<?php echo $nutrition_category->id; ?>'>
-						<?php                            
-							foreach($product->nutrition as $nutrition):                                                                                                                                                   
-                                if($nutrition->nutrition_category_id == $nutrition_category->id){																
-                                    echo '<div class="" id="hidden_nutrition_wrapper_'.$nutrition_fact_count.'">';								
-    								$inp_hidden = array(
-    									'name' => 'hidden_nutrition_existed[]', 
-    									'id' => 'hid_nutrition_fact_'.$nutrition_fact_count, 
-    									'value' => $nutrition->nutrition_id);								
-                                    echo form_attr_hidden($inp_hidden);								
-    								echo $nutrition->nutrition_name." - ".$nutrition->value.' '.anchor('#','remove', array('class' => 'nutrition_fact_remove nf_remove_from_db', 'id' => 'nutrition_fact_remove_'.$nutrition_fact_count));								
-    								echo "</div>";
-    								$nutrition_fact_count++;
-                                }
-							endforeach;
-						?>
-					</div>
-			</div>
-            <?php
+						echo cleared_div();					
             endforeach;
     		
-            echo form_label('Мера измерения по умолчанию', $sel_mera['id'], array('class' => 'f_label'));
+            echo form_label('Меры измерения', $sel_mera['id'], array('class' => 'f_label'));
             echo form_dropdown($sel_mera['name'], $sel_mera['options'], $sel_mera['selected'], 'id = "'.$sel_mera['id'].'" class = "'.$sel_mera['class'].'"');
             
             echo form_label('Цена', $inp_price['id'], array('class' => 'f_label'));
@@ -139,14 +119,30 @@
             echo form_dropdown($sel_units_mera['name'], $sel_units_mera['options'], $sel_units_mera['selected'], 'id = "'.$sel_units_mera['id'].'" class = "'.$sel_units_mera['class'].'"');
             echo separator_div();
             
-            foreach($meras as $mera){   
-                echo open_f_block();
-                echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'checked' => dm_object_exist($mera,$dm_product->mera), 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
-                echo form_label($mera->join_name, 'selected_meras_'.$mera->id, array('class' => 'f_label_cb'));
-                echo cleared_div();
-                echo close_f_block();                  
-            }?>
+            //
+//            foreach($meras as $mera){   
+//                echo open_f_block();
+//                echo form_checkbox(array('value' => $mera->id, 'id'=> 'selected_meras_'.$mera->id, 'checked' => dm_object_exist($mera,$dm_product->mera), 'name' => 'selected_meras[]', 'class' => 'f_checkbox' ));
+//                echo form_label($mera->join_name, 'selected_meras_'.$mera->id, array('class' => 'f_label_cb'));
+//                echo cleared_div();
+//                echo close_f_block();                  
+//            }?>
+
         </div>
+        <div class="clear"></div>
+        <div class="group_nutrition span-9">
+        <?php foreach($nutrition_category as $category):?>
+            <?php foreach($dm_product->nutrition as $nutrition):
+                    if($nutrition->nutrition_category_id == $category->id)?>
+                    <div class="nutrition_block">
+                        <span class="nutrition_name"> <?php echo $nutrition->join_name?></span>
+                        <span class="nutrition_weight"> <?php echo $nutrition->join_value?></span>
+                    </div>
+                <?php ?>
+            <?php endforeach;?>
+        <?php endforeach;?>
+        </div>
+        <div class="clear"></div>
         <div id="pe_additional_tab" class="tab_content hidden">
             <?php 
             echo form_label('Картинка', $fu_image['id'], array('class' => 'f_label'));

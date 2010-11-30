@@ -111,10 +111,12 @@ class Products extends Admin_Controller {
         $languages              = new Language();        
         
         $product->get_full_info($id);
+        $meras_available = array();
+        foreach($product->mera as $mera){                
+            $meras_available[$mera->join_seq] = $mera->join_name.' ( '.$mera->join_weight.'gm )';
+        }
         #
-        $meras->get_full_info();
-        #
-        $product_categories->get_full_info();
+        $meras->get_full_info();        
         #
         $nutrition->get_full_info();
         #
@@ -122,6 +124,7 @@ class Products extends Admin_Controller {
         #
         $languages->get_iterated();            
         #
+        $this->data['meras_available']              = $meras_available;
         $this->data['dm_product']                   = $product;        
         $this->data['product_categories']	        = $product_categories;
         $this->data['all_nutrition_categories']     = $nutrition_categories;

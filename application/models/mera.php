@@ -14,7 +14,7 @@ class Mera extends DataMapper {
         parent::__construct($id);
     }
     
-    function get_full_info($id = false, $current_language = 'Russian'){
+    function get_full_info($id = false, $current_language = 'English'){
         $language = new Language();
         $language->get_by_name($current_language);
         if($id)
