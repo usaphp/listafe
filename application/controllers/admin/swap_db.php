@@ -5,11 +5,11 @@
         public function __construct() {
             parent::__construct();
             set_time_limit(5000);
-            $this->output->enable_profiler(false);
+            #$this->output->enable_profiler(false);
         }
         
         public function index(){
-            $this->run_mera_category_from_mera();
+            $this->run_nutrition_units_from_mera();
         }
         public function abbrev_product(){            
 
@@ -156,21 +156,28 @@
             }
         }
         
-        function run_mer_category_from_mera(){            
-            $category    = new A_Mera_category(); 
-            $meras       = new A_Mera();
+        function run_nutrition_units_from_mera(){            
+            $query = $this->db->get('nutr_def')->result();
+            #$query = get_object_vars(current($query));
+            #print_flex($query);
+            $language = new A_Language();
+            $language->get_by_id(1);
+            $nutrition = new A_Nutrition();
             
-            $meras->include_join_fields()
-                        ->where_related('a_language','id',1)
-                        ->limit(100,7)
-                        ->get();
-            foreach($meras as $mera){
-                $arr_mera = current(explode(' ',$mera->join_name));
-                if(strpos($arr_mera,',')!=false) $arr_mera = substr_replace($arr_mera,'',-1,1); 
-                echo $arr_mera.'</br>';
-                 
-                #$category->get() 
-                #$mera->save($);
+            foreach($query as $row){
+                $nutrition->include_join_fields()->where_related($language)
+                        ->where('nutr_def',$row->Tagname)->get();
+                #if(!$nutrition->exists())
+                    if(!is_numeric(substr($row->NutrDesc,0,1))){
+                        $nutrition->units = $row->Units;
+                        $nutrition->save($language);
+                        $data = array (
+                            'name'      => $row->NutrDesc,
+                            'nutr_def'  => $row->Tagname
+                        );
+                        $nutrition->set_join_field($language,$data);
+                        echo $row->NutrDesc.'</br>';
+                    }
             }
         }
 	}

@@ -5,7 +5,7 @@ class Ajax extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct(FALSE);
-        $this->output->enable_profiler(FALSE);
+        #$this->output->enable_profiler(FALSE);
 	}
 	
     
@@ -28,7 +28,7 @@ class Ajax extends Admin_Controller {
 	
 	/* Suggest product for recipe */
 	function suggest_products(){
-		$product_name = $this->input->post('q', TRUE);        
+		$product_name = $this->input->post('q', TRUE);
         
         $products = new Languages_Product();                
         $products->like('name', $product_name, 'after')->get_iterated(); 
@@ -124,7 +124,24 @@ class Ajax extends Admin_Controller {
 		$recipe->get_by_name(trim($this->input->post('text_name')));
 		echo json_encode(!$recipe->exists());
 	}
-	
+	#preres4itivaet nutrition v zavisimosti ot meri
+    function get_nutrition_by_mera(){
+        $product_id     = $this->input->post('number_product_id');
+        $mera_selected  = $this->input->post('mera_id');
+        
+        $product                = new Product();
+        $nutrition_categories   = new Nutrition_category();
+        
+        $product->get_full_info($product_id);
+        $product->nutrition->convert_to_mera($mera_selected);
+        
+        $nutrition_categories->get_full_info();
+        
+        $this->data['dm_product']               = $product;
+        $this->data['dm_nutrition_categories']  = $nutrition_categories;
+        $this->load->view('admin/products/sub/nutrition_table',$this->data);
+        
+    }
 	
 }
 ?>

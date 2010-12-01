@@ -2,7 +2,7 @@
 class Nutrition_category extends DataMapper {
     var $table = 'nutrition_categories';
     var $has_one = array();
-    var $has_many = array('language','nutrition','product');    
+    var $has_many = array('language','nutrition');    
 //    var $validation = array(
 //        'name' => array(
 //            'label' => 'Название категрии',
@@ -13,7 +13,7 @@ class Nutrition_category extends DataMapper {
     function __construct($id = NULL){
         parent::__construct($id);
     }
-    function get_full_info($id = false,$current_language = 'Russian'){        
+    function get_full_info($id = false,$current_language = 'English'){        
         #svazivaet nutrition s vibranim language
         $language = new Language();
         is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
@@ -21,7 +21,7 @@ class Nutrition_category extends DataMapper {
             $this->get_by_id($id);
             $this->language->include_join_fields()->get_iterated();
         }else{
-            $this->include_join_fields()->where_in_related($language)->get_iterated();
+            $this->include_join_fields()->where_related($language)->get_iterated();
             $this->id = null;    
         }
     }

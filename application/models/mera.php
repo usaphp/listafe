@@ -31,6 +31,7 @@ class Mera extends DataMapper {
         }
         return $data;
     }
+    
 }
 
 /* End of file name.php */

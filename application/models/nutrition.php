@@ -43,4 +43,19 @@ class Nutrition extends DataMapper {
         }
         
     }
+    function convert_to_mera($sequence = 0){        
+        if ($sequence == 0){
+            $this->include_join_fields()->where_related('language','id',1)->include_join_fields()->get();                    
+            return ;
+        }
+        $ratio_mera = new Ratio_mera();
+        $ratio_mera->where(array('seq' => $sequence, 'product_id' => $this->parent['id']))->get();
+        if($ratio_mera->exists()){
+            $factor = $ratio_mera->weight/100;
+            foreach($this as $nutrition){
+                $nutrition->join_weight = $factor*$nutrition->join_weight;
+            }
+        }
+        return $this;
+    }
 }
