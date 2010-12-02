@@ -5,11 +5,11 @@
         public function __construct() {
             parent::__construct();
             set_time_limit(5000);
-            #$this->output->enable_profiler(false);
+            $this->output->enable_profiler(false);
         }
         
         public function index(){
-            $this->run_nutrition_units_from_mera();
+            $this->run_product_from_product_type01();
         }
         public function abbrev_product(){            
 
@@ -59,32 +59,74 @@
             print_flex($result_data);
             return ; 
         }
-        function run_product_nutrition(){
+        function run_nutrition_product_from_nutr_data(){
             #
-            $query = $this->db->select()           # 'Shrt_Desc'
-                                ->from('abbrev')
-                                ->limit(2053,6890)
-                                ->get()
-                                ->result();
-            
-            $nutritions = new A_Nutrition();            
-            $nutritions->include_join_fields()
-                        ->where_related('a_language','id',1)
-                        ->get();
-                        
-            
-            #$result_data = get_object_vars(current($query));                                                       
-            foreach($query as $row){                
-                $product = new A_Product();
-                $product->where('NDB_No',$row->NDB_No)->get();
-                $product->save($nutritions->all);
-                foreach($nutritions as $nutrition)
-                    $product->set_join_field($nutrition,'value',$row->{$nutrition->join_description});                
+            $nutr_product = new A_Nutritions_a_product();
+            $n = 0;
+            while(true){
+                $query = $this->db->select()           # 'Shrt_Desc'
+                                    ->from('nut_data')
+                                    ->limit(1000,100000+$n)
+                                    ->get()
+                                    ->result();
+                if(!$query) return ;
+                foreach($query as $row){                    
+                    $nutr_product->where(array('NDB_No'=>$row->NDB_No,'Nutr_No'=>$row->Nutr_No))->get();
+                    $nutr_product->value = $row->Nutr_Val;
+                    $nutr_product->NDB_No = $row->NDB_No;
+                    $nutr_product->Nutr_No = $row->Nutr_No;
+                    $nutr_product->Num_Data_Pts = $row->Num_Data_Pts;
+                    $nutr_product->Std_Error = $row->Std_Error;
+                    $nutr_product->Src_Cd = $row->Src_Cd;
+                    $nutr_product->Deriv_Cd = $row->Deriv_Cd;
+                    $nutr_product->Ref_NDB_No = $row->Ref_NDB_No;
+                    $nutr_product->Add_Nutr_Mark = $row->Add_Nutr_Mark;
+                    $nutr_product->Num_Studies = $row->Num_Studies;
+                    $nutr_product->Min = $row->Min;
+                    $nutr_product->Max = $row->Max;
+                    $nutr_product->DF = $row->DF;
+                    $nutr_product->Low_EB = $row->Low_EB;
+                    $nutr_product->Up_EB = $row->Up_EB;
+                    $nutr_product->Stat_Cmt = $row->Stat_Cmt;
+                    $nutr_product->save();
+                }
+                $n += 1000; 
+                echo $query[count($query)-1]->NDB_No;
+                #return ;
             }
-            
-            print_flex($query[count($query)-1]);
-            return ; 
+                 
         }
+        
+        function run_product_type_from_langdesc00(){
+            $query = $this->db->get('langdesc')->result();
+            $type = new A_Product_type();
+            $language = new A_Language(1);
+            foreach($query as $row){
+                 $type = new A_Product_type();
+                 $type->Factor = $row->Factor;
+                 $type->save($language);
+                 $type->set_join_field($language,'name',$row->Description);
+                 print_flex($row);
+            }
+        }
+        
+        function run_product_from_product_type01(){
+            #get product type
+            $query = $this->db->get('no_langual')->result();
+            $type       = new A_Product_type();
+            $product    = new A_Product();
+            $language = new A_Language(1);
+            
+            foreach($query as $row){
+                $type->where('Factor',$row->Factor)->get();
+                $product->where('NDB_No',$row->NDB_No)->get();
+                $type->save($product);                
+                $type->set_join_field($product,'Factor',$row->Factor);
+                $type->set_join_field($product,'NDB_No',$row->NDB_No);
+                print_flex($row);
+            }
+        }
+        
         function run_mera_from_weight(){
             $query = $this->db->select('NDB_No, Msre_Desc')           # 'Shrt_Desc'
                 ->from('weight')
@@ -179,6 +221,50 @@
                         echo $row->NutrDesc.'</br>';
                     }
             }
+        }
+        
+        function run_nutrition_from_nutr_def(){            
+            $query = $this->db->get('nutr_def')->result();
+            $nutrition = new A_Nutrition();
+            $language = new A_Language();
+            $language->get_by_id(1);
+            foreach($query as $row){
+                $nutrition->include_join_fields()->where_related($language)
+                        ->where('Nutr_No',$row->Nutr_No)->get();                
+                $nutrition->units   = $row->Units;
+                $nutrition->Nutr_No = $row->Nutr_No;
+                $nutrition->Tagname = $row->Tagname;
+                $nutrition->Num_Dec = $row->Num_Dec;
+                $nutrition->SR_Order= $row->SR_Order;
+                $nutrition->save($language);
+                $data = array (
+                    'Nutr_No'   => $row->Nutr_No,
+                    'name'      => $row->NutrDesc
+                );
+                $nutrition->set_join_field($language,$data);
+                echo $row->Nutr_No.'</br>';
+            }
+        }
+        #
+        function rating(){
+            $books = array(1704,1704,1627,5089,5092,5100,3966,1635,
+                            1635,1725,1725,1725,1694,1631,1631,1643,2060,1628,1629,3907,1704,1688,1688);
+            #current
+            foreach ($books as $book)
+                $query_1 = $this->db->select_avg('rating')
+                        ->where('book_id',$book)
+                        ->get('book_ratings')->result();
+            #new
+            $query_2 = $this->db->select_avg('rating')
+                        ->where_in('book_id',$books)
+                        ->group_by('book_id')
+                        ->get('book_ratings')->result();
+            //$query = $this->db->select('*')
+    //                            ->from('book_ratings')
+    //                            ->where_in($books)
+    //                            ->get()->result();
+            print_flex($query_1);
+            print_flex($query_2);    
         }
 	}
 ?>
