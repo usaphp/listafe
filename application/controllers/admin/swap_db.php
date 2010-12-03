@@ -9,7 +9,16 @@
         }
         
         public function index(){
+            $this->data['all_nutr_data']                    = current($this->db->select('COUNT(NDB_No) as count')->get('nut_data')->result())->count;
+            $this->data['all_nutritions_products']          = current($this->db->select('COUNT(id) as count')->get('a_nutritions_a_products')->result())->count;
+            $this->data['count_product']                    = current($this->db->select('COUNT(id) as count')->where('a_product_id > ',0)->get('a_nutritions_a_products')->result())->count;
+            $this->data['count_nutrition']                  = current($this->db->select('COUNT(id) as count')->where('a_nutrition_id > ',0)->get('a_nutritions_a_products')->result())->count;
+            $this->data['count_product_properties']         = current($this->db->select('COUNT(id) as count')->get('a_product_properties')->result())->count;
+            $this->data['count_langdesc']                   = current($this->db->select('COUNT(Factor) as count')->get('langdesc')->result())->count;
+            $this->data['count_no_langual']                 = current($this->db->select('COUNT(NDB_No) as count')->get('no_langual')->result())->count;
+            $this->data['count_products_product_properties']= current($this->db->select('COUNT(id) as count')->get('a_product_properties_a_products')->result())->count;
             #$this->run_nutrition_product_from_tbl_product11();
+            
             $this->template->load('admin/templates/main_template', 'admin/view_swap_db', $this->data);
         }
         public function abbrev_product(){            
@@ -65,9 +74,11 @@
             $nutr_product = new A_Nutritions_a_product();
             $n = 0;
             while(true){
-                $query = $this->db->select()           # 'Shrt_Desc'
+                $nutr_product_last = current($this->db->select('MAX(NDB_No) as max')->get('a_nutritions_a_products')->result())->max;
+                $query = $this->db->select()
                                     ->from('nut_data')
-                                    ->limit(1000,100000+$n)
+                                    ->limit(100)
+                                    ->where('NDB_No >=',$nutr_product_last-1)
                                     ->get()
                                     ->result();
                 if(!$query) return ;
@@ -93,41 +104,47 @@
                 }
                 $n += 1000; 
                 echo $query[count($query)-1]->NDB_No;
-                #return ;
+                return ;
             }
                  
         }
         
         function run_nutrition_product_from_tbl_product11(){
-            $products    = new A_Product();
-            $nutrition_product = new A_Nutritions_a_product();
-                                    
-            $products->select('id, NDB_No')
-                    #->limit(1)
-                    ->get();
+            $last_product_id = current($this->db->select('MAX(a_product_id) as max')->get('a_nutritions_a_products')->result())->max;
+                                  
+            $products = $this->db->select('id, NDB_No')
+                        ->where('id >= ',$last_product_id)                        
+                        ->get('a_products')->result();
             foreach($products as $product){
-                $nutrition_product->db->where('NDB_No',$product->NDB_No)                    
+                $this->db->where('NDB_No',$product->NDB_No)                    
                     ->update('a_nutritions_a_products',array('a_product_id'=>$product->id));                
+            
             }
-            echo 'end';
-            return ;
+            echo $last_product_id;
+            return true;
         }
         
-        function run_nutrition_product_from_tbl_product12(){
-            $products    = new A_Product();
-            $nutrition  = new A_Nutrition();
-            $products->select('id, NDB_No')->limit(1)->get();
-                
-            echo 'end';                
-            return ;
+        function run_nutrition_product_from_tbl_nutrition12(){
+            $last_nutrition_id = current($this->db->select('MAX(a_nutrition_id) as max')->get('a_nutritions_a_products')->result())->max;
+                                  
+            $nutritions = $this->db->select('id, Nutr_No')
+                        ->where('id >= ',$last_nutrition_id)                        
+                        ->get('a_nutritions')->result();
+            foreach($nutritions as $nutrition){
+                $this->db->where('Nutr_No',$nutrition->Nutr_No)                    
+                    ->update('a_nutritions_a_products',array('a_nutrition_id'=>$nutrition->id));                
+            
+            }
+            echo $last_nutrition_id;
+            return true;
         }
         
-        function run_product_type_from_langdesc00(){
+        function run_product_properties_from_langdesc00(){
             $query = $this->db->get('langdesc')->result();
-            $type = new A_Product_type();
+            $type = new A_Product_property();
             $language = new A_Language(1);
             foreach($query as $row){
-                 $type = new A_Product_type();
+                 $type = new A_Product_property();
                  $type->Factor = $row->Factor;
                  $type->save($language);
                  $type->set_join_field($language,'name',$row->Description);
@@ -135,15 +152,15 @@
             }
         }
         
-        function run_product_from_product_type01(){
+        function run_properties_products(){
             #get product type
-            $query = $this->db->where('NDB_No >', 11223)
-                            ->get('no_langual')->result();
-            $type       = new A_Product_type();
-            $product    = new A_Product();
-            $language = new A_Language(1);
-            
-            foreach($query as $row){
+            $last_product_id = current($this->db->select('MAX(a_product_id) as max')->get('a_product_properties_a_products')->result())->max;
+            $products = new Product();
+            $products->where('id >=',$last_product_id)->get('a_products');
+            foreach($products as $product)
+                echo $product->id;
+            return ;
+            foreach($products as $product){
                 $type->where('Factor',$row->Factor)->get();
                 $product->where('NDB_No',$row->NDB_No)->get();
                 $type->save($product);                

@@ -54,7 +54,7 @@ class MY_Controller extends Controller {
     
     public $top_error;
     public $top_success;
-    
+    private $data;
     function __construct(){
         parent::__construct();
         $this->top_error    = $this->session->flashdata('top_error');
