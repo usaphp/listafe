@@ -5,7 +5,7 @@ class Ajax extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct(FALSE);
-        #$this->output->enable_profiler(FALSE);
+        $this->output->enable_profiler(FALSE);
 	}
 	
     

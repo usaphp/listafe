@@ -9,7 +9,8 @@
         }
         
         public function index(){
-            $this->run_product_from_product_type01();
+            #$this->run_nutrition_product_from_tbl_product11();
+            $this->template->load('admin/templates/main_template', 'admin/view_swap_db', $this->data);
         }
         public function abbrev_product(){            
 
@@ -59,7 +60,7 @@
             print_flex($result_data);
             return ; 
         }
-        function run_nutrition_product_from_nutr_data(){
+        function run_nutrition_product_from_nutr_data10(){
             #
             $nutr_product = new A_Nutritions_a_product();
             $n = 0;
@@ -97,6 +98,30 @@
                  
         }
         
+        function run_nutrition_product_from_tbl_product11(){
+            $products    = new A_Product();
+            $nutrition_product = new A_Nutritions_a_product();
+                                    
+            $products->select('id, NDB_No')
+                    #->limit(1)
+                    ->get();
+            foreach($products as $product){
+                $nutrition_product->db->where('NDB_No',$product->NDB_No)                    
+                    ->update('a_nutritions_a_products',array('a_product_id'=>$product->id));                
+            }
+            echo 'end';
+            return ;
+        }
+        
+        function run_nutrition_product_from_tbl_product12(){
+            $products    = new A_Product();
+            $nutrition  = new A_Nutrition();
+            $products->select('id, NDB_No')->limit(1)->get();
+                
+            echo 'end';                
+            return ;
+        }
+        
         function run_product_type_from_langdesc00(){
             $query = $this->db->get('langdesc')->result();
             $type = new A_Product_type();
@@ -112,7 +137,8 @@
         
         function run_product_from_product_type01(){
             #get product type
-            $query = $this->db->get('no_langual')->result();
+            $query = $this->db->where('NDB_No >', 11223)
+                            ->get('no_langual')->result();
             $type       = new A_Product_type();
             $product    = new A_Product();
             $language = new A_Language(1);
@@ -136,19 +162,17 @@
             #print_flex($query);
             $mera       = new A_Mera();            
             $language   = new A_Language(1);
-            
+            #
             foreach($query as $row){
                 $mera->include_join_fields()
                         ->where_related('a_language','id',1)
                         ->where('name',$row->Msre_Desc)->get();
-            
                 if(!$mera->exists()){
                     $mera->type = 2;
                     $mera->save($language);
                     $mera->set_join_field($language,'name',$row->Msre_Desc);
                     echo $row->NDB_No.'</br>';
                 }
-                 
                 #print_flex($row);
             }
             
@@ -255,7 +279,7 @@
                         ->where('book_id',$book)
                         ->get('book_ratings')->result();
             #new
-            $query_2 = $this->db->select_avg('rating')
+            $query_2 = $this->db->select('book_id, AVG(rating), COUNT(user_id)')
                         ->where_in('book_id',$books)
                         ->group_by('book_id')
                         ->get('book_ratings')->result();

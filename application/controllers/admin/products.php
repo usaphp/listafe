@@ -80,7 +80,7 @@ class Products extends Admin_Controller {
                 }
                 #MERAS-PRODUCT
                 $selected_mera = $this->input->post('selected_meras');
-                
+
                 $meras = new Mera();            
                 if($selected_mera){
                     $meras->where_not_in('id',$selected_mera)->get();
@@ -146,4 +146,4 @@ class Products extends Admin_Controller {
 
 /* End of file admin.php */
 /* Location: ./system/application/controllers/admin/products.php*/ 
-    
+?>
