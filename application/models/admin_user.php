@@ -8,9 +8,10 @@ class Admin_user extends DataMapper {
     
 	/* search for a user with specified username and password in database */
 	function login($username, $password){
+	   
 		$this->where(array('username' => $username, 'password' => $password))->get();
-		if($this->exists()){
-			return TRUE;
+		if($this->exists()){		
+        	return TRUE;
 		}
 		return FALSE;
 	}

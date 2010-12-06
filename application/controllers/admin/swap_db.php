@@ -4,8 +4,8 @@
         
         public function __construct() {
             parent::__construct();
-            set_time_limit(5000);
-            $this->output->enable_profiler(false);
+            set_time_limit(28800);
+            #$this->output->enable_profiler(false);
         }
         
         public function index(){
@@ -17,6 +17,8 @@
             $this->data['count_langdesc']                   = current($this->db->select('COUNT(Factor) as count')->get('langdesc')->result())->count;
             $this->data['count_no_langual']                 = current($this->db->select('COUNT(NDB_No) as count')->get('no_langual')->result())->count;
             $this->data['count_products_product_properties']= current($this->db->select('COUNT(id) as count')->get('a_product_properties_a_products')->result())->count;
+            $this->data['count_products']                   = current($this->db->select('COUNT(id) as count')->get('a_products')->result())->count;
+            $this->data['count_food_des']                   = current($this->db->select('COUNT(NDB_No) as count')->get('food_des')->result())->count;
             #$this->run_nutrition_product_from_tbl_product11();
             
             $this->template->load('admin/templates/main_template', 'admin/view_swap_db', $this->data);
@@ -77,7 +79,7 @@
                 $nutr_product_last = current($this->db->select('MAX(NDB_No) as max')->get('a_nutritions_a_products')->result())->max;
                 $query = $this->db->select()
                                     ->from('nut_data')
-                                    ->limit(100)
+                                    ->limit(5000)
                                     ->where('NDB_No >=',$nutr_product_last-1)
                                     ->get()
                                     ->result();
@@ -104,7 +106,7 @@
                 }
                 $n += 1000; 
                 echo $query[count($query)-1]->NDB_No;
-                return ;
+                #return ;
             }
                  
         }
@@ -286,6 +288,77 @@
                 echo $row->Nutr_No.'</br>';
             }
         }
+        function run_Product_type_from_Product_language20(){
+            $products = $this->db->select('id as a_product_id, name')->get('a_products')->result();
+            
+            foreach($products as $row){
+                
+                $type_name = current(explode(',',$row->name));
+                
+                $product_type = $this->db->select()->where('name',$type_name)->get('a_product_types')->result();
+                
+                if(!$product_type){
+                    $this->db->insert('a_product_types',array('name' => $type_name));
+                    $product_type = $this->db->select()->where('name',$type_name)->get('a_product_types')->result();
+                }
+                print_flex(current($product_type));
+                $this->db->update('a_products',array('a_product_type_id'=>current($product_type)->id),array('id'=>$row->a_product_id));                
+            }
+        }
+        function run_Product_type_languages_from_Product_type22(){
+            $types = $this->db->get('a_languages_a_product_types')->result();
+            foreach($types as $type)
+                $this->db->update('a_languages_a_product_types',array('a_language_id'=>1),"id = $type->id");
+            
+        }
+        function run_Product_type_languages_from_Product_type21(){
+            $types = $this->db->get('a_product_types')->result();
+            foreach($types as $type){
+                if(!$this->db->select()->where(array('a_product_type_id'=>$type->id,'name'=>$type->name))->get('a_languages_a_product_types')->result())
+                    $this->db->insert('a_languages_a_product_types',array('a_product_type_id'=>$type->id,'name'=>$type->name,'a_language_id' => 1));
+            
+            }
+        }
+
+        function run_Product_type_from_Product_category30(){
+            $categories = $this->db->get('a_product_categories')->result();
+            foreach($categories as $category){
+                $products           = $this->db->select('NDB_No, FdGrp_CD')
+                                        ->where('FdGrp_CD',$category->FdGrp_CD)->group_by('NDB_No')
+                                        ->get('a_products')->result();
+                print_flex($products);                                        
+                $product_types_id   = array_map(function($x){return $x->id;},$products);
+//                $NDB_Nos    = array_map(function($x){return $x->NDB_No;},$food_des);
+//                $products   = $this->db->select('a_product_type_id, a_product_types.name')->where_in('NDB_No',$NDB_Nos)
+//                                    ->join('a_product_types','a_product_types.id=a_products.a_product_type_id','left')
+//                                    ->group_by('a_product_type_id')->get('a_products')->result();
+                                                    
+                
+                print_flex($product_types_id);
+                return ;
+                $this->db->where_in('id',$product_types_id)
+                            ->update('a_product_types',array('a_product_category_id' => $category->id));
+                
+//                print_flex($food_des);
+//                print_flex($NDB_Nos);
+//                print_flex($products);
+//                print_flex($product_types_id)
+//            return ;
+            }
+            
+        }
+        function run_product_from_food_des(){
+            $food_des = $this->db->select('NDB_No, FdGrp_CD, Long_Desc')->get('food_des')->result();
+            foreach($food_des as $row){
+                $data = array (
+                    'NDB_No'    => $row->NDB_No,
+                    'FdGrp_CD'  => $row->FdGrp_CD,
+                    #'name'      => current(explode(',',$row->Long_Desc))
+                    'name'      => $row->Long_Desc
+                );
+                $this->db->where('NDB_No',$row->NDB_No)->update('a_products',$data);
+            }
+        }
         #
         function rating(){
             $books = array(1704,1704,1627,5089,5092,5100,3966,1635,
@@ -293,6 +366,7 @@
             #current
             foreach ($books as $book)
                 $query_1 = $this->db->select_avg('rating')
+                
                         ->where('book_id',$book)
                         ->get('book_ratings')->result();
             #new
