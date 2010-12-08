@@ -182,8 +182,56 @@ class Linker {
 	function home_page_link() {
 		return base_url();
 	}
-
+    
+    function home_product_categories($category_name){
+        $segments = array('home', 'product_categories',$category_name);
+        $url = generate_url($segments);
+        return $url;
+    }
+    
+    function home_product_types($category_name,$type_name,$type_id){
+        $segments = array('home', 'product_types',$category_name,$type_name,$type_id);
+        $url = generate_url($segments);
+        return $url;
+    }
+    
+    function home_products_by_type(){
+        $segments = array('home', 'products_by_type');
+        $url = generate_url($segments);
+        return $url;
+    }
+    
+    function home_product_show(){
+        $segments = array('home', 'product_show');
+        $url = generate_url($segments);
+        return $url;
+    }
 }
 
 /* End of file Template.php */
-/* Location: ./system/application/libraries/Template.php */
+/* Location: ./system/application/libraries/Template.php 
+/*    function __call($method,$param){
+        if(method_exists($this, $method)){
+            $this->$method;
+        }else{
+                
+        }
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -141,6 +141,28 @@ class Ajax extends Admin_Controller {
         $this->load->view('admin/products/sub/nutrition_table',$this->data);
         
     }
+    function get_products_list(){
+        $type_id = (int)$this->input->post('type_id');
+        if (!$type_id and !is_numeric($type_id)) echo 'return !';
+        $product_type   = new Product_type();
+        $products       = new Product();
+        
+        $product_type->get_full_info($type_id);
+        $product_type->product->get_full_info();
+        $this->data['dm_products'] = $product_type->product;
+        $this->load->view('admin/products/sub/show_products_list',$this->data);
+    }
+    function get_product_types_list(){
+        $category_id = (int)$this->input->post('category_id');
+        if (!$category_id and !is_numeric($type_id)) echo 'return false';
+        $product_category   = new Product_category();
+        $products           = new Product();
+        
+        $product_category->get_full_info($category_id);
+        $product_category->product_type->get_full_info();
+        $this->data['dm_product_types'] = $product_category->product_type;
+        $this->load->view('admin/products/sub/show_types_list',$this->data);
+    }
 	
 }
 ?>

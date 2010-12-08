@@ -5,6 +5,7 @@
         public function __construct() {
             parent::__construct();
             set_time_limit(28800);
+            
             #$this->output->enable_profiler(false);
         }
         
@@ -71,39 +72,97 @@
             print_flex($result_data);
             return ; 
         }
-        function run_nutrition_product_from_nutr_data10(){
-            #
-            $nutr_product = new A_Nutritions_a_product();
-            $n = 0;
-            while(true){
-                $nutr_product_last = current($this->db->select('MAX(NDB_No) as max')->get('a_nutritions_a_products')->result())->max;
-                $query = $this->db->select()
+        
+        function run_review_comment(){
+            #$query = 
+        }
+        function run_alternativenutrition_product_from_nutr_data(){
+            $query = $this->db->select('*')
                                     ->from('nut_data')
-                                    ->limit(5000)
-                                    ->where('NDB_No >=',$nutr_product_last-1)
+                                    #->limit(4)
+                                    #->where(array('NDB_No >=' => end($nutr_product_last)->maxNDB_No,'Nutr_No >=' => end($nutr_product_last)->maxNutr_No))
                                     ->get()
                                     ->result();
-                if(!$query) return ;
+            foreach($query as $row){                    
+                $data = array(
+                    'value'         => $row->Nutr_Val,
+                    'NDB_No'        => $row->NDB_No,
+                    'Nutr_No'       => $row->Nutr_No,
+                    'Num_Data_Pts'  => $row->Num_Data_Pts,
+                    'Std_Error'     => $row->Std_Error,
+                    'Src_Cd'        => $row->Src_Cd,
+                    'Deriv_Cd'      => $row->Deriv_Cd,
+                    'Ref_NDB_No'    => $row->Ref_NDB_No,
+                    'Add_Nutr_Mark' => $row->Add_Nutr_Mark,
+                    'Num_Studies'   => $row->Num_Studies,
+                    'Min'           => $row->Min,
+                    'Max'           => $row->Max,
+                    'DF'            => $row->DF,
+                    'Low_EB'        => $row->Low_EB,
+                    'Up_EB'         => $row->Up_EB,
+                    'Stat_Cmt'      => $row->Stat_Cmt
+                );
+                
+                #echo $row->NDB_No.' '.$row->Nutr_No.'</br>';
+                $this->db->insert('a_alt_nutritions_a_products',$data);
+            }
+        }
+        function run_nutrition_product_from_nutr_data10(){            
+            #
+            #$nutr_product = new A_Nutritions_a_product();
+            $n = 0;
+            while(true){
+                $nutr_product_last = $this->db->select('MAX(NDB_No) AS maxNDB_No, MAX(Nutr_No) AS maxNutr_No')
+                ->group_by('NDB_No')                
+                ->get('a_nutritions_a_products')
+                ->result();
+                print_flex(end($nutr_product_last));
+                
+                $query = $this->db->select('*')
+                                    ->from('nut_data')
+                                    ->limit(4)
+                                    ->where(array('NDB_No >=' => end($nutr_product_last)->maxNDB_No,'Nutr_No >=' => end($nutr_product_last)->maxNutr_No))
+                                    ->get()
+                                    ->result();
+                unset($query[0]); 
+                #print_flex($query);
+                                                    
+//                if(!$query) return ;
+//                
+//                $iter_query = new ArrayIterator($query);
+//                while($iter_query->valid()){
+//                    $nutr_product = $this->db->select()
+//                            ->where(array('NDB_No'=>$iter_query->current()->NDB_No,'Nutr_No'=>$iter_query->current()->Nutr_No))
+//                            ->get('a_nutritions_a_products')->result();
+//                    if(!$nutr_product) break;
+//                    $iter_query->next();
+//                }
+                
                 foreach($query as $row){                    
-                    $nutr_product->where(array('NDB_No'=>$row->NDB_No,'Nutr_No'=>$row->Nutr_No))->get();
-                    $nutr_product->value = $row->Nutr_Val;
-                    $nutr_product->NDB_No = $row->NDB_No;
-                    $nutr_product->Nutr_No = $row->Nutr_No;
-                    $nutr_product->Num_Data_Pts = $row->Num_Data_Pts;
-                    $nutr_product->Std_Error = $row->Std_Error;
-                    $nutr_product->Src_Cd = $row->Src_Cd;
-                    $nutr_product->Deriv_Cd = $row->Deriv_Cd;
-                    $nutr_product->Ref_NDB_No = $row->Ref_NDB_No;
-                    $nutr_product->Add_Nutr_Mark = $row->Add_Nutr_Mark;
-                    $nutr_product->Num_Studies = $row->Num_Studies;
-                    $nutr_product->Min = $row->Min;
-                    $nutr_product->Max = $row->Max;
-                    $nutr_product->DF = $row->DF;
-                    $nutr_product->Low_EB = $row->Low_EB;
-                    $nutr_product->Up_EB = $row->Up_EB;
-                    $nutr_product->Stat_Cmt = $row->Stat_Cmt;
-                    $nutr_product->save();
+                    $data = array(
+                        'value'         => $row->Nutr_Val,
+                        'NDB_No'        => $row->NDB_No,
+                        'Nutr_No'       => $row->Nutr_No,
+                        'Num_Data_Pts'  => $row->Num_Data_Pts,
+                        'Std_Error'     => $row->Std_Error,
+                        'Src_Cd'        => $row->Src_Cd,
+                        'Deriv_Cd'      => $row->Deriv_Cd,
+                        'Ref_NDB_No'    => $row->Ref_NDB_No,
+                        'Add_Nutr_Mark' => $row->Add_Nutr_Mark,
+                        'Num_Studies'   => $row->Num_Studies,
+                        'Min'           => $row->Min,
+                        'Max'           => $row->Max,
+                        'DF'            => $row->DF,
+                        'Low_EB'        => $row->Low_EB,
+                        'Up_EB'         => $row->Up_EB,
+                        'Stat_Cmt'      => $row->Stat_Cmt
+                    );
+                    
+                    echo $row->NDB_No.' '.$row->Nutr_No.'</br>';
+                    $this->db->insert('a_nutritions_a_products',$data);
+                    #return ;
                 }
+                
                 $n += 1000; 
                 echo $query[count($query)-1]->NDB_No;
                 #return ;
@@ -323,22 +382,22 @@
         function run_Product_type_from_Product_category30(){
             $categories = $this->db->get('a_product_categories')->result();
             foreach($categories as $category){
-                $products           = $this->db->select('NDB_No, FdGrp_CD')
+                $products           = $this->db->select('NDB_No, FdGrp_CD, a_product_type_id')
                                         ->where('FdGrp_CD',$category->FdGrp_CD)->group_by('NDB_No')
                                         ->get('a_products')->result();
-                print_flex($products);                                        
-                $product_types_id   = array_map(function($x){return $x->id;},$products);
+                #print_flex($products);                                        
+                $product_types_id   = array_map(function($x){return $x->a_product_type_id;},$products);
 //                $NDB_Nos    = array_map(function($x){return $x->NDB_No;},$food_des);
 //                $products   = $this->db->select('a_product_type_id, a_product_types.name')->where_in('NDB_No',$NDB_Nos)
 //                                    ->join('a_product_types','a_product_types.id=a_products.a_product_type_id','left')
 //                                    ->group_by('a_product_type_id')->get('a_products')->result();
                                                     
                 
-                print_flex($product_types_id);
-                return ;
+                #print_flex($product_types_id);
+                
                 $this->db->where_in('id',$product_types_id)
                             ->update('a_product_types',array('a_product_category_id' => $category->id));
-                
+                #return ;
 //                print_flex($food_des);
 //                print_flex($NDB_Nos);
 //                print_flex($products);
@@ -346,6 +405,13 @@
 //            return ;
             }
             
+        }
+        
+        function run_Language_Product_type_from_Product_types(){
+            $product_type_names = $this->db->select('name, id')->get('a_product_types')->result();
+            foreach($product_type_names as $type_name){
+                $this->db->insert('a_languages_a_product_types',array('a_product_type_id'=>$type_name->id,'a_language_id'=>1,'name'=>$type_name->name));
+            }
         }
         function run_product_from_food_des(){
             $food_des = $this->db->select('NDB_No, FdGrp_CD, Long_Desc')->get('food_des')->result();
@@ -374,6 +440,9 @@
                         ->where_in('book_id',$books)
                         ->group_by('book_id')
                         ->get('book_ratings')->result();
+            $x= new AppendIterator();
+            $x->append($query_2);
+            print_flex($x);
             //$query = $this->db->select('*')
     //                            ->from('book_ratings')
     //                            ->where_in($books)

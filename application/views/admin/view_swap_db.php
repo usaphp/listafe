@@ -85,10 +85,22 @@
                     echo separator_div();            
                 ?>            
             </div>
+            
             <div class="nutrition_block">
                 <?php
                     echo form_open('/admin/swap_db/run_Product_type_from_Product_category30');        
-                    echo form_label('get Product_category gut in Product_type', '', array('class' => 'f_label'));
+                    echo form_label('get Product_category put in Product_type', '', array('class' => 'f_label'));
+                    #echo form_label('current rows / total_rows: '.$count_langdesc.' / '.$count_product_properties, '', array('class' => 'f_label'));
+                    echo form_submit('run','Run export','class = "f_button green"');
+                    echo form_close();
+                    echo cleared_div();
+                    echo separator_div();            
+                ?>            
+            </div>
+            <div class="nutrition_block">
+                <?php
+                    echo form_open('/admin/swap_db/run_Language_Product_type_from_Product_types');        
+                    echo form_label('get Product_type(name) put in Language_Product_type', '', array('class' => 'f_label'));
                     #echo form_label('current rows / total_rows: '.$count_langdesc.' / '.$count_product_properties, '', array('class' => 'f_label'));
                     echo form_submit('run','Run export','class = "f_button green"');
                     echo form_close();

@@ -17,6 +17,8 @@
             'nutrition_category' =>
                 array('field' => 'inp_name', 'label' => 'Название Категории', 'rules' => 'trim|required'),
             'product_category' =>
-                array('field' => 'category_name', 'label' => 'Название Категории', 'rules' => 'trim|required')                        
+                array('field' => 'category_name', 'label' => 'Название Категории', 'rules' => 'trim|required'),                        
+            'home_product_categories'=>
+                array('field' => '', 'label' => '', 'rules' => '')
         );  
 ?>

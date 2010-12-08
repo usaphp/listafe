@@ -13,13 +13,13 @@ class Products extends Admin_Controller {
         $this->show();
 	}
     
-    function show(){        
-        $products   = new Product();
-        $meras      = new Mera();
-        #vzat' product i dobavit' kategoriu producta
-        $products->get_full_info();
+    function show(){
+        array_push($this->data['js_functions'], array('name' => 'products_show_init', 'data' => FALSE));
+        $product_categories = new Product_category();
+        
+        $product_categories ->get_full_info();
 
-        $this->data['products'] = $products;
+        $this->data['dm_product_categories'] = $product_categories ;
         
         $this->template->load('/admin/templates/main_template', '/admin/products/show', $this->data);
     }

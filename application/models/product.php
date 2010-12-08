@@ -1,7 +1,7 @@
 <?php
 class Product extends Datamapper {
     
-    var $has_one = array('product_category');
+    var $has_one = array('product_type');
     var $has_many = array('language', 'languages_product', 'mera', 'recipe', 'nutrition', 'ratio_mera'); 
     
 //    var $validation = array(
@@ -26,7 +26,7 @@ class Product extends Datamapper {
         }        
         
     }
-    function get_full_info($id = false,$current_language = 'English'){        
+    function get_full_info($id = false, $current_language = 'English'){        
         #
         $language = new Language();
         is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
@@ -36,11 +36,12 @@ class Product extends Datamapper {
             $this->nutrition->include_join_fields()->where_related($language)->include_join_fields()->get();
             $this->mera->include_join_fields()->where_related($language)->include_join_fields()->get_iterated();
         }else{
-            $this->include_join_fields()->where_related($language)->limit(100)->get_iterated();
-            foreach($this as $product){
-                $product->product_category->include_join_fields()->where_in_related($language)->get();
-                $product->mera->include_join_fields()->where_in_related($language)->get_iterated();            
-            }
+            $this->include_join_fields()->where_related($language)->limit(10)->get_iterated();
+            
+//            foreach($this as $product){
+//                $product->product_category->include_join_fields()->where_in_related($language)->get();
+//                $product->mera->include_join_fields()->where_in_related($language)->get_iterated();            
+//            }
             $this->id = null;
         }
     }

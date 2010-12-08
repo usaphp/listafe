@@ -849,7 +849,7 @@ class CI_Upload {
 	 * @access	public
 	 * @param	string
 	 * @return	void
-	 */	
+	 */
 	function set_error($msg)
 	{
 		$CI =& get_instance();	
@@ -862,7 +862,7 @@ class CI_Upload {
 				$msg = ($CI->lang->line($val) == FALSE) ? $val : $CI->lang->line($val);				
 				$this->error_msg[] = $msg;
 				log_message('error', $msg);
-			}		
+			}
 		}
 		else
 		{
@@ -910,7 +910,7 @@ class CI_Upload {
 		global $mimes;
 	
 		if (count($this->mimes) == 0)
-		{
+		
 			if (@require_once(APPPATH.'config/mimes'.EXT))
 			{
 				$this->mimes = $mimes;

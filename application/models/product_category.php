@@ -1,7 +1,7 @@
 <?php
 class Product_category extends DataMapper {
     
-    var $has_many = array('language','product'); 
+    var $has_many = array('language','product_type'); 
     
 //    var $validation = array(
 //        'name' => array(
@@ -23,11 +23,14 @@ class Product_category extends DataMapper {
             $this->set_join_field($language,'name',$data['name']);
         }
     }
-    function get_full_info($id = false,$current_language = 'Russian'){
+    function get_full_info($id_name = false, $current_language = 'English'){
         $language = new Language();
         is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
-        if ($id){
-            $this->get_by_id($id);
+        if ($id_name){
+            if(is_numeric($id_name)){
+                $this->get_by_id($id_name);                    
+            }else
+                $this->include_join_fields()->where_related($language)->get();            
             $this->language->include_join_fields()->get_iterated();
         }else{
             $this->include_join_fields()->where_related($language)->get_iterated();

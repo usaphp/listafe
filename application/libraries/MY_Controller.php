@@ -54,12 +54,19 @@ class MY_Controller extends Controller {
     
     public $top_error;
     public $top_success;
-    private $data;
-    function __construct(){
+    protected $data;
+    function __construct($force_login = TRUE){
         parent::__construct();
+        
+        if($force_login) $this->security_lib->force_login();
         $this->top_error    = $this->session->flashdata('top_error');
         $this->top_success  = $this->session->flashdata('top_success');
-		$this->output->enable_profiler(TRUE);
+		
+        $this->data                 = array();
+        $this->data['js_functions'] = array();        
+        
+        $this->output->enable_profiler(TRUE);
     }
     
 }
+?>

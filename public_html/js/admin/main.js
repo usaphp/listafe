@@ -131,6 +131,34 @@ function main(){
         })*/
         
     }
+    main.prototype.products_show_init = function(){
+        $('.load_product_types').live('click',function(){
+            var elem_id = $(this).attr('id').replace('product_category_', '');
+            $.ajax({
+               url : '/admin/ajax/get_product_types_list',
+               data : { 'category_id' : elem_id },
+               type : 'POST',
+               success : function(response){
+                    $('#product_types_holder_'+elem_id).html(response);
+               }    
+            });
+   		   return false;
+    	});
+        
+        $('.load_products').live('click',function(){
+            var elem_id = $(this).attr('id').replace('product_type_', '');
+            $.ajax({
+               url : '/admin/ajax/get_products_list',
+               data : { 'type_id' : elem_id },
+               type : 'POST',
+               success : function(response){
+                    $('#products_holder_'+elem_id).html(response);
+               }    
+            });
+   		   return false;
+    	});
+        
+    }
     
     main.prototype.product_category_edit_init = function(){
         $('#product_category_edit_form').validate({
@@ -355,5 +383,12 @@ function main(){
     		});
     		return false;
    	    });
-    }    
+    }
+    main.prototype.home_product_types_init = function(){
+        $('.suggest_product_types').autocomplete('/admin/ajax/suggest_products',{
+            width : $(this).attr('width')
+        });
+    }
+    main.prototype.home_product_categories_init = function(){}
+    main.prototype.home_products_init = function(){}    
 }
