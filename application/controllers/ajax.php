@@ -1,5 +1,5 @@
 <?php
-	class Pablic_ajax extends MY_Controller{
+	class Ajax extends MY_Controller{
         public function __construct()
     	{
     		parent::__construct(FALSE);
@@ -10,18 +10,18 @@
         
     	}
         
-        public function suggest_product_types(){
-            $product_types = $this->input->post('q', TRUE);
+        public function search_suggest_products(){
+
+            $product_types = $this->input->post('query_string', TRUE);
             
             $product_types = new Languages_Product_type();
             $products      = new Product();
             $product_types->like('name', $product_type, 'after')->get_iterated();
-            #$products->get_full_info();
+            $products->get_full_info(1);
     		
-    		foreach($product_types as $product_type){
-    			echo $product_type->name."\n";
-    		}
-    		return;
+            $return_arr = array('product_types' => $product_types, 'product_items' => $products);
+            echo json_encode($return_arr);
+            return;
         }
         
         
