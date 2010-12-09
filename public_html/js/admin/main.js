@@ -384,7 +384,7 @@ function main(){
     		return false;
    	    });
     }
-    main.prototype.home_product_types_init = function(){
+    main.prototype.home_product_type_by_name_init = function(){
         $('.suggest_product_types').autocomplete('/admin/ajax/suggest_products',{
             width : $(this).attr('width')
         });

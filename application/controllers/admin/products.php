@@ -1,5 +1,4 @@
 <?php
-
 class Products extends Admin_Controller {
 
 	function __construct()
@@ -57,7 +56,6 @@ class Products extends Admin_Controller {
                     if(!$this->input->post('nutrition_category_'.$nc->id)) continue;
                     $nc->save($product);
                     $nc->set_join_field($product,'value', $this->input->post('nutrition_category_'.$nc->id));
-                    echo 1;
                 }                                               
                 #NUTRITION          
                 $hidden_nutrition_add       = ($this->input->post('hidden_nutrition'))?$this->input->post('hidden_nutrition'):array();

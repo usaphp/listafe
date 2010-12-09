@@ -206,6 +206,12 @@ class Linker {
         $url = generate_url($segments);
         return $url;
     }
+    
+    function home_product_type_by_name(){
+        $segment = array('home','product_type_by_name');
+        $url = generate_url($segment);
+        return $url;
+    }
 }
 
 /* End of file Template.php */
