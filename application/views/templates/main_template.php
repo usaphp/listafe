@@ -1,3 +1,3 @@
-<?php $this->load->view('/admin/header'); ?>
+<?php $this->load->view('header'); ?>
 <?php echo $contents; ?>
-<?php $this->load->view('/admin/footer'); ?>
+<?php $this->load->view('footer'); ?>
