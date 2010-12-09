@@ -23,5 +23,6 @@
             echo form_submit($btn_search);
         ?>
         <div class="clear"></div>
+        <div id = "products_result_block"></div>
 <?php echo form_close(); ?>
 </div>

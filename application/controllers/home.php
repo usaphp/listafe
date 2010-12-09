@@ -73,10 +73,6 @@ class Home extends MY_Controller {
     }
     
     public function product_type_by_name(){
-        $type = new Product_type();
-        $type->get();
-        print_flex($type->all[0]->product->get());
-        return ;
         array_push($this->data['js_functions'], array('name' => 'home_product_type_by_name_init', 'data' => FALSE));
         $this->template->load('/templates/main_template', 'homepage',$this->data);    
     }

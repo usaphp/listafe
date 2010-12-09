@@ -398,7 +398,7 @@ function main(){
                         return;
                     }
                     console.log(response.product_types);
-                    console.log(response.product_items);
+                    $('#products_result_block').html(response.product_items);
                     return;
                 }
                 
