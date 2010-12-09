@@ -1,4 +1,80 @@
 <?php
+    
+ 
+// Component - компонент
+// объявляет интерфейс для компонуемых объектов;
+// предоставляет подходящую реализацию операций по умолчанию,
+// общую для всех классов;
+// объявляет интерфейс для доступа к потомкам и управлению ими;
+// определяет интерфейс доступа к родителю компонента в рекурсивной структуре
+// и при необходимости реализует его. Описанная возможность необязательна;
+abstract class Component
+{
+	protected $name;
+ 
+	// Constructor
+	public function Component($name)
+	{
+		$this->name = $name;
+	}
+ 
+	public abstract function Add(Component $c);
+	public abstract function Remove(Component $c);
+	public abstract function Display();
+}
+ 
+ 
+// Composite - составной объект
+// определяет поведеление компонентов, у которых есть потомки;
+// хранит компоненты-потомоки;
+// реализует относящиеся к управлению потомками операции и интерфейс
+class Composite extends Component
+{
+	private $children = array();
+ 
+	public function Add(Component $component)
+	{
+		$this->children[$component->name] = $component;
+	}
+ 
+	public function Remove(Component $component)
+	{
+		unset($this->children[$component->name]);
+	}
+ 
+	public function Display()
+	{
+		print_flex($this->children);
+	}
+}
+ 
+ 
+// Leaf - лист
+// представляет листовой узел композиции и не имеет потомков;
+// определяет поведение примитивных объектов в композиции;
+class Leaf extends Component
+{
+ 
+	public function Add(Component $c)
+	{
+		print ("Cannot add to a leaf");
+	}
+ 
+	public function Remove(Component $c)
+	{
+		print("Cannot remove from a leaf");
+	}
+ 
+	public function Display()
+	{
+		echo $this->name;
+	}
+}
+ 
+ 
+
+?>
+<?php
     class Swap_db extends MY_Controller{
         
         
@@ -6,7 +82,7 @@
             parent::__construct();
             set_time_limit(28800);
             
-            #$this->output->enable_profiler(false);
+            $this->output->enable_profiler(false);
         }
         
         public function index(){
@@ -76,16 +152,18 @@
         function run_review_comment(){
             #$query = 
         }
-        function run_alternativenutrition_product_from_nutr_data(){
+        function run_alternative_nutrition_product_from_nutr_data(){
             $query = $this->db->select('*')
                                     ->from('nut_data')
-                                    #->limit(4)
+                                    #->limit(4,10)
                                     #->where(array('NDB_No >=' => end($nutr_product_last)->maxNDB_No,'Nutr_No >=' => end($nutr_product_last)->maxNutr_No))
                                     ->get()
                                     ->result();
+            $products    = $this->db->select('NDB_No, id')->get('a_products')->result();
+            $nutritions  = $this->db->select('Nutr_No, id')->get('a_nutritions')->result();
             foreach($query as $row){                    
                 $data = array(
-                    'value'         => $row->Nutr_Val,
+                    'value'         => $row->Nutr_Val,                    
                     'NDB_No'        => $row->NDB_No,
                     'Nutr_No'       => $row->Nutr_No,
                     'Num_Data_Pts'  => $row->Num_Data_Pts,
@@ -102,9 +180,21 @@
                     'Up_EB'         => $row->Up_EB,
                     'Stat_Cmt'      => $row->Stat_Cmt
                 );
-                
-                #echo $row->NDB_No.' '.$row->Nutr_No.'</br>';
+                foreach($products as $product)
+                    if($product->NDB_No == $row->NDB_No){
+                        $data['a_product_id'] = $product->id;
+                        break;
+                    } 
+                foreach($nutritions as $nutrition)
+                    if($nutrition->Nutr_No == $row->Nutr_No){
+                        $data['a_nutrition_id'] = $nutrition->id;
+                        break;
+                    } 
+
+                #print_flex($data);
+                #return;
                 $this->db->insert('a_alt_nutritions_a_products',$data);
+                unset($row);
             }
         }
         function run_nutrition_product_from_nutr_data10(){            
@@ -169,7 +259,17 @@
             }
                  
         }
-        
+        function run_nutrition_product_from_product(){
+            $query = $this->db->select('NDB_No, id')->get('a_products')->result();
+            $stdclass = new stdClass();
+            foreach($query as $row){                
+                print_flex($row);
+                
+                return ;
+                $this->db->where('NDB_No',$row->NDB_No)->update('a_alt_nutritions_a_products',array('a_product_id' => $row->id));
+                
+            }
+        }
         function run_nutrition_product_from_tbl_product11(){
             $last_product_id = current($this->db->select('MAX(a_product_id) as max')->get('a_nutritions_a_products')->result())->max;
                                   
@@ -449,6 +549,28 @@
     //                            ->get()->result();
             print_flex($query_1);
             print_flex($query_2);    
+        }
+        function proba(){
+                        // Create a tree structure
+            $root = new Composite("root");
+             
+            $root->Add(new Leaf("Leaf A"));
+            $root->Add(new Leaf("Leaf B"));
+             
+            $comp = new Composite("Composite X");
+             
+            $comp->Add(new Leaf("Leaf XA"));
+            $comp->Add(new Leaf("Leaf XB"));
+            $root->Add($comp);
+            $root->Add(new Leaf("Leaf C"));
+             
+            // Add and remove a leaf
+            $leaf = new Leaf("Leaf D");
+            $root->Add($leaf);
+            $root->Remove($leaf);
+             
+            // Recursively display tree
+            $root->Display();
         }
 	}
 ?>

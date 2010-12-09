@@ -9,7 +9,7 @@ class Home extends MY_Controller {
 	
 	function index()
 	{
-        $this->product_categories();        
+        $this->product_type_by_name();
         #$this->template->load('/templates/main_template', 'homepage');
 	}
     
@@ -70,6 +70,11 @@ class Home extends MY_Controller {
         $this->data['dm_products']                  = $product_type_selected->product;
         
         $this->template->load('/templates/main_template', 'homepage',$this->data);
+    }
+    
+    public function product_type_by_name(){
+        array_push($this->data['js_functions'], array('name' => 'home_product_type_by_name_init', 'data' => FALSE));
+        $this->template->load('/templates/main_template', 'homepage',$this->data);    
     }
     
     public function product_show($product_name = '', $product_id){
