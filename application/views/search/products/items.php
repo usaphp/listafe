@@ -3,7 +3,7 @@
 	<li class="search_results_item">		
         <?php echo anchor($this->linker->product_link($product), $product->join_name, array('class' => 'mp_sr_title')); ?>        
 
-        <div><?php echo dm_get_value_by_field('Energy Kcal',$product->nutrition,'join_name')?> Calories</div>
+        <div><?php echo $product->nutrition->data->protein['value']?> Calories</div>
         <div>
             <span>Fat: <?php echo dm_get_value_by_field('Total lipid (fat)',$product->nutrition,'join_name')?></span>
             <span>Carbohidrate: <?php echo dm_get_value_by_field('Carbohydrate, by difference',$product->nutrition,'join_name')?></span>

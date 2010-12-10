@@ -599,10 +599,9 @@ class Leaf extends Component
                 $return_arr['product_items'] = array();
                 
                 foreach($product_type->product as $product){
-                    
-                        
-                        echo dm_get_value_by_field('Protein',$product->nutrition,'join_name');
-                    
+                    print_flex($product->nutrition->data);    
+                    echo dm_get_value_by_field('Protein',$product->nutrition,'join_name');
+                    return ;
                 }
                 #print_flex(dm_get_value_by_field('Protein',$product_type->product->nutrition,'join_name'));
                 
