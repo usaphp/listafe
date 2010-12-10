@@ -40,15 +40,17 @@ function main(){
             dataType : 'json',
             data : { 'query_string' : query_string},
             type : 'post',
-            success : function(response){
+            success : function(response){                
                 if(!response.status){
                     $('#search_results_holder').html('Error');
                     return;
                 }
 				$('#search_suggest').html('');
+                
                 if(use_suggest){
-	                $.each(response.product_types, function(index, value) { 
-						$('#search_suggest').append($('<li>').text(value));
+	                $.each(response.product_types, function(index, value) {
+	                   
+						$('#search_suggest').append($('<li>').html(value));
 					});
 					// if results = 0 hide the suggest box
 					if(response.product_types.length) $('#search_suggest').show();

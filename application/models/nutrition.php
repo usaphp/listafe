@@ -43,6 +43,21 @@ class Nutrition extends DataMapper {
         }
         
     }
+    
+    function get_short_info($id = false, $current_language = 'English'){
+        #
+        $language = new Language();
+        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
+        #svazivaet nutrition s vibranim language
+        if ($id){
+            $this->get_by_id($id);
+            $this->language->include_join_fields()->get_iterated();
+        }else{
+            $this->include_join_fields()->where_in_related($language)->include_join_fields()->limit(10)->get_iterated();
+            $this->id = null;
+        }
+        
+    }
     function convert_to_mera($sequence = 0){        
         if ($sequence == 0){
             $this->include_join_fields()->where_related('language','id',1)->include_join_fields()->get();                    
