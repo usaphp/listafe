@@ -1,6 +1,7 @@
-    <?php foreach($dm_products as $product): ?>
-    	<div>
-            <?php echo $product->id.' ';?>
-            <?php echo $product->join_name;?>
-        </div>
-    <?php endforeach;?>
+<ul class='search_results'>
+<?php foreach($dm_products as $product): ?>
+	<li>
+		<?php echo anchor($this->linker->product_link($product), $product->join_name, array('class' => 'mp_sr_title')); ?>
+    </li>
+<?php endforeach;?>
+</ul>
