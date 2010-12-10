@@ -53,7 +53,7 @@ class Nutrition extends DataMapper {
             $this->get_by_id($id);
             $this->language->include_join_fields()->get_iterated();
         }else{
-            $this->include_join_fields()->where_in_related($language)->include_join_fields()->limit(10)->get_iterated();
+            $this->include_join_fields()->where_in_related($language)->include_join_fields()->get();
             $this->id = null;
         }
         

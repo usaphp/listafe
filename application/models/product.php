@@ -50,8 +50,8 @@ class Product extends Datamapper {
         is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
         if($id){
             $this->get_by_id($id);
-            $this->language->include_join_fields()->get_iterated();            
-            #$this->nutrition->include_join_fields()->where_related($language)->include_join_fields()->get();
+            $this->language->include_join_fields()->get();            
+            $this->nutrition->include_join_fields()->where_related($language)->include_join_fields()->get();
             #$this->mera->include_join_fields()->where_related($language)->include_join_fields()->get_iterated();
         }else{
             $this->include_join_fields()->where_related($language)->limit(10)->get();

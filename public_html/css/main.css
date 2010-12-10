@@ -11,8 +11,9 @@
 	#search_results_holder { margin-top:50px; }
 	
 	/* Search result */
-	.search_results { list-style:none; margin:0px; }
-		.search_results li { padding:10px 0px; border-bottom:1px solid #e7e7e7; }
+	.search_results { list-style:none; margin:0px; border-left:1px solid #e7e7e7;}
+		.search_results li {margin:0px 10px; padding:10px 0px; border-bottom:1px solid #e7e7e7;}
+        .search_results li:hover {background-color:#EBF2FC}
 			.mp_sr_title { font-size: 16px; color:#1170ad; }
 			.mp_sr_title:visited { color:#7011ad; }
 /* box shadows */

@@ -592,11 +592,21 @@ class Leaf extends Component
                 $product_type->get_full_info($product_type_names->all[0]->id);
                 
                 $product_type->product->get_short_info();
-                print_flex($product_type->product);
+                
                 $data['dm_products'] = $product_type->product;      
                 $return_arr['product_items'] = $this->load->view('search/products/items',$data, true);
             }else
                 $return_arr['product_items'] = array();
+                
+                foreach($product_type->product as $product){
+                    
+                        
+                        echo dm_get_value_by_field('Protein',$product->nutrition,'join_name');
+                    
+                }
+                #print_flex(dm_get_value_by_field('Protein',$product_type->product->nutrition,'join_name'));
+                
+                
         }
 	}
 ?>
