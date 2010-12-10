@@ -8,7 +8,7 @@ function main(){
     	
     	// mouse click on list of types suggest
     	$('#search_suggest li').live('click', function(){
-            var query_string = $(this).text();
+            var query_string = main.prototype.get_query_string($(this).text());
             $('.main_search_input').val(query_string);
             $('#search_suggest').hide();
             main.prototype.search_by_query(query_string, false);
@@ -16,24 +16,46 @@ function main(){
     	
     	// key pressed in search input
         $('.main_search_input').keyup(function(e){
+        	var query_string = main.prototype.get_query_string();
+        	if(!query_string){
+        		main.prototype.clear_results();
+        		return false;
+        	} 
+        	// dont do anything when enter clicked
         	var code = (e.keyCode ? e.keyCode : e.which);
 			if(code == 13) { //Enter keycode
 				return;
 			}
         	$('.mp_big_logo').slideUp();
         	$('.left_hider').show();
-            var query_string = $(this).val();
             main.prototype.search_by_query(query_string, true);
         })
         
         $('#main_search_form').submit(function(){
-            var query_string = $('.main_search_input').val();
+        	var query_string = main.prototype.get_query_string();
+        	if(!query_string){
+        		main.prototype.clear_results();
+        		return false;
+        	} 
             $('#search_suggest').hide();
             main.prototype.search_by_query(query_string, false);
         	return false;
         })
     }
     
+    /* returns formatted query string */
+    main.prototype.get_query_string = function(query_string){
+        if(!query_string) query_string = $('.main_search_input').val();
+        query_string = $.trim(query_string);
+        return query_string;
+    }
+    
+    main.prototype.clear_results = function(){
+    	$('#search_suggest').html('').hide();
+    	$('#search_results_holder').html('').hide();
+    }
+    
+    // calls server with a query string
     main.prototype.search_by_query = function(query_string, use_suggest){
         $.ajax({
             url : '/ajax/search_suggest_products',
@@ -60,4 +82,6 @@ function main(){
             
         })
     }
+    
+    
 }

@@ -6,16 +6,13 @@ class Linker {
 		$this->CI =& get_instance();
 	}
 	
-	/* Generates a link to author info page
-	 * 
-	 * $data - object which contents a row from authors table
-	 * 
-	 * $data['id'] - author id
-	 * $data['first_name'] - first name
-	 * $data['last_name'] - last name
-	 * 
-	 * */
- 	
+	
+	function product_link($product){
+		$segments = array('product', $product->id);
+		$url = generate_url($segments);
+		return $url;
+	}
+	
 	#'a_' znachit /admin/ v linke
 	# Login page for admin
 	function a_login_link(){
