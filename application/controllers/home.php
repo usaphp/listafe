@@ -4,11 +4,12 @@ class Home extends MY_Controller {
 
 	function __construct()
 	{
-		parent::__construct(false);   	
+		parent::__construct(FALSE);   	
 	}
 	
 	function index()
 	{
+        $this->output->enable_profiler(FALSE);
         $this->product_type_by_name();
         #$this->template->load('/templates/main_template', 'homepage');
 	}
@@ -29,7 +30,7 @@ class Home extends MY_Controller {
         $this->template->load('/templates/main_template', 'homepage',$this->data);
     }
     
-    public function product_types($category_name = false){
+    public function product_types($category_name = FALSE){
         if(!$category_name) echo 'product_types return false';
         array_push($this->data['js_functions'], array('name' => 'home_product_types_init', 'data' => FALSE));
         #!
@@ -73,7 +74,7 @@ class Home extends MY_Controller {
     }
     
     public function product_type_by_name(){
-        array_push($this->data['js_functions'], array('name' => 'home_product_type_by_name_init', 'data' => FALSE));
+        array_push($this->data['js_functions'], array('name' => 'main_search_init', 'data' => FALSE));
         $this->template->load('/templates/main_template', 'homepage',$this->data);    
     }
     

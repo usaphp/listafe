@@ -384,27 +384,6 @@ function main(){
     		return false;
    	    });
     }
-    main.prototype.home_product_type_by_name_init = function(){
-        $('.suggest_product_types').keyup(function(){
-            var query_string = $(this).val();
-            $.ajax({
-                url : '/ajax/search_suggest_products',
-                dataType : 'json',
-                data : { 'query_string' : query_string},
-                type : 'post',
-                success : function(response){
-                    if(!response.status){
-                        console.log('Error');
-                        return;
-                    }
-                    console.log(response.product_types);
-                    $('#products_result_block').html(response.product_items);
-                    return;
-                }
-                
-            })
-        })
-    }
     main.prototype.home_product_categories_init = function(){}
     main.prototype.home_products_init = function(){}    
 }

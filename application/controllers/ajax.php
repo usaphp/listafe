@@ -17,7 +17,7 @@
             $product_type_names = new Languages_Product_type();
             $product_type       = new Product_type();
                         
-            $product_type_names->like('name', $query_string, 'after')->get();
+            $product_type_names->like('name', $query_string, 'after')->get(5);
             #PRODUCT TYPE
             foreach($product_type_names as $type)
                 $return_arr['product_types'][] = $type->name;            
