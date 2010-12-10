@@ -82,7 +82,7 @@ class Leaf extends Component
             parent::__construct();
             set_time_limit(28800);
             
-            $this->output->enable_profiler(false);
+            #$this->output->enable_profiler(false);
         }
         
         public function index(){
@@ -526,6 +526,15 @@ class Leaf extends Component
             }
         }
         #
+        function report(){
+            $query = $this->db->select(' report_on_id, report_on_type, review_id')
+                                ->from('reports')
+                                ->where('report_on_type =','review')
+                                ->join('review_comments','review_comments.id = reports.report_on_id')
+                                ->where('report_on_type =','comment')
+                                
+                                ->get();
+        }
         function rating(){
             $books = array(1704,1704,1627,5089,5092,5100,3966,1635,
                             1635,1725,1725,1725,1694,1631,1631,1643,2060,1628,1629,3907,1704,1688,1688);
@@ -550,7 +559,7 @@ class Leaf extends Component
             print_flex($query_1);
             print_flex($query_2);    
         }
-        function proba(){
+        function run_component_proba(){
                         // Create a tree structure
             $root = new Composite("root");
              
@@ -571,6 +580,33 @@ class Leaf extends Component
              
             // Recursively display tree
             $root->Display();
+        }
+        function run_axaj_proba(){
+            $product_type_names = new Languages_Product_type();
+            $product_type       = new Product_type();
+      
+            $product_type_names->like('name', 'ch', 'after')->get(5);
+                        
+            #PRODUCT_by_first_type
+            if(isset($product_type_names->all[0])){
+                $product_type->get_full_info($product_type_names->all[0]->id);
+                
+                $product_type->product->get_short_info();
+                
+                $data['dm_products'] = $product_type->product;      
+                $return_arr['product_items'] = $this->load->view('search/products/items',$data, true);
+            }else
+                $return_arr['product_items'] = array();
+                
+                foreach($product_type->product as $product){
+                    
+                        
+                        echo dm_get_value_by_field('Protein',$product->nutrition,'join_name');
+                    
+                }
+                #print_flex(dm_get_value_by_field('Protein',$product_type->product->nutrition,'join_name'));
+                
+                
         }
 	}
 ?>
