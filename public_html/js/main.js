@@ -29,7 +29,7 @@ function main(){
         	$('.mp_big_logo').slideUp();
         	$('.left_hider').show();
             main.prototype.search_by_query(query_string, true);
-        })
+        });
         
         $('#main_search_form').submit(function(){
         	var query_string = main.prototype.get_query_string();
@@ -40,7 +40,15 @@ function main(){
             $('#search_suggest').hide();
             main.prototype.search_by_query(query_string, false);
         	return false;
-        })
+        });
+        
+        $('.search_results_item').live('mouseover', function(){
+        	var position = $(this).position();
+	  		$('.nutrition_facts', this).show().css('left', position.left + 400).css('top', position.top - 100);
+        });
+        $('.search_results_item').live('mouseout', function(){
+	  		$('.nutrition_facts', this).hide();
+        });
     }
     
     /* returns formatted query string */

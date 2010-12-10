@@ -5,16 +5,35 @@
 	.mp_input_wrapper { background:#fff; padding:5px; border:1px solid; border-color: #dadada #b8b8b8 #b8b8b8 #dadada; }
 		.main_search_input { display:block; float:left; padding:10px 5px 0px; font-size:16px; width:480px; border:none; outline:none; }
 		.main_search_button { display:block; float:right; margin-left:5px; /*padding:10px; width:120px; font-size:16px;  color:#fff; border:1px solid; border-color: #7a7a7a #494949 #494949 #7a7a7a;  background:#7a7a7a;*/}
-		#search_suggest { list-style:none; background:#fff; border:1px solid; border-color:#fff #c8c8c8 #c8c8c8 #e7e7e7; margin:0px; }
+		#search_suggest { list-style:none; background:#fff; border:1px solid; border-color:#fff #c8c8c8 #c8c8c8 #e7e7e7; border-top:none; margin:0px; }
 			#search_suggest li { padding:3px 10px; font-size:16px; }
 			#search_suggest li:hover { background:#eef4ff; }	
 	#search_results_holder { margin-top:50px; }
 	
 	/* Search result */
-	.search_results { list-style:none; margin:0px; border-left:1px solid #e7e7e7;}
-		.search_results li {margin:0px 10px; padding:10px 0px; border-bottom:1px solid #e7e7e7;}
-        .search_results li:hover {background-color:#EBF2FC}
-			.mp_sr_title { font-size: 16px; color:#1170ad; }
-			.mp_sr_title:visited { color:#7011ad; }
+	.search_results { list-style:none; margin:0px; }
+		.search_results_item {margin:0px 10px; padding:10px 0px; border-bottom:1px solid #e7e7e7;}
+        	.mp_sr_title { margin-bottom:10px; }
+				.mp_sr_title a { font-size: 16px; color:#1170ad; }
+				.mp_sr_title a:visited { color:#7011ad; }
+			.mp_sr_calories { font-size:14px; color:#000; }
+			.mp_sr_calories span { color:#790000; font-weight:bold; font-size:16px; }
+			.mp_sr_main_nutr_wrapper {}
+				.mp_sr_main_nutr { float:left; padding:3px 10px 3px 0px; margin-right:10px; border-right:1px solid #e7e7e7; font-size:12px; color:#565656; }
+					.mp_sr_main_nutr span { font-size:14px; font-weight:bold; }
+					.mp_sr_main_nutr span.red { color:#790000; }
+					.mp_sr_main_nutr span.green { color:#477900; }
+		/* nutrition facts block */
+		.nutrition_facts { font-size:11px; width:250px; padding:10px; border:1px solid #111; position:absolute; background:#fff; }
+			.nutrition_facts h4 { font-size:24px; font-weight:bold; margin:0px; }
+			.nutrition_facts_ul { list-style:none; margin:0px; }
+				.nutrition_facts_ul li { border-bottom: 1px solid #111; }
+				.nutrition_facts_ul li.second_level { padding-left:20px; }
+				.nutrition_facts_ul li.bold_border { border-top:5px solid #111; }
+				.nutrition_facts_ul li.medium_border { border-top:3px solid #111; }
 /* box shadows */
 .shadow_normal { -webkit-box-shadow: 1px 1px 1px #a8a8a8;  -moz-box-shadow: 1px 1px 1px #a8a8a8;  box-shadow: 1px 1px 1px #a8a8a8; }
+
+/* floats */
+.f_l { float:left; display:block; }
+.f_r { float:right; display:block; }

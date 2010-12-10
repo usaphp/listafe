@@ -4,6 +4,7 @@ class Product extends Datamapper {
     var $has_one = array('product_type');
     var $has_many = array('language', 'languages_product', 'mera', 'recipe', 'nutrition', 'ratio_mera'); 
     
+	public $main_data;
 //    var $validation = array(
 //        'name' => array(
 //            'label' => 'Название продукта',
