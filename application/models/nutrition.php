@@ -59,7 +59,7 @@ class Nutrition extends DataMapper {
             $this->select('id, tagname, value, units')->where_related($language)->where_in('id',array_map(function($x){return $x->nutrition_id;},$short_list->all))->get();
             foreach($this as $nutrition){
         	    if (isset($nutrition->tagname)) {
-	               $this->data->{$nutrition->tagname} = array(
+	               $this->data->{strtolower($nutrition->tagname)} = array(
                                             'id'    =>$nutrition->id,
                                             'value' =>$nutrition->value,
                                             'units' =>$nutrition->units
