@@ -153,4 +153,9 @@ a { color:#0076c8; outline:none;}
 .recipe_translate_status_3 { width:20px; height:20px; background:url('/images/icons/icon_green_checkmark.png') center center no-repeat; }
 .recipe_translate_status_4 { width:20px; height:20px; background:url('/images/icons/icon_pause.png') center center no-repeat; }
 /* Product edit */
+    .group_nutrition{margin-top:10px ;padding: 8px 8px 10px; border: 1px solid #9FABB9}
+        .nutrition_category{text-align: center; font-size: 13px; font-style: oblique;}
+        .nutrition_block{font-size: 12px;border-bottom: 1px solid #9FABB9}
+            .nutrition_name{float: left;}
+            .nutrition_weight{float:right;}
 	.prod_nutritions_wrapper { padding-top:20px; }

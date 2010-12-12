@@ -131,6 +131,34 @@ function main(){
         })*/
         
     }
+    main.prototype.products_show_init = function(){
+        $('.load_product_types').live('click',function(){
+            var elem_id = $(this).attr('id').replace('product_category_', '');
+            $.ajax({
+               url : '/admin/ajax/get_product_types_list',
+               data : { 'category_id' : elem_id },
+               type : 'POST',
+               success : function(response){
+                    $('#product_types_holder_'+elem_id).html(response);
+               }    
+            });
+   		   return false;
+    	});
+        
+        $('.load_products').live('click',function(){
+            var elem_id = $(this).attr('id').replace('product_type_', '');
+            $.ajax({
+               url : '/admin/ajax/get_products_list',
+               data : { 'type_id' : elem_id },
+               type : 'POST',
+               success : function(response){
+                    $('#products_holder_'+elem_id).html(response);
+               }    
+            });
+   		   return false;
+    	});
+        
+    }
     
     main.prototype.product_category_edit_init = function(){
         $('#product_category_edit_form').validate({
@@ -164,49 +192,18 @@ function main(){
     		$('#f_subinput_node_holder_' + elem_id).toggle();
     		return false;
     	});
-    	$('.add_nutrition_fact').click(function(){
-            // update next id for the next product nutrition
-    		var next_id = $('#max_nutrition_fact').val();
-    		// get id of the current pressed add link
-    		var elem_id = $(this).attr('id').replace('add_product_fact_', '');
-    		// create a content for new nutrition
-    		var div_content = $('#sel_nutrition_' + elem_id + ' option:selected').text() + ' - ' + $('#inp_nutrition_' + elem_id).val() + ' ';
-            // create a "remove" link for new nutrition
-    		var remove_link = $('<a>').text('remove');
-    			remove_link.attr({
-    				'id' : 'nutrition_fact_remove_' + next_id,
-    				'href' : '#',
-    				'class' : 'nutrition_fact_remove'
-    			});
-    		// create a hidden field with data about this nutrition
-    		var hidden_field = $('<input type="hidden">').val($('#sel_nutrition_' + elem_id).val() + '_' + $('#inp_nutrition_' + elem_id).val()).attr('name', 'hidden_nutrition[]');
-    		// build the final div
-    		var nutrition_fact_div = $('<div>').html(div_content).append(hidden_field).append(remove_link);
-    			nutrition_fact_div.attr({
-    				'id' : 'hidden_nutrition_wrapper_' + next_id
-    			});
-    		// append final div to the wrapper
-    		$('#prod_nutritions_wrapper_' + elem_id).append(nutrition_fact_div);
-            // update last nutrition id
-    		$('#max_nutrition_fact').val(parseInt(next_id)  + 1);
-    		
-    		return false;
-    	});
+        $('#mera_id').change(function(){
+            $.ajax({
+                url     : '/admin/ajax/get_nutrition_by_mera',
+                data    : { mera_id : $('#mera_id').val(),
+                            number_product_id : $('#number_product_id').val()},
+                type    : 'POST',
+                success : function(response){
+                    $('#nutrition_wrapper').html(response);
+                }
+            });
+        });
     	
-    	// Click on remove nutrition factt button
-    	$('.nutrition_fact_remove').live('click', function(){
-    		var elem_id = $(this).attr('id').replace('nutrition_fact_remove_', '');
-            // keep removed value
-            var removed_value = $('#hid_nutrition_fact_' + elem_id).val();
-    		$('#hidden_nutrition_wrapper_' + elem_id).remove();
-            // if this link has a class nf_remove_from_db - it means that this nutrition is in database and we need to delete it
-            if($(this).hasClass('nf_remove_from_db')){
-                // geenrates a hidden input field with data about removed nutrition - so in controller we ca removet this nutrition for product
-                var hidden_remove = $('<input type="hidden">').val(removed_value).attr('name', 'hidden_nutrition_removed[]');
-                $('#product_edit_form').append(hidden_remove);
-            }
-    		return false;
-    	});
     }
     main.prototype.ratio_meras_edit_init = function(){            	
     	$('#load_product').click(function(){
@@ -365,8 +362,8 @@ function main(){
                 data : {total_language_names : $('#total_language_names').val()},
     			type : 'post',
     			success : function(response){
-    			    if (response) $('#total_language_names').val(parseInt($('#total_language_names').val())+1);  
-                    $('#language_block_id').append(response);				
+    			    if (response) $('#total_language_names').val(parseInt($('#total_language_names').val())+1);
+                    $('#language_block_id').append(response);
     			}
     		});
     		return false;
@@ -374,7 +371,7 @@ function main(){
     }
     main.prototype.language_text_init = function(){
         $('.btn_language_add_text').live('click', function(){
-        var elem_id = $(this).attr('id').replace('btn_language_add_', '');                
+        var elem_id = $(this).attr('id').replace('btn_language_add_', '');
     		$.ajax({
     			url  : '/admin/ajax/add_language',
                 data : {total_language_names : $('#total_language_' + elem_id).val(),param : 'textarea'},
@@ -386,5 +383,7 @@ function main(){
     		});
     		return false;
    	    });
-    }    
+    }
+    main.prototype.home_product_categories_init = function(){}
+    main.prototype.home_products_init = function(){}    
 }

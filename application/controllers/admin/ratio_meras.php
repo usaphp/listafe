@@ -77,9 +77,7 @@ class Ratio_meras extends Admin_Controller {
         $this->data['product']          = $product;
         $this->data['meras']            = $meras;
         
-        $this->data['scalar_meras']     = dm_get_array_by_filtr('type',1,$meras);
         
-        $this->data['relative_meras']   = dm_get_array_by_filtr('type',2,$meras);
         $this->data['ratios']           = $product->get_ratios();
         #
         $this->template->load('/admin/templates/main_template', 'admin/ratio_meras/edit', $this->data);

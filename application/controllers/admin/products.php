@@ -1,5 +1,4 @@
 <?php
-
 class Products extends Admin_Controller {
 
 	function __construct()
@@ -13,13 +12,13 @@ class Products extends Admin_Controller {
         $this->show();
 	}
     
-    function show(){        
-        $products   = new Product();
-        $meras      = new Mera();
-        #vzat' product i dobavit' kategoriu producta
-        $products->get_full_info();
+    function show(){
+        array_push($this->data['js_functions'], array('name' => 'products_show_init', 'data' => FALSE));
+        $product_categories = new Product_category();
+        
+        $product_categories ->get_full_info();
 
-        $this->data['products'] = $products;
+        $this->data['dm_product_categories'] = $product_categories ;
         
         $this->template->load('/admin/templates/main_template', '/admin/products/show', $this->data);
     }
@@ -57,7 +56,6 @@ class Products extends Admin_Controller {
                     if(!$this->input->post('nutrition_category_'.$nc->id)) continue;
                     $nc->save($product);
                     $nc->set_join_field($product,'value', $this->input->post('nutrition_category_'.$nc->id));
-                    echo 1;
                 }                                               
                 #NUTRITION          
                 $hidden_nutrition_add       = ($this->input->post('hidden_nutrition'))?$this->input->post('hidden_nutrition'):array();
@@ -80,7 +78,7 @@ class Products extends Admin_Controller {
                 }
                 #MERAS-PRODUCT
                 $selected_mera = $this->input->post('selected_meras');
-                
+
                 $meras = new Mera();            
                 if($selected_mera){
                     $meras->where_not_in('id',$selected_mera)->get();
@@ -111,10 +109,13 @@ class Products extends Admin_Controller {
         $languages              = new Language();        
         
         $product->get_full_info($id);
+        $product->nutrition->convert_to_mera(1);
+        $meras_available = array('100 gramms');
+        foreach($product->mera as $mera){                
+            $meras_available[$mera->join_seq] = $mera->join_name.' ( '.$mera->join_weight.' gm )';
+        }
         #
-        $meras->get_full_info();
-        #
-        $product_categories->get_full_info();
+        $meras->get_full_info();        
         #
         $nutrition->get_full_info();
         #
@@ -122,9 +123,10 @@ class Products extends Admin_Controller {
         #
         $languages->get_iterated();            
         #
+        $this->data['meras_available']              = $meras_available;
         $this->data['dm_product']                   = $product;        
         $this->data['product_categories']	        = $product_categories;
-        $this->data['all_nutrition_categories']     = $nutrition_categories;
+        $this->data['dm_nutrition_categories']     = $nutrition_categories;
         $this->data['dm_languages']                 = $languages;
         $this->data['meras']                        = $meras;
         
@@ -142,4 +144,4 @@ class Products extends Admin_Controller {
 
 /* End of file admin.php */
 /* Location: ./system/application/controllers/admin/products.php*/ 
-    
+?>

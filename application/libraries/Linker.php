@@ -6,16 +6,13 @@ class Linker {
 		$this->CI =& get_instance();
 	}
 	
-	/* Generates a link to author info page
-	 * 
-	 * $data - object which contents a row from authors table
-	 * 
-	 * $data['id'] - author id
-	 * $data['first_name'] - first name
-	 * $data['last_name'] - last name
-	 * 
-	 * */
- 	
+	
+	function product_link($product){
+		$segments = array('product', $product->id);
+		$url = generate_url($segments);
+		return $url;
+	}
+	
 	#'a_' znachit /admin/ v linke
 	# Login page for admin
 	function a_login_link(){
@@ -182,8 +179,62 @@ class Linker {
 	function home_page_link() {
 		return base_url();
 	}
-
+    
+    function home_product_categories($category_name){
+        $segments = array('home', 'product_categories',$category_name);
+        $url = generate_url($segments);
+        return $url;
+    }
+    
+    function home_product_types($category_name,$type_name,$type_id){
+        $segments = array('home', 'product_types',$category_name,$type_name,$type_id);
+        $url = generate_url($segments);
+        return $url;
+    }
+    
+    function home_products_by_type(){
+        $segments = array('home', 'products_by_type');
+        $url = generate_url($segments);
+        return $url;
+    }
+    
+    function home_product_show(){
+        $segments = array('home', 'product_show');
+        $url = generate_url($segments);
+        return $url;
+    }
+    
+    function home_product_type_by_name(){
+        $segment = array('home','product_type_by_name');
+        $url = generate_url($segment);
+        return $url;
+    }
 }
 
 /* End of file Template.php */
-/* Location: ./system/application/libraries/Template.php */
+/* Location: ./system/application/libraries/Template.php 
+/*    function __call($method,$param){
+        if(method_exists($this, $method)){
+            $this->$method;
+        }else{
+                
+        }
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

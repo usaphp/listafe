@@ -3,7 +3,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Povarenok Admin</title>
-        <link rel="stylesheet" href="/css/grid.css"/>
+        <link rel="stylesheet" href="/css/screen.css"/>
+    	<!--[if lt IE 8]><link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen, projection"><![endif]--> 
         <link rel="stylesheet" href="/css/main.css"/>
     </head>
     <body>

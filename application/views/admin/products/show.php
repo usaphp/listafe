@@ -3,30 +3,17 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Название</th>
                 <th>Категория</th>
-                <?php /*
-                foreach($nutrition_categories as $nc){
-                    echo '<th>'.$nc->name.'</th>';    
-                }*/
-                ?>
-                <th>Единицы Измения</th>
-                <th>Фото</th>
-                <th class="c_aligned">Действия</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach($products as $product){ ?>
+            <?php foreach($dm_product_categories as $product_category){ ?>
                 <tr>
-                    <td><?php echo $product->id; ?></td>
-                    <td><?php echo $product->join_name; ?></td>
-                    <td><?php echo $product->product_category->join_name; ?></td>                    
-                    <td><?php echo $product->mera->join_name; ?></td>
-                    <td><img src="<?php echo image_url($product->image, 'product', 'tiny'); ?>"/></td>
-                    <td class="c_aligned">
-                        <?php echo anchor('admin/products/edit/'.$product->id, 'Редактировать', array('class' => 't_action'));?> 
-                        <?php echo anchor('admin/products/delete/'.$product->id, 'Удалить', array('class' => 't_action'));?>
-                    </td>
+                    <td><?php echo $product_category->id; ?></td>                    
+                    <td><?php echo $product_category->join_name.' '.anchor('#', '+', array('id' => 'product_category_'.$product_category->id, 'class' => 'load_product_types t_action')); ?></td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="product_types_holder_<?php echo $product_category->id; ?>"></td>
                 </tr>
             <?php } ?>
         </tbody>
