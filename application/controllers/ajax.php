@@ -20,12 +20,12 @@
             $product_type_names->like('name', $query_string, 'after')->get(5);
             #PRODUCT TYPE
             foreach($product_type_names as $type)
-                $return_arr['product_types'][] = $query_string.'<strong>'.(str_ireplace($query_string,'',$type->name)).'</strong>';            
+                $return_arr['product_types'][] = $query_string.'<strong>'.(str_ireplace($query_string,'',$type->name)).'</strong>';
             #PRODUCT_by_first_type
             if(isset($product_type_names->all[0])){
                 $product_type->get_full_info($product_type_names->all[0]->id);
                 $product_type->product->get_short_info();
-                $data['dm_products'] = $product_type->product;      
+                $data['dm_products'] = $product_type->product;
                 $return_arr['product_items'] = $this->load->view('search/products/items',$data, true);
             }else
                 $return_arr['product_items'] = array();

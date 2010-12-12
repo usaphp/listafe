@@ -78,7 +78,7 @@ class Home extends MY_Controller {
         $this->template->load('/templates/main_template', 'homepage',$this->data);    
     }
     
-    public function product_show($product_name = '', $product_id){
+    public function product_show($product_id, $product_name = ''){
         if(!$product_id) echo 'product_show return false';
         array_push($this->data['js_functions'], array('name' => 'home_prodcut_show_init', 'data' => FALSE));
         #!

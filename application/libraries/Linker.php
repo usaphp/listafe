@@ -8,7 +8,8 @@ class Linker {
 	
 	
 	function product_link($product){
-		$segments = array('product', $product->id);
+		$name = clean_string($product->name);
+		$segments = array('nutrition-facts', $product->name, $product->id);
 		$url = generate_url($segments);
 		return $url;
 	}

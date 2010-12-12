@@ -3,7 +3,7 @@
 .mp_search_wrapper { padding-top:20px; /* padding-top:30px; padding-bottom:30px;  border:1px solid; border-color:#e7e7e7 #c8c8c8 #c8c8c8 #e7e7e7; background:#e7e7e7; */ }
 	.main_search_label { display:block; font-size:18px; color:#a9a9a9; font-weight:bold; text-shadow: 1px 1px 0 white; }
 	.mp_input_wrapper { background:#fff; padding:5px; border:1px solid; border-color: #dadada #b8b8b8 #b8b8b8 #dadada; }
-		.main_search_input { display:block; float:left; padding:10px 5px 0px; font-size:16px; width:480px; border:none; outline:none; }
+		.main_search_input { display:block; float:left; padding:13px 5px 0px; font-size:16px; width:480px; border:none; outline:none; }
 		.main_search_button { display:block; float:right; margin-left:5px; /*padding:10px; width:120px; font-size:16px;  color:#fff; border:1px solid; border-color: #7a7a7a #494949 #494949 #7a7a7a;  background:#7a7a7a;*/}
 		#search_suggest { list-style:none; background:#fff; border:1px solid; border-color:#fff #c8c8c8 #c8c8c8 #e7e7e7; border-top:none; margin:0px; }
 			#search_suggest li { padding:3px 10px; font-size:16px; }
@@ -12,17 +12,19 @@
 	
 	/* Search result */
 	.search_results { list-style:none; margin:0px; }
-		.search_results_item {margin:0px 10px; padding:10px 0px; border-bottom:1px solid #e7e7e7;}
+		.search_results_item { padding:15px 10px; border:1px solid #fff; }
+		.search_results_item:hover { background:#f7f7f7; border:1px solid #e7e7e7; }
         	.mp_sr_title { margin-bottom:10px; }
 				.mp_sr_title a { font-size: 16px; color:#1170ad; }
 				.mp_sr_title a:visited { color:#7011ad; }
-			.mp_sr_calories { font-size:14px; color:#000; }
+			.mp_sr_calories { font-size:14px; color:#000; line-height:16px; }
 			.mp_sr_calories span { color:#790000; font-weight:bold; font-size:16px; }
 			.mp_sr_main_nutr_wrapper {}
 				.mp_sr_main_nutr { float:left; padding:3px 10px 3px 0px; margin-right:10px; border-right:1px solid #e7e7e7; font-size:12px; color:#565656; }
 					.mp_sr_main_nutr span { font-size:14px; font-weight:bold; }
 					.mp_sr_main_nutr span.red { color:#790000; }
 					.mp_sr_main_nutr span.green { color:#477900; }
+					.mp_sr_main_nutr span.black { color:#111; }
 		/* nutrition facts block */
 		.nutrition_facts { font-size:11px; width:250px; padding:10px; border:1px solid #111; position:absolute; background:#fff; }
 			.nutrition_facts h4 { font-size:24px; font-weight:bold; margin:0px; }

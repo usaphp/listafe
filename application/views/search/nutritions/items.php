@@ -6,7 +6,7 @@
 		<li class='bold_border'>Amount Per Serving</li>
 		<li><span class='f_l'><strong>Calories</strong> 114</span><span class='f_r'>Calories from Fat 6</span><div class='clear'></div></li>
 		<li class='medium_border'><span class='f_l'><strong>% Daily Value*</strong></span><div class='clear'></div></li>
-		<li><span class='f_l'><strong>Total Fat</strong> 1g</span><span class='f_r'>1%</span><div class='clear'></div></li>
+		<li><span class='f_l'><strong>Total Fat</strong> <?php echo $dm_nutritions->fat['value'] ?>g</span><span class='f_r'>1%</span><div class='clear'></div></li>
 		<li class='second_level'><span class='f_l'>Saturated Fat 0g</span><span class='f_r'>1%</span><div class='clear'></div></li>
 		<li class='second_level'><span class='f_l'>Trans Fat</span><span class='f_r'></span><div class='clear'></div></li>
 		<li><span class='f_l'><strong>Cholesterol</strong> 4mg</span><span class='f_r'>1%</span><div class='clear'></div></li>
