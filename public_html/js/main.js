@@ -1,6 +1,5 @@
 function main(){
 	
-	
     main.prototype.main_search_init = function(){
     	
     	// focus on search input when page loads
@@ -93,5 +92,17 @@ function main(){
         })
     }
     
-    
+    main.prototype.home_prodcut_show_init = function(){
+	   $('#mera_id').change(function(){
+            $.ajax({
+                url     : '/ajax/get_nutrition_by_mera',
+                data    : { mera_id : $('#mera_id').val(),
+                            number_product_id : $('#number_product_id').val()},
+                type    : 'POST',
+                success : function(response){
+                    $('#nutrition_wrapper').html(response);
+                }
+            });
+        });   
+	}
 }

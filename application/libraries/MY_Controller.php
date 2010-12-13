@@ -63,8 +63,8 @@ class MY_Controller extends Controller {
         $this->top_success  = $this->session->flashdata('top_success');
 		
         $this->data                 = array();
-        $this->data['js_functions'] = array();        
-        
+        $this->data['js_functions'] = array();
+        $this->data['crumbs']       = array();
         $this->output->enable_profiler(TRUE);
     }
     

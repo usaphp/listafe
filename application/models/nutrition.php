@@ -1,8 +1,8 @@
 <?php
 class Nutrition extends DataMapper {
 	
-	var $has_one = array('nutrition_category','short_list_nutrition');
-	var $has_many = array('language','product');
+	var $has_one = array('nutrition_category', 'nutrition');
+	var $has_many = array('language', 'product');
     public $data;
 //	var $validation = array(
 //		'nutritions_categories_id' => array(
@@ -15,7 +15,7 @@ class Nutrition extends DataMapper {
         
     }
     
-    function save_by_language($data, $current_language = 'Russian'){
+    function save_by_language($data, $current_language = 'English'){
         $language = new Language();
         is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);                
         if(isset($data['name'])){
@@ -25,20 +25,36 @@ class Nutrition extends DataMapper {
         
     }
     
-    function get_full_info($id = false, $current_language = false){
-        
-        
+    function get_full_info($id = false, $current_language = 'English'){
         #svazivaet nutrition s vibranim language
+        $language = new Language();
+        is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
         if ($id){
-            $this->get_by_id($id);
-            $this->language->include_join_fields()->get_iterated();
+            $this->include_join_fields()->where_related($language)->get_by_id($id);
         }else{
-            $language = new Language();
-            if ($current_language)                
-                $language->get_by_name($current_language);
-            else
-                $language->get_by_name('Russian');
-            $this->include_join_fields()->where_in_related($language)->get_iterated();
+            #!
+            #$this->select('id, tagname, value, units')->get();
+            $this->select('id, tagname, value, units')->where('short_list',1)->get();
+            foreach($this as $nutrition){            
+                   $this->data->{strtolower($nutrition->tagname)} = array(
+                                            'id'    =>$nutrition->id,
+                                            'value' =>$nutrition->value,
+                                            'units' =>$nutrition->units
+                                            );
+            }
+            #!
+            $full_list = new Nutrition();
+            $full_list->select('id, tagname')->get();
+            
+            foreach($full_list as $elem){        
+            print_flex($elem->tagname);
+                if(!isset($this->data->{strtolower($elem->tagname)}))
+                    $this->data->{strtolower($elem->tagname)} = array(
+                                                        'id'    => $elem->id,
+                                                        'value' => 0,
+                                                        'units' =>''
+                                                        );
+            }
             $this->id = null;    
         }
         
@@ -48,27 +64,35 @@ class Nutrition extends DataMapper {
         #
         $language = new Language();
         is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
-        $short_list = new Short_list_nutrition();
-        $short_list->get();
+        
         #svazivaet nutrition s vibranim language
         if ($id){
             $this->get_by_id($id);
             $this->language->include_join_fields()->get_iterated();
         }else{
-            print_flex(array_map(function($x){return $x->nutrition_id;},$short_list->all));
-            $this->select('id, tagname, value, units')->where_related($language)->where_in('id',array_map(function($x){return $x->nutrition_id;},$short_list->all))->get();
-            foreach($this as $nutrition){
-        	    if (isset($nutrition->tagname)){
-	               echo $nutrition->id."\n";
+            $short_list = new Nutrition();
+            $short_list->select('id, tagname')->where('short_list',1)->get_iterated();
+            #!
+            $this->select('id, tagname, value, units')->where('short_list',1)->get();
+            foreach($this as $nutrition){            
                    $this->data->{strtolower($nutrition->tagname)} = array(
                                             'id'    =>$nutrition->id,
                                             'value' =>$nutrition->value,
                                             'units' =>$nutrition->units
                                             );
-                }
             }
-            $this->id = null;            
+            #!
+            foreach($short_list as $elem){
+                if(!isset($this->data->{strtolower($elem->tagname)}))
+                    $this->data->{strtolower($elem->tagname)} = array(
+                                                        'id'    => $elem->id,
+                                                        'value' => 0,
+                                                        'units' =>''
+                                                        );
+            }
+            $this->id = null;
         }
+        
     }
     function convert_to_mera($sequence = 0){        
         if ($sequence == 0){

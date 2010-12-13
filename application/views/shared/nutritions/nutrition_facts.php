@@ -1,4 +1,4 @@
-<div class='nutrition_facts' style='display:none'>
+<div class='nutrition_facts'>
 	<h4>Nutrition Facts</h4>
 	<div>Serving Size 100 grams</div>
 	<div>&nbsp;</div>

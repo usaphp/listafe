@@ -45,7 +45,7 @@ $route['scaffolding_trigger'] = "";
 
 //frontend routes
 $route['reciepts'] = 'home/reciepts';
-
+$route['nutrition-facts/(\d+)/(.*)'] = 'home/product_show/$1/$2';
 
 
 

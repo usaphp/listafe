@@ -8,7 +8,8 @@ class Linker {
 	
 	
 	function product_link($product){
-		$segments = array('product', $product->id);
+		$name = clean_string($product->name);
+		$segments = array('nutrition-facts', $product->id, $product->name);
 		$url = generate_url($segments);
 		return $url;
 	}
@@ -198,8 +199,8 @@ class Linker {
         return $url;
     }
     
-    function home_product_show(){
-        $segments = array('home', 'product_show');
+    function home_product_show($id, $name = false){
+        $segments = array('home', 'product_show', $id, $name);
         $url = generate_url($segments);
         return $url;
     }

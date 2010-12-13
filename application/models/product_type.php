@@ -5,7 +5,7 @@
         public function __construct() {
             parent::__construct();
         }
-       
+        
         function get_full_info($id = false,$current_language = 'English'){
             #
             $language = new Language();
@@ -14,7 +14,7 @@
                 $this->get_by_id($id);
                 $this->language->include_join_fields()->get_iterated();            
             }else{
-                $this->include_join_fields()->where_related($language)->get_iterated();
+                $this->include_join_fields()->where_related($language)->get();
                 $this->id = null;
             }
         }

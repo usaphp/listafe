@@ -68,11 +68,10 @@
 	
 	/* Removes everything except numbers and letters from url */
 	function clean_string($string) {
-		/*
-        Poka ne budem ispolzovat potom budet vidno. Tamik
         $string = preg_replace('/[^\w\d\/]/','-', $string);
 		$string = preg_replace('/\-+/', '-', $string);
-		$string = preg_replace('/.*\-$/', '', $string);*/
+		$string = preg_replace('/.*\-$/', '', $string);
+		$string = strtolower($string);
 		return $string;
 	}
     function explode_ext($var,$keys=false){
