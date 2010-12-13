@@ -55,22 +55,19 @@ class Nutrition extends DataMapper {
             $this->get_by_id($id);
             $this->language->include_join_fields()->get_iterated();
         }else{
-            
+            print_flex(array_map(function($x){return $x->nutrition_id;},$short_list->all));
             $this->select('id, tagname, value, units')->where_related($language)->where_in('id',array_map(function($x){return $x->nutrition_id;},$short_list->all))->get();
             foreach($this as $nutrition){
-        	    if (isset($nutrition->tagname)) {
-	               $this->data->{strtolower($nutrition->tagname)} = array(
+        	    if (isset($nutrition->tagname)){
+	               echo $nutrition->id."\n";
+                   $this->data->{strtolower($nutrition->tagname)} = array(
                                             'id'    =>$nutrition->id,
                                             'value' =>$nutrition->value,
                                             'units' =>$nutrition->units
                                             );
-       	        }
-             }
-	    
-	
-            
-            $this->id = null;
-            
+                }
+            }
+            $this->id = null;            
         }
     }
     function convert_to_mera($sequence = 0){        

@@ -80,16 +80,7 @@ class Leaf extends Component
         
         public function __construct() {
             parent::__construct();
-<<<<<<< HEAD
             set_time_limit(5000);
-            $this->output->enable_profiler(false);
-        }
-        
-        public function index(){
-            $this->run_product_nutrition();
-=======
-            set_time_limit(28800);
-            
             #$this->output->enable_profiler(false);
         }
         
@@ -107,7 +98,6 @@ class Leaf extends Component
             #$this->run_nutrition_product_from_tbl_product11();
             
             $this->template->load('admin/templates/main_template', 'admin/view_swap_db', $this->data);
->>>>>>> bd0c89b14ca6e67305840aee9b300393022713bd
         }
         public function abbrev_product(){            
 
@@ -133,7 +123,6 @@ class Leaf extends Component
             );
             #
             $query = $this->db->select()           # 'Shrt_Desc'
-<<<<<<< HEAD
                                 ->from('abbrev')
                                 ->limit(1000)
                                 #->get()
@@ -157,59 +146,7 @@ class Leaf extends Component
             print_flex($query);
             print_flex($result_data);
             return ; 
-        }
-        function run_product_nutrition(){
-            #
-            $query = $this->db->select()           # 'Shrt_Desc'
-                                ->from('abbrev')
-                                ->limit(2053,5580)
-                                ->get()
-                                ->result();
-            
-            $nutritions = new A_Nutrition();            
-            $nutritions->include_join_fields()
-                        ->where_related('a_language','id',1)
-                        ->get();
-                        
-            
-            #$result_data = get_object_vars(current($query));                                                       
-=======
-                                ->from('abbrev')
-                                ->limit(1000)
-                                #->get()
-                                ->result();
-            #
-            $nutritions = new A_Nutrition();            
-            $nutritions->include_join_fields()
-                        ->where_related('a_language','id',1)
-                        ->where_in('name',$data)
-                        ->get();
-            
-            $result_data = array_intersect_key(get_object_vars(current($query)),$data);                                                       
->>>>>>> bd0c89b14ca6e67305840aee9b300393022713bd
-            foreach($query as $row){                
-                $product = new A_Product();
-                $product->where('NDB_No',$row->NDB_No)->get();
-                $product->save($nutritions->all);
-                foreach($nutritions as $nutrition)
-<<<<<<< HEAD
-                    $product->set_join_field($nutrition,'value',$row->{$nutrition->join_description});                
-            }
-            
-            print_flex($query[count($query)-1]);
-            return ; 
-        }
-        function run_mera_from_weight(){
-            $query = $this->db->select('Msre_Desc')           # 'Shrt_Desc'
-=======
-                    $product->set_join_field($nutrition,'value',$result_data[$nutrition->join_name]);                
-            }
-            
-            print_flex($query);
-            print_flex($result_data);
-            return ; 
-        }
-        
+        }        
         function run_review_comment(){
             #$query = 
         }
@@ -392,69 +329,6 @@ class Leaf extends Component
             }
         }
         
-        function run_mera_from_weight(){
-            $query = $this->db->select('NDB_No, Msre_Desc')           # 'Shrt_Desc'
->>>>>>> bd0c89b14ca6e67305840aee9b300393022713bd
-                ->from('weight')
-                #->limit(1000,1000)
-                ->get()
-                ->result();
-            #print_flex($query);
-<<<<<<< HEAD
-            $mera       = new A_Mera();
-            $language   = new A_Language(1);
-=======
-            $mera       = new A_Mera();            
-            $language   = new A_Language(1);
-            #
->>>>>>> bd0c89b14ca6e67305840aee9b300393022713bd
-            foreach($query as $row){
-                $mera->include_join_fields()
-                        ->where_related('a_language','id',1)
-                        ->where('name',$row->Msre_Desc)->get();
-<<<<<<< HEAD
-                $mera->type = 2;
-                $mera->save($language);
-                $mera->set_join_field($language,'name',$row->Msre_Desc);
-                #print_flex($row);
-=======
-                if(!$mera->exists()){
-                    $mera->type = 2;
-                    $mera->save($language);
-                    $mera->set_join_field($language,'name',$row->Msre_Desc);
-                    echo $row->NDB_No.'</br>';
-                }
-                #print_flex($row);
-            }
-            
-        }
-        #        
-        function run_ration_mera_from_weight(){
-            $query = $this->db->select()           # 'Shrt_Desc'
-                ->from('weight')
-                #->limit()
-                ->get()
-                ->result();
-            #print_flex($query);
-
-            $product    = new A_Product(); 
-            $mera       = new A_Mera();
-            foreach($query as $row){
-                $product->where('NDB_No',$row->NDB_No)->get();
-                $mera->include_join_fields()
-                        ->where_related('a_language','id',1)
-                        ->where('name',$row->Msre_Desc)->get();
-                
-                $mera->save($product);
-                $data = array (
-                            'amount'=> $row->Amount,
-                            'seq'   => $row->Seq,
-                            'weight'=> $row->Gm_Wgt
-                );
-                $mera->set_join_field($product,$data);
-                echo $row->NDB_No.'</br>';
-            }        
-        }
         function run_mera_category_from_mera(){            
             $category    = new A_Mera_category(); 
             $meras       = new A_Mera();
@@ -549,7 +423,6 @@ class Leaf extends Component
                 if(!$this->db->select()->where(array('a_product_type_id'=>$type->id,'name'=>$type->name))->get('a_languages_a_product_types')->result())
                     $this->db->insert('a_languages_a_product_types',array('a_product_type_id'=>$type->id,'name'=>$type->name,'a_language_id' => 1));
             
->>>>>>> bd0c89b14ca6e67305840aee9b300393022713bd
             }
             
         }
