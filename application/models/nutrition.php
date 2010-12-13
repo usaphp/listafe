@@ -1,9 +1,9 @@
 <?php
 class Nutrition extends DataMapper {
 	
-	var $has_one = array('nutrition_category');
+	var $has_one = array('nutrition_category','short_list_nutrition');
 	var $has_many = array('language','product');
-                          
+    public $data;
 //	var $validation = array(
 //		'nutritions_categories_id' => array(
 //			'label' => 'Название категории состава',
@@ -48,15 +48,30 @@ class Nutrition extends DataMapper {
         #
         $language = new Language();
         is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
+        $short_list = new Short_list_nutrition();
+        $short_list->get();
         #svazivaet nutrition s vibranim language
         if ($id){
             $this->get_by_id($id);
             $this->language->include_join_fields()->get_iterated();
         }else{
-            $this->include_join_fields()->where_in_related($language)->include_join_fields()->get();
+            
+            $this->select('id, tagname, value, units')->where_related($language)->where_in('id',array_map(function($x){return $x->nutrition_id;},$short_list->all))->get();
+            foreach($this as $nutrition){
+        	    if (isset($nutrition->tagname)) {
+	               $this->data->{strtolower($nutrition->tagname)} = array(
+                                            'id'    =>$nutrition->id,
+                                            'value' =>$nutrition->value,
+                                            'units' =>$nutrition->units
+                                            );
+       	        }
+             }
+	    
+	
+            
             $this->id = null;
+            
         }
-        
     }
     function convert_to_mera($sequence = 0){        
         if ($sequence == 0){
