@@ -18,7 +18,7 @@
 	        </div>
 	        <div class='clear'></div>
 		</div>
-        <?php $this->load->view('search/nutritions/items',array('dm_nutritions'=>$product->nutrition));?>
+        <?php $this->load->view('shared/nutrition_facts',array('dm_nutritions'=>$product->nutrition));?>
     </li>
 <?php endforeach;?>
 </ul>

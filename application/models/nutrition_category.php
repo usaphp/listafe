@@ -18,8 +18,7 @@ class Nutrition_category extends DataMapper {
         $language = new Language();
         is_numeric($current_language)?$language->get_by_id($current_language):$language->get_by_name($current_language);
         if ($id){
-            $this->get_by_id($id);
-            $this->language->include_join_fields()->get_iterated();
+            $this->include_join_fields()->where_related($language)->get_by_id($id);
         }else{
             $this->include_join_fields()->where_related($language)->get_iterated();
             $this->id = null;    

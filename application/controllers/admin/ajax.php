@@ -138,7 +138,7 @@ class Ajax extends Admin_Controller {
         
         $this->data['dm_product']               = $product;
         $this->data['dm_nutrition_categories']  = $nutrition_categories;
-        $this->load->view('admin/products/sub/nutrition_table',$this->data);
+        $this->load->view('admin/products/sub/nutrition_tables',$this->data);
         
     }
     function get_products_list(){

@@ -78,7 +78,7 @@
                 <?php 
                 $data['dm_nutritions_categories']   = $dm_nutrition_categories;
                 $data['dm_product']                 = $dm_product;
-                $this->load->view('admin/products/sub/nutrition_table',$data);?>        
+                $this->load->view('admin/products/sub/nutrition_tables',$data);?>        
             </div>
             <div class="clear"></div>
             <?php

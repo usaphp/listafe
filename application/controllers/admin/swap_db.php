@@ -1,77 +1,5 @@
 <?php
     
- 
-// Component - компонент
-// объявляет интерфейс для компонуемых объектов;
-// предоставляет подходящую реализацию операций по умолчанию,
-// общую для всех классов;
-// объявляет интерфейс для доступа к потомкам и управлению ими;
-// определяет интерфейс доступа к родителю компонента в рекурсивной структуре
-// и при необходимости реализует его. Описанная возможность необязательна;
-abstract class Component
-{
-	protected $name;
- 
-	// Constructor
-	public function Component($name)
-	{
-		$this->name = $name;
-	}
- 
-	public abstract function Add(Component $c);
-	public abstract function Remove(Component $c);
-	public abstract function Display();
-}
- 
- 
-// Composite - составной объект
-// определяет поведеление компонентов, у которых есть потомки;
-// хранит компоненты-потомоки;
-// реализует относящиеся к управлению потомками операции и интерфейс
-class Composite extends Component
-{
-	private $children = array();
- 
-	public function Add(Component $component)
-	{
-		$this->children[$component->name] = $component;
-	}
- 
-	public function Remove(Component $component)
-	{
-		unset($this->children[$component->name]);
-	}
- 
-	public function Display()
-	{
-		print_flex($this->children);
-	}
-}
- 
- 
-// Leaf - лист
-// представляет листовой узел композиции и не имеет потомков;
-// определяет поведение примитивных объектов в композиции;
-class Leaf extends Component
-{
- 
-	public function Add(Component $c)
-	{
-		print ("Cannot add to a leaf");
-	}
- 
-	public function Remove(Component $c)
-	{
-		print("Cannot remove from a leaf");
-	}
- 
-	public function Display()
-	{
-		echo $this->name;
-	}
-}
- 
- 
 
 ?>
 <?php
@@ -99,13 +27,19 @@ class Leaf extends Component
             
             $this->template->load('admin/templates/main_template', 'admin/view_swap_db', $this->data);
         }
-        public function abbrev_product(){            
-
-            foreach($query as $row){                
-                $product = new A_Product();
-                $product->NDB_No;                
+        public function run_ajax_nutr(){  
+            $product = new Product(4);
+            $product->nutrition->get_full_info();
+            $ratio_mera = new Ratio_mera();
+            $ratio_mera->where(array('seq' => 2, 'product_id' => 4))->get();
+            
+            if($ratio_mera->exists()){
+                $factor = $ratio_mera->value/100;
+                foreach($product->nutrition as $nutrition){
+                    $nutrition->value = $factor*$nutrition->value;
+                    echo $nutrition->value.' ';
+                }
             }
-            echo $product->id;
         }
         function set_minerals(){
             #

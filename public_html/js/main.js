@@ -93,14 +93,38 @@ function main(){
     }
     
     main.prototype.home_prodcut_show_init = function(){
-	   $('#mera_id').change(function(){
+	   $('#mera_selected_id').change(function(){
             $.ajax({
                 url     : '/ajax/get_nutrition_by_mera',
-                data    : { mera_id : $('#mera_id').val(),
-                            number_product_id : $('#number_product_id').val()},
+                dataType: 'json',
+                data    : { mera_selected_id : $('#mera_selected_id').val(),
+                            product_selected_id : $('#product_selected_id').val()},
                 type    : 'POST',
                 success : function(response){
-                    $('#nutrition_wrapper').html(response);
+                    if(!response.status){
+                        $('#search_results_holder').html('Error');
+                        return;
+                    }
+                    $('#block_nutrition_facts').html(response.nutrition_facts);
+                    $('#block_nutrition_tables').html(response.nutrition_tables);
+                }
+            });
+        });
+        $('#product_selected_id').change(function(){
+            $.ajax({
+                url     : '/ajax/get_nutrition_by_product',
+                dataType: 'json',
+                data    : {product_selected_id : $('#product_selected_id').val()},
+                type    : 'POST',
+                success : function(response){
+                    if(!response.status){
+                        $('#search_results_holder').html('Error');
+                        return;
+                    }
+                    $('#block_nutrition_facts').html(response.nutrition_facts);
+                    $('#block_nutrition_tables').html(response.nutrition_tables);
+                    $('#mera_selected_id').html(response.meras_available);
+                    //console.log(response.meras_available);
                 }
             });
         });   

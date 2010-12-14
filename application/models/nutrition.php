@@ -34,20 +34,20 @@ class Nutrition extends DataMapper {
         }else{
             #!
             #$this->select('id, tagname, value, units')->get();
-            $this->select('id, tagname, value, units')->where('short_list',1)->get();
-            foreach($this as $nutrition){            
+            $this->select('id, tagname, value, units, nutrition_category_id, group_list')->include_join_fields()->where_related($language)->get();
+            foreach($this as $nutrition){
+                if($nutrition)
                    $this->data->{strtolower($nutrition->tagname)} = array(
                                             'id'    =>$nutrition->id,
                                             'value' =>$nutrition->value,
                                             'units' =>$nutrition->units
                                             );
+                 
             }
             #!
             $full_list = new Nutrition();
-            $full_list->select('id, tagname')->get();
-            
-            foreach($full_list as $elem){        
-            print_flex($elem->tagname);
+            $full_list->select('id, tagname')->where('group_list',3)->get_iterated();            
+            foreach($full_list as $elem){
                 if(!isset($this->data->{strtolower($elem->tagname)}))
                     $this->data->{strtolower($elem->tagname)} = array(
                                                         'id'    => $elem->id,
@@ -70,10 +70,10 @@ class Nutrition extends DataMapper {
             $this->get_by_id($id);
             $this->language->include_join_fields()->get_iterated();
         }else{
-            $short_list = new Nutrition();
-            $short_list->select('id, tagname')->where('short_list',1)->get_iterated();
+            $full_list = new Nutrition();
+            $full_list->select('id, tagname')->where('group_list',3)->get_iterated();
             #!
-            $this->select('id, tagname, value, units')->where('short_list',1)->get();
+            $this->select('id, tagname, value, units')->where('group_list',3)->get();
             foreach($this as $nutrition){            
                    $this->data->{strtolower($nutrition->tagname)} = array(
                                             'id'    =>$nutrition->id,
@@ -82,7 +82,7 @@ class Nutrition extends DataMapper {
                                             );
             }
             #!
-            foreach($short_list as $elem){
+            foreach($full_list as $elem){
                 if(!isset($this->data->{strtolower($elem->tagname)}))
                     $this->data->{strtolower($elem->tagname)} = array(
                                                         'id'    => $elem->id,
@@ -101,12 +101,16 @@ class Nutrition extends DataMapper {
         }
         $ratio_mera = new Ratio_mera();
         $ratio_mera->where(array('seq' => $sequence, 'product_id' => $this->parent['id']))->get();
+        
         if($ratio_mera->exists()){
-            $factor = $ratio_mera->weight/100;
+            $factor = $ratio_mera->value/100;
             foreach($this as $nutrition){
-                $nutrition->join_weight = $factor*$nutrition->join_weight;
+                $nutrition->value = $factor*$nutrition->value;
+                $this->data->{strtolower($nutrition->tagname)}['value'] =  $nutrition->value;
+                #echo $this->data->{strtolower($nutrition->tagname)}['value']; 
             }
         }
-        return $this;
+        #print_flex($this);
     }
 }
+?>

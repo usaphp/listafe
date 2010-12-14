@@ -5,7 +5,7 @@
             if($nutrition->nutrition_category_id == $category->id) {?>
                 <div class="nutrition_block">
                     <div class="nutrition_name"> <?php echo $nutrition->join_name;?></div>
-                    <div class="nutrition_weight"> <?php echo $nutrition->join_weight.' '.$nutrition->units; ?></div>
+                    <div class="nutrition_weight"> <?php echo $nutrition->value.' '.$nutrition->units; ?></div>
                     <div class="clear"></div>
                 </div>
             <?php } ?>
