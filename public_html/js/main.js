@@ -6,7 +6,7 @@ function main(){
             if(!event.pathNames[0])return;
             $('.mp_big_logo').slideUp();
             $('.left_hider').show();
-            $('.main_search_input').val(event.pathNames[0]);
+            $('.main_search_input').value(event.pathNames[0]);
             main.prototype.search_by_query(event.pathNames[0]);
             console.log(event);
         });
@@ -17,7 +17,7 @@ function main(){
     	// mouse click on list of types suggest
     	$('#search_suggest li').live('click', function(){
             var query_string = main.prototype.get_query_string($(this).text());
-            $.address.val(query_string);
+            $.address.value(query_string);
             $('.main_search_input').val(query_string);
             $('#search_suggest').hide();
             main.prototype.search_by_query(query_string, false);
@@ -34,7 +34,7 @@ function main(){
         	var code = (e.keyCode ? e.keyCode : e.which);
 			if(code == 13) { //Enter keycode
                 //изменяет строку при нажатии клавиши ввода
-                $.address.val(query_string);
+                $.address.value(query_string);
 				return;
 			}
         	$('.mp_big_logo').slideUp();
