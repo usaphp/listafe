@@ -7,11 +7,11 @@
         'value' => $dm_product->join_name
     );
     $sel_product_category = array(
-        'options' => array_for_dropbox($product_categories,'Категория продукта','id','join_name'),
+        'options' => array_for_dropbox($dm_product_categories,'Категория продукта','id','join_name'),
         'name'  => 'product_category_id',
         'id'    => 'product_category_id',
         'class' => 'f_select wide required',
-        'selected' => $dm_product->product_category_id
+        'selected' => $dm_product_
     );
     $txt_description = array(
         'name'  => 'description',

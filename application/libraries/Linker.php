@@ -200,7 +200,7 @@ class Linker {
     }
     
     function home_product_show($id, $name = false){
-        $segments = array('home', 'product_show', $id, $name);
+        $segments = array('home', 'products', 'show', $id, $name);
         $url = generate_url($segments);
         return $url;
     }

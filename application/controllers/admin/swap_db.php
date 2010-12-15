@@ -41,6 +41,12 @@
                 }
             }
         }
+        public function run_product_category(){
+            $categories = $this->db->select('id, FdGrp_CD')->get('product_categories')->result();
+            foreach($categories as $category){
+                $this->db->where('FdGrp_CD',$category->FdGrp_CD)->update('products',array('product_category_id'=>$category->id));
+            }
+        }
         function set_minerals(){
             #
             $data = array(

@@ -37,7 +37,7 @@
             $return_arr['status']   = false;
             $product_selected_id    = $this->input->post('product_selected_id');
             $mera_selecte_id        = $this->input->post('mera_selected_id');
-            if(!$product_selected_id or !$mera_selecte_id) return ;
+            #if(!$product_selected_id or !$mera_selecte_id) return ;
             
             $product                = new Product();
             $nutrition_categories   = new Nutrition_category();
