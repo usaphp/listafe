@@ -47,17 +47,21 @@ class Nutrition extends DataMapper {
             #добавляет нулевые значения к отсутствующим данным 
             #full_list - определяет полный перечень nutritions
             $full_list = new Nutrition();
-            $full_list->select('id, tagname')->where('Group_List',3)->get_iterated();            
-            foreach($full_list as $elem){
+            $full_list->select('id, nutrition_category_id, units, Group_List, Num_Dec, Tagname as tagname')->include_join_fields()->where_related_language('id',1)->limit(1)->get();
+            print_flex($full_list);
+            foreach($full_list as $elem){                
                 if(!isset($this->data->{strtolower($elem->tagname)})){
+                    $this->all[] = $elem;
                     $this->data->{strtolower($elem->tagname)} = array(
                                                         'id'    => $elem->id,
                                                         'value' => '~',
                                                         'units' =>''
                                                         );
-                    
-                    }
+                                        
+                }
             }
+            #print_flex($this->all);
+            echo count $this->all;
             $this->id = null;    
         }
     }
