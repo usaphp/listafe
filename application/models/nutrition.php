@@ -34,7 +34,7 @@ class Nutrition extends DataMapper {
         }else{
             #
             #$this->select('id, tagname, value, units')->get();
-            $this->select('id, tagname, value, units, nutrition_category_id, group_list')->include_join_fields()->where_related($language)->get();
+            $this->select('id, tagname, value, units, nutrition_category_id, Group_List')->include_join_fields()->where_related($language)->get();
             #создает объектную модель данных для одбращения к данным через свойства объекта
             foreach($this as $nutrition){
                 if($nutrition)
@@ -47,14 +47,16 @@ class Nutrition extends DataMapper {
             #добавляет нулевые значения к отсутствующим данным 
             #full_list - определяет полный перечень nutritions
             $full_list = new Nutrition();
-            $full_list->select('id, tagname')->where('group_list',3)->get_iterated();            
+            $full_list->select('id, tagname')->where('Group_List',3)->get_iterated();            
             foreach($full_list as $elem){
-                if(!isset($this->data->{strtolower($elem->tagname)}))
+                if(!isset($this->data->{strtolower($elem->tagname)})){
                     $this->data->{strtolower($elem->tagname)} = array(
                                                         'id'    => $elem->id,
-                                                        'value' => 0,
+                                                        'value' => '~',
                                                         'units' =>''
                                                         );
+                    
+                    }
             }
             $this->id = null;    
         }
@@ -71,7 +73,7 @@ class Nutrition extends DataMapper {
             $this->language->include_join_fields()->get_iterated();
         }else{
             $full_list = new Nutrition();
-            $full_list->select('id, tagname')->where('group_list',3)->get_iterated();
+            $full_list->select('id, tagname')->where('Group_List',3)->get_iterated();
             #создает объектную модель данных для одбращения к данным через свойства объекта
             $this->select('id, tagname, value, units')->where('group_list',3)->get();
             foreach($this as $nutrition){            
@@ -86,7 +88,7 @@ class Nutrition extends DataMapper {
                 if(!isset($this->data->{strtolower($elem->tagname)}))
                     $this->data->{strtolower($elem->tagname)} = array(
                                                         'id'    => $elem->id,
-                                                        'value' => 0,
+                                                        'value' => '~',
                                                         'units' =>''
                                                         );
             }

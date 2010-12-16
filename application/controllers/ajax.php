@@ -49,11 +49,10 @@
             $product->nutrition->convert_to_mera($mera_selecte_id);            
             $nutrition_categories->get_full_info();
             
-            
             $this->data['dm_nutrition_categories']  = $nutrition_categories;
             
             $return_arr['nutrition_facts']  = $this->load->view('shared/nutrition_facts',array('dm_nutritions' => $product->nutrition),true);
-            $raturn_arr['nutrition_tables'] = $this->load->view('products/nutrition_tables',array('dm_product' => $product, 'dm_nutrition_categories' => $nutrition_categories),true);
+            $return_arr['nutrition_tables'] = $this->load->view('products/nutrition_tables',array('dm_product' => $product, 'dm_nutrition_categories' => $nutrition_categories),true);
             $return_arr['status'] = true;
             echo json_encode($return_arr);
             return ;

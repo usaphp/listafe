@@ -6,7 +6,7 @@ function main(){
             if(!event.pathNames[0])return;
             $('.mp_big_logo').slideUp();
             $('.left_hider').show();
-            $('.main_search_input').value(event.pathNames[0]);
+            $('.main_search_input').val(event.pathNames[0]);
             main.prototype.search_by_query(event.pathNames[0]);
             console.log(event);
         });
@@ -123,7 +123,8 @@ function main(){
                         return;
                     }
                     $('#block_nutrition_facts').html(response.nutrition_facts);
-                    $('#block_nutrition_tables').html(response.nutrition_tables);                    
+                    $('#block_nutrition_tables').html(response.nutrition_tables);
+                    console.log(response);                    
                 }
             });
         });        
@@ -138,8 +139,9 @@ function main(){
                         $('#search_results_holder').html('Error');
                         return;
                     }
+                    
                     $('#block_nutrition_facts').html(response.nutrition_facts);
-                    $('#block_nutrition_tables').html(response.nutrition_tables);
+                    $('#block_nutrition_tables').html(response.nutrition_tables);                    
                     $('#mera_selected_id').html(response.meras_available);                                         
                 }                
             });
