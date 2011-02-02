@@ -14,9 +14,9 @@
     	'class'	=> 'main_search_button',
     	'value' => 'search',
     	'content' => 'search'
-    ); #value-onalogi4no name
+    ); 
     $sel_products = array(
-        'options'   => array_for_dropbox($dm_products,'Products selected category','id','join_name'),
+        'options'   => array_for_dropbox($dm_products,'Products selected category','id','name'),
         'name'      => 'product_selected_name',
         'selected'  => $dm_product_selected->id,
         'id'        => 'product_selected_id',

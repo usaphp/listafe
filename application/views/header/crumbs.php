@@ -1,6 +1,6 @@
 <?php if(count($crumbs) > 1): ?>
 <div>
-	<ul>
+	<ul class="breadcrumbs_top">
 		<?php foreach($crumbs as $crumb): ?>
 			<li>
 				<?php 

@@ -9,7 +9,11 @@
 			#search_suggest li { padding:3px 10px; font-size:16px; }
 			#search_suggest li:hover { background:#eef4ff; }	
 	#search_results_holder { margin-top:50px; }
-	
+/* Breadcrumbs */
+.breadcrumbs_top { list-style:none; float:left; margin:15px 0px; }
+	.breadcrumbs_top li { float:left; font-size:14px; }
+		.breadcrumbs_top li a, .breadcrumbs_top li span{ padding:0px 3px; }
+  
 	/* Search result */
 	.search_results { list-style:none; margin:0px; }
 		.search_results_item { padding:15px 10px; border:1px solid #fff; }

@@ -37,7 +37,6 @@ class Nutrition extends DataMapper {
             $this->select('id, tagname, value, units, nutrition_category_id, Group_List')->include_join_fields()->where_related($language)->get();
             #создает объектную модель данных для одбращения к данным через свойства объекта
             foreach($this as $nutrition){
-                if($nutrition)
                    $this->data->{strtolower($nutrition->tagname)} = array(
                                             'id'    =>$nutrition->id,
                                             'value' =>$nutrition->value,
