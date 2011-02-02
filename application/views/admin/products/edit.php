@@ -1,5 +1,5 @@
 <?php
-    
+    print_flex($body_parts);
     $inp_product_name = array(
         'name'  => 'product_name',
         'id'    => 'product_name',
