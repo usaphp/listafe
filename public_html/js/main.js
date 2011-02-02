@@ -1,13 +1,23 @@
 function main(){
 	
     main.prototype.main_search_init = function(){
-    	
+    	//делает запрос при изменении строки адреса
+        $.address.change(function(event) {
+            if(!event.pathNames[0])return;
+            $('.mp_big_logo').slideUp();
+            $('.left_hider').show();
+            $('.main_search_input').val(event.pathNames[0]);
+            main.prototype.search_by_query(event.pathNames[0]);
+            console.log(event);
+        });
+        
     	// focus on search input when page loads
     	$('.main_search_input').focus();
     	
     	// mouse click on list of types suggest
     	$('#search_suggest li').live('click', function(){
             var query_string = main.prototype.get_query_string($(this).text());
+            $.address.value(query_string);
             $('.main_search_input').val(query_string);
             $('#search_suggest').hide();
             main.prototype.search_by_query(query_string, false);
@@ -15,18 +25,21 @@ function main(){
     	
     	// key pressed in search input
         $('.main_search_input').keyup(function(e){
-        	var query_string = main.prototype.get_query_string();
-        	if(!query_string){
+        	var query_string = main.prototype.get_query_string();        	
+            if(!query_string){
         		main.prototype.clear_results();
         		return false;
         	} 
         	// dont do anything when enter clicked
         	var code = (e.keyCode ? e.keyCode : e.which);
 			if(code == 13) { //Enter keycode
+                //изменяет строку при нажатии клавиши ввода
+                $.address.value(query_string);
 				return;
 			}
         	$('.mp_big_logo').slideUp();
         	$('.left_hider').show();
+            
             main.prototype.search_by_query(query_string, true);
         });
         
@@ -85,15 +98,19 @@ function main(){
 					if(response.product_types.length) $('#search_suggest').show();
 					else $('#search_suggest').hide();
 				}
+                
                 $('#search_results_holder').html(response.product_items).show();
+                
                 return;
+                
             }
             
-        })
+        });
+        
     }
     
-    main.prototype.home_prodcut_show_init = function(){
-	   $('#mera_selected_id').change(function(){
+    main.prototype.home_prodcut_show_init = function(){        
+        $('#mera_selected_id').change(function(){
             $.ajax({
                 url     : '/ajax/get_nutrition_by_mera',
                 dataType: 'json',
@@ -107,10 +124,11 @@ function main(){
                     }
                     $('#block_nutrition_facts').html(response.nutrition_facts);
                     $('#block_nutrition_tables').html(response.nutrition_tables);
+                    console.log(response);                    
                 }
             });
-        });
-        $('#product_selected_id').change(function(){
+        });        
+        $('#product_selected_id').change(function(){            
             $.ajax({
                 url     : '/ajax/get_nutrition_by_product',
                 dataType: 'json',
@@ -121,12 +139,13 @@ function main(){
                         $('#search_results_holder').html('Error');
                         return;
                     }
+                    
                     $('#block_nutrition_facts').html(response.nutrition_facts);
-                    $('#block_nutrition_tables').html(response.nutrition_tables);
-                    $('#mera_selected_id').html(response.meras_available);
-                    //console.log(response.meras_available);
-                }
+                    $('#block_nutrition_tables').html(response.nutrition_tables);                    
+                    $('#mera_selected_id').html(response.meras_available);                                         
+                }                
             });
+            
         });   
 	}
 }

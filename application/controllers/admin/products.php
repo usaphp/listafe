@@ -103,16 +103,19 @@ class Products extends Admin_Controller {
         #
         $meras                  = new Mera();
         $product                = new Product();
-        $product_categories     = new Product_category();
+        
         $nutrition_categories   = new Nutrition_category();
         $languages              = new Language();        
         
-        $product->get_full_info($id);
-        $product->nutrition->get_full_info();
-        $product->nutrition->convert_to_mera(1);
+        $product_categories->get_full_info();
+        $product_categories->product_type->get_full_info();
+        $product_categories->product_type->product->get_full_info($id);
+        $product_categories->product_type->product->language->get_full_info();
+        $product_categories->product_type->product->nutrition->get_full_info();
+        $product_categories->product_type->product->nutrition->convert_to_mera(1);
         $meras_available = array('100 gramms');
-        foreach($product->mera as $mera){                
-            $meras_available[$mera->join_seq] = $mera->join_name.' ( '.$mera->join_weight.' gm )';
+        foreach($product_categories->product_type->product->mera as $mera){                
+            $meras_available[$mera->join_seq] = $mera->join_name.' ( '.$mera->join_value.' gm )';
         }
         #
         $meras->get_full_info();
@@ -122,14 +125,13 @@ class Products extends Admin_Controller {
         $languages->get_iterated();            
         #
         $this->data['meras_available']              = $meras_available;
-        $this->data['dm_product']                   = $product;        
-        $this->data['product_categories']	        = $product_categories;
+        $this->data['dm_product_categories']	    = $product_categories;
+        $this->data['dm_product_types']              = $product_categories->product_type;
+        $this->data['dm_product']                   = $product_categories->product_type->product;
         $this->data['dm_nutrition_categories']      = $nutrition_categories;
         $this->data['dm_languages']                 = $languages;
         $this->data['meras']                        = $meras;
-        
         $this->template->load('/admin/templates/main_template', '/admin/products/edit', $this->data);
-        
     }
     //checks to see if product name already exists    
     function _product_name_exists($product_name){
