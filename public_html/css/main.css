@@ -29,8 +29,9 @@
 					.mp_sr_main_nutr span.red { color:#790000; }
 					.mp_sr_main_nutr span.green { color:#477900; }
 					.mp_sr_main_nutr span.black { color:#111; }
+		.search_results_item .nutrition_facts{ position:absolute; display:none; }
 		/* nutrition facts block */
-		.nutrition_facts { font-size:11px; width:250px; padding:10px; border:1px solid #111; background:#fff; position:absolute; display:none; }
+		.nutrition_facts { font-size:11px; width:250px; padding:10px; border:1px solid #111; background:#fff; }
 			.nutrition_facts h4 { font-size:24px; font-weight:bold; margin:0px; }
 			.nutrition_facts_ul { list-style:none; margin:0px; }
 				.nutrition_facts_ul li { border-bottom: 1px solid #111; }
