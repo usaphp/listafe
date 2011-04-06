@@ -9,7 +9,6 @@ class Home extends MY_Controller {
 	
 	function index()
 	{
-        $this->output->enable_profiler(FALSE);
         $this->product_type_by_name();
         #$this->template->load('/templates/main_template', 'homepage');
 	}
@@ -20,9 +19,9 @@ class Home extends MY_Controller {
         $product_categories         = new Product_category();
         $product_category_selected  = new Product_category();
         
-        $product_categories ->get_full_info();
+        $product_categories->get_full_info();
         
-        if(isset($prodcut_categories_name))
+        if(isset($product_categories_name))
             $product_category_selected->get_full_info($category_name);
             
         $this->data['dm_product_categories']        = $product_categories;
