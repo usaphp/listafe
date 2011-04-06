@@ -11,4 +11,11 @@ public_html/images/buttons/*.db
 public_html/images/gradients/*.db
 public_html/images/icons/*.db
 public_html/images/site/*.db
+Thumbs.db
 .project
+.buildpath
+.settings
+.idea
+*.ppj
+*.ppx
+*.tmproj

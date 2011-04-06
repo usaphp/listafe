@@ -23,8 +23,8 @@ class Admin_Controller extends CI_Controller {
 		array_push($this->data['js_functions'], array('name' => 'general_init', 'data' => FALSE));
 		array_push($this->data['js_functions'], array('name' => 'tabs_init', 'data' => FALSE));
 		array_push($this->data['js_functions'], array('name' => 'dropdown_init', 'data' => FALSE));
-        array_push($this->data['js_functions'], array('name' => 'language_name_init', 'data' => FALSE));		
-		$this->output->enable_profiler(TRUE);
+        array_push($this->data['js_functions'], array('name' => 'language_name_init', 'data' => FALSE));
+        $this->output->enable_profiler($this->config->item('enable_profiler'));
     }
     function get_current_language(){
         return $this->data['language']['current'];
