@@ -7,7 +7,7 @@
         <script type="text/javascript" src="/js/offline/jquery-1.3.2.min.js"></script>
         <script type="text/javascript" src="/js/offline/jquery.validate.js"></script>
          -->
-        <script type="text/javascript" src="/js/jquery.autocomplete.js"></script>
+        <!-- NOT USED I THINK <script type="text/javascript" src="/js/jquery.autocomplete.js"></script> -->
         <!-- ADMIN ONLY <script type="text/javascript" src="/js/jquery.form.js"></script>-->
         <!-- ADMIN ONLY DONT KNOW <script type="text/javascript" src="/js/jquery.fancybox-1.3.1.js"></script>-->
         <script type="text/javascript" src="/js/jquery.address-1.3.1.min.js"></script>
